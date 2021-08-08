@@ -23,7 +23,7 @@
       </div>
     </template>
     <template v-else>
-      <ul class="aqiList pl-0">
+      <ul class="dataList pl-0">
         <li v-for="(list, i) in lists" :key="`${i}_aqi`">
           <v-icon
             large
@@ -198,12 +198,4 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    .aqiList {
-      display: flex;
-      justify-content: space-around;
-      li {
-        display: flex;
-        flex-direction: column;
-      }
-    }
 </style>

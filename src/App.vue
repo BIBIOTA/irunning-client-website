@@ -3,6 +3,7 @@
     <v-main>
       <Weather />
       <Aqi />
+      <Alert />
     </v-main>
   </v-app>
 </template>
@@ -10,7 +11,9 @@
 <script>
 import Weather from './components/Weather.vue';
 import Aqi from './components/Aqi.vue';
+import Alert from './components/Alert.vue';
 import { mapMutations } from 'vuex';
+import './scss/all.scss';
 
 export default {
   name: 'App',
@@ -21,6 +24,7 @@ export default {
   components: {
     Weather,
     Aqi,
+    Alert,
   },
   methods: {
     ...mapMutations([

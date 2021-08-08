@@ -55,7 +55,7 @@
                 :items="districts"
                 label="請選擇鄉鎮區"
                 item-text="AreaName"
-                @input="passVal($event.CityName, $event.AreaName, area.siteName)"
+                @input="passVal($event.CityName, $event.AreaName, area.siteName);getWeather($event.CityName, $event.AreaName)"
                 return-object
               ></v-select>
             </v-card-text>
@@ -112,6 +112,7 @@ export default {
       'setAqi',
       'setArea',
       'setWeather',
+      'setError',
     ]),
     getCities() {
       cities.getCities().then((res) => {
@@ -135,7 +136,8 @@ export default {
           this.getWeather(county, district);
           this.getAqi(siteName);
         } else {
-          console.log(res.message);
+          this.setWeather(null);
+          this.setError(res.message);
         }
       });
     },
@@ -144,7 +146,8 @@ export default {
         if (res.status) {
           this.setWeather(res.data);
         } else {
-          console.log(res.message);
+          this.setWeather({});
+          this.setError(res.message);
         }
       });
     },
@@ -162,7 +165,8 @@ export default {
           });
           this.setOverlay(false);
         } else {
-          console.log(res.message);
+          this.setAqi({});
+          this.setError(res.message);
         }
       });
     },

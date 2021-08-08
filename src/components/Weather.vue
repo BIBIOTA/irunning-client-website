@@ -24,7 +24,7 @@
       </div>
     </template>
     <template v-else>
-      <ul class="aqiList pl-0">
+      <ul class="dataList pl-0">
         <li>
           <figure v-if="weather.WxValue">
             <img :src="require(`../assets/weather/${getDayOrNight()}/${weather.WxValue}.svg`)" alt="">
@@ -79,12 +79,4 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    .aqiList {
-      display: flex;
-      justify-content: space-around;
-      li {
-        display: flex;
-        flex-direction: column;
-      }
-    }
 </style>
