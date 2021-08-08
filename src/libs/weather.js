@@ -1,18 +1,18 @@
 import { request } from './axios';
 
-export const aqi = {
-  baseUrl: '/aqi',
+export const weather = {
+  baseUrl: '/weather',
 
   fullUrl(url) {
     return `${this.baseUrl}${url}`;
   },
 
   /**
-   * 取得空氣品質資料
+   * 取得所有天氣資料
    */
-  getAqi(County) {
-    const url = '/getAqiList';
-    return request(this.fullUrl(url), { County })
+  getWeather(CityName, AreaName) {
+    const url = '/getWeather';
+    return request(this.fullUrl(url), { CityName, AreaName })
       .then((res) => {
         if (res.status) {
           return res.data;
