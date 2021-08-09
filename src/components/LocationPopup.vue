@@ -23,17 +23,7 @@
         </template>
         <template v-slot:default="dialog">
           <v-card>
-            <v-overlay :value="overlay" class="text-center">
-              <v-progress-circular
-                :size="70"
-                :width="8"
-                indeterminate
-                color="cyan lighten-3"
-              ></v-progress-circular>
-              <v-card-title class="pl-8">
-                資料讀取中...
-              </v-card-title>
-            </v-overlay>
+            <Overlay :message="'資料讀取中...'" />
             <v-card-title>
               請選擇縣市
             </v-card-title>
@@ -90,6 +80,7 @@
 </template>
 
 <script>
+import Overlay from './Overlay.vue';
 import { cities } from '../libs/cities.js';
 import { aqi } from '../libs/aqi.js';
 import { weather } from '../libs/weather.js';
@@ -105,6 +96,7 @@ export default {
     };
   },
   components: {
+    Overlay,
   },
   methods: {
     ...mapMutations([
@@ -185,7 +177,6 @@ export default {
   },
   computed: {
     ...mapState([
-      'overlay',
       'area',
     ]),
   },
