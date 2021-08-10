@@ -3,7 +3,7 @@
 </template>
 <script>
 import Overlay from '../components/Overlay.vue';
-import { mapMutations } from 'vuex';
+import { mapActions, mapMutations } from 'vuex';
 
 export default {
   name: 'Login',
@@ -11,12 +11,21 @@ export default {
     Overlay,
   },
   methods: {
+    ...mapActions([
+      'getToken',
+    ]),
     ...mapMutations([
       'setOverlay',
     ]),
+    async loginProcess(query) {
+      if (query.code) {
+        this.getToken(query.code);
+      }
+    },
   },
   mounted() {
     this.setOverlay(true);
+    this.loginProcess(this.$route.query);
   }
 }
 </script>
