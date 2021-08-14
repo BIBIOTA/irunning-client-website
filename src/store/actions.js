@@ -1,4 +1,6 @@
 import strava from 'strava-v3';
+import { loginApi } from '../libs/login.js';
+import Cookies from 'js-cookie'
 
 const errors = require('request-promise/errors')
 
@@ -17,15 +19,27 @@ export const getRequestAccessURL = async () => {
   window.location.href = stravaUrl;
 };
 
-export const getToken = async ({ dispatch }, code) => {
+export const getToken = async ({ dispatch, commit}, code) => {
   const payload = await strava.oauth.getToken(code)
     .catch(errors.StatusCodeError, function (e) {
-    console.log(e);
+    commit('setError', e);
   })
-  dispatch('login', payload);
+  const res = await dispatch('login', payload);
+  if (res) {
+    return true
+  }
+  return false;
 };
 
 export const login = async ({ commit }, payload) => {
-  console.log(commit);
-  console.log(payload);
+  loginApi.login(payload).then((res) => {
+    if (res.status) {
+      Cookies.set('member', JSON.stringify(res.data), { expires: 5 });
+      commit('setIsLogin', true);
+      return true;
+    } else {
+      commit('setError', res.message);
+      return false;
+    }
+  });
 };

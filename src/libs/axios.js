@@ -1,4 +1,5 @@
 import axios from 'axios';
+import qs from 'qs';
 
 const API_URL = process.env.VUE_APP_API_KEY;
 let AUTH_TOKEN = null;

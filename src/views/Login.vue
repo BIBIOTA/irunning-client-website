@@ -19,7 +19,8 @@ export default {
     ]),
     async loginProcess(query) {
       if (query.code) {
-        this.getToken(query.code);
+        await this.getToken(query.code);
+        this.$router.push({name: 'Home'});
       }
     },
   },

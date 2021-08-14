@@ -26,14 +26,26 @@
           v-model="group"
           active-class="deep-purple--text text--accent-4"
         >
-
-          <v-list-item>
+          <v-list-item v-if="login">
             <v-btn
               class="mx-auto overflow-hidden"
               rounded
               color="#F64906"
               dark
-              @click="login"
+              width="150"
+              @click="logout"
+            >
+              登出 
+            </v-btn>
+          </v-list-item>
+
+          <v-list-item v-else>
+            <v-btn
+              class="mx-auto overflow-hidden"
+              rounded
+              color="#F64906"
+              dark
+              @click="setLogin"
             >
               Login 
               <figure class="flex">
@@ -44,21 +56,36 @@
 
           <v-list-item>
             <v-list-item-icon>
-              <v-icon>mdi-home</v-icon>
+              <v-icon color="green darken-2">mdi-home</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Home</v-list-item-title>
+            <v-list-item-title>首頁</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item v-if="login">
+            <v-list-item-icon>
+              <v-icon color="green darken-2">mdi-run</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>我的跑步紀錄</v-list-item-title>
           </v-list-item>
 
           <v-list-item>
             <v-list-item-icon>
-              <v-icon>mdi-account</v-icon>
+              <v-icon class="twicon-main-island" color="green darken-2"></v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Account</v-list-item-title>
+            <v-list-item-title>全國賽會</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item v-if="login">
+            <v-list-item-icon>
+              <v-icon color="green darken-2">mdi-account</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>會員中心</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
     <v-main>
+      <StravaIndex />
       <Weather />
       <Aqi />
       <Alert />
@@ -68,10 +95,11 @@
 </template>
 
 <script>
-import Weather from '../components/Weather.vue';
 import Aqi from '../components/Aqi.vue';
 import Alert from '../components/Alert.vue';
-import { mapActions, mapMutations } from 'vuex';
+import Weather from '../components/Weather.vue';
+import StravaIndex from '../components/StravaIndex.vue';
+import { mapState, mapActions, mapMutations } from 'vuex';
 import '../scss/all.scss';
 
 export default {
@@ -83,9 +111,10 @@ export default {
     };
   },
   components: {
-    Weather,
     Aqi,
     Alert,
+    Weather,
+    StravaIndex,
   },
   methods: {
     ...mapActions([
@@ -93,10 +122,24 @@ export default {
     ]),
     ...mapMutations([
       'setArea',
+      'setIsLogin'
     ]),
-    async login() {
+    async setLogin() {
       this.getRequestAccessURL();
     },
+    logout() {
+      this.setIsLogin(false);
+    },
+  },
+  watch: {
+    login() {
+      this.$router.go();
+    },
+  },
+  computed: {
+    ...mapState([
+      'login',
+    ]),
   },
   created() {
     const data = {county: '臺北市', district:'北投區', siteName:'士林'};

@@ -6,10 +6,10 @@
   >
     <v-row class="py-5 flex align-center">
       <v-col class="col-md-8">
-        <div class="test-h6 text-center">
+        <div class="text-h7 text-center">
           天氣
         </div>
-        <div class="test-h6 text-center">
+        <div class="text-h7 text-center">
           {{area.county}} {{area.district}}
         </div>
       </v-col>

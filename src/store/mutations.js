@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie'
+
 export const setOverlay = (state, data) => {
   state.overlay = data;
 };
@@ -20,3 +22,14 @@ export const setError = (state, data) => {
     state.error = false;
   }, 3000);
 };
+
+export const setIsLogin = (state, status) => {
+  state.login = status;
+  if (!status) {
+    Cookies.remove('member');
+  }
+};
+
+export const setLoginData = (state, data) => {
+  state.loginData = data;
+}
