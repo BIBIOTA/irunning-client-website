@@ -1,7 +1,7 @@
 <template>
   <v-main>
     <v-card>
-      <v-row>
+      <v-row dense>
         <v-col
           cols="12"
           sm="6"
@@ -12,7 +12,7 @@
           </v-card-title>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row dense>
         <v-col
           cols="6"
           sm="6"
@@ -59,54 +59,144 @@
       <v-data-table
         :headers="headers"
         :items="events"
+        :options.sync="pagination"
         hide-default-footer
-      >
-        <template v-slot:item="events">
-            <tr>
-              <td class="td">
-                {{events.item.name}}
-                <div>
-                  <v-chip
-                    color="green darken-2"
-                    v-for="(data, i) in events.item.distance"
-                    text-color="white"
-                    x-small
-                    class="mx-1"
-                    :key="`distance_${events.item.name}_${i}`"
-                  >
-                    {{ data }}
-                  </v-chip>
+        item-key="name"
+        class="elevation-1"
+        dense
+      >          
+        <template
+          v-slot:body="{ items }"
+        >
+          <tbody>
+            <tr
+              v-for="(item, i) in items"
+              :key="`${item.name}_${i}`"
+            >
+              <td>
+                <div :class="{ 'text-decoration-line-through': !item.event_status }">
+                  {{item.event_name}}
                 </div>
+                  <template v-for="(data, i) in item.distance">
+                    <v-chip
+                      color="green darken-2"
+                      text-color="white"
+                      x-small
+                      class="mx-1"
+                      v-if="data.event_distance"
+                      :key="`distance_${item.name}_${i}`"
+                    >
+                      {{ data.event_distance }}
+                    </v-chip>
+                  </template>
               </td>
               <td>
-                <template v-for="(data, i) in events.item.date">
-                  <span :key="`date_${events.item.name}_${i}`">
-                    {{data}}
-                  </span>
-                </template>
+                {{item.event_date}} {{item.event_time ? moment(item.event_time, 'h:mm:ss').format('hh:mm') : ''}}
                 </td>
-              <td>{{events.item.location}}</td>
+              <td class="py-8">{{item.location}}</td>
               <td>
-                  <v-btn
-                    color="cyan"
-                    elevation="2"
-                    small
-                    class="white--text"
-                  >
-                    更多資訊
-                  </v-btn>
+                <v-dialog
+                  transition="dialog-bottom-transition"
+                  max-width="600"
+                >
+                  <template v-slot:default="dialog">
+                    <v-card>
+                      <v-card-title :class="{ 'text-decoration-line-through': !dialogTitle.event_status }">{{dialogTitle.event_name}}</v-card-title>
+
+
+                      <v-data-table
+                        v-if="event"
+                        :items="event"
+                        :options.sync="pagination"
+                        hide-default-footer
+                      >
+                        <template
+                          v-slot:body="{ items }"
+                        >
+                          <tbody>
+                            <tr
+                              v-for="(item, i) in items"
+                              :key="`event_${i}`"
+                            >
+                              <td class="py-4">{{item.name}}</td>
+                              <td v-if="item.name === '里程'">
+                                <template v-for="(data, i) in item.value">
+                                  <v-chip
+                                    color="green darken-2"
+                                    text-color="white"
+                                    x-small
+                                    class="mx-1"
+                                    v-if="data.event_distance"
+                                    :key="`event_distance_${item.name}_${i}`"
+                                  >
+                                    {{ data.event_distance }}
+                                  </v-chip>
+                                </template>
+                              </td>
+                              <td v-else>
+                                {{item.value}}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </template>
+                      </v-data-table>
+
+                      <v-card-actions class="justify-end">
+                        <v-btn
+                          color="primary"
+                          text
+                          @click="() => { 
+                            dialog.value = false;
+                          }"
+                        >
+                          Close
+                        </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </template>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      color="cyan"
+                      elevation="2"
+                      small
+                      class="white--text"
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="processEventData(item)"
+                    >
+                      更多資訊
+                    </v-btn>
+                  </template>
+                </v-dialog>
               </td>
             </tr>
+          </tbody>
         </template>
       </v-data-table>
     </v-card>
   </v-main>
 </template>
 <script>
+import { mapMutations } from 'vuex';
+import { events } from '../libs/events.js';
+import _ from 'lodash';
+
+const dataName = {
+  event_date: '舉辦日期',
+  event_time: '起跑時間',
+  location: '地點',
+  distance: '里程',
+  agent: '承辦單位',
+  participate: '報名日期',
+};
+
 export default {
   name: 'Events',
   data() {
     return {
+      pagination: {
+        itemsPerPage: -1,
+      },
       date: [],
       dateMenu: false,
       search: '',
@@ -116,7 +206,6 @@ export default {
           text: '賽事名稱',
           align: 'start',
           value: 'name',
-          class: 'td',
         },
         {
           sortable: false,
@@ -134,30 +223,41 @@ export default {
           value: 'data-table-expand',
         },
       ],
-      events: [
-        {
-          id: '1',
-          name: '台北馬拉松',
-          distance: ['42k', '21k'],
-          date: ['2021-12-20'],
-          location: '台北市政府前廣場',
-        },
-        {
-          id: '2',
-          name: '台北馬拉松',
-          distance: ['42k', '21k'],
-          date: ['2021-12-20', '06:00'],
-          location: '台北市政府前廣場',
-        },
-        {
-          id: '3',
-          name: '台北馬拉松',
-          distance: ['42k'],
-          date:  ['2021-12-20', '06:00'],
-          location: '台北市政府前廣場',
-        },
-      ],
+      events: [],
+      dialogTitle: { event_name: '', event_status: 1 },
+      event: [],
     }
+  },
+  methods: {
+    ...mapMutations([
+      'setError',
+    ]),
+    getData() {
+      events.getEvents().then((res) => {
+        if (res.status) {
+          this.events = res.data;
+        } else {
+          this.setError(res.message);
+        }
+      });
+    },
+    async processEventData(data) {
+      this.event = [];
+      this.dialogTitle.event_name = data.event_name;
+      this.dialogTitle.event_status = data.event_status;
+      const arr = []
+        Object.keys(dataName).forEach((nameKey) => {
+          Object.keys(data).forEach((key) => {
+          if (key === nameKey) {
+            const obj = {};
+            _.set(obj, 'name', dataName[nameKey]);
+            _.set(obj, 'value', data[key]);
+            arr.push(obj);
+          }
+        });
+      });
+      this.event = arr;
+    },
   },
   computed: {
     dateRangeText () {
@@ -166,6 +266,9 @@ export default {
       }
       return null;
     },
+  },
+  mounted() {
+    this.getData();
   },
 }
 </script>
