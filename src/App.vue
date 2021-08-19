@@ -54,16 +54,16 @@
               </v-btn>
             </v-list-item>
 
+            <router-link to="/" >
             <v-list-item>
-              <v-list-item-icon>
-                <v-icon color="green darken-2">mdi-home</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>
-                <router-link to="/" >
+                <v-list-item-icon>
+                  <v-icon color="green darken-2">mdi-home</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>
                   首頁
-                </router-link>
-              </v-list-item-title>
+                </v-list-item-title>
             </v-list-item>
+            </router-link>
 
             <v-list-item v-if="login">
               <v-list-item-icon>
@@ -76,16 +76,16 @@
               </v-list-item-title>
             </v-list-item>
 
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon class="twicon-main-island" color="green darken-2"></v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>
-                <router-link to="/Events">
-                  全國賽會
-                </router-link>
-              </v-list-item-title>
-            </v-list-item>
+            <router-link to="/Events">
+              <v-list-item>
+                <v-list-item-icon>
+                  <v-icon class="twicon-main-island" color="green darken-2"></v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>
+                    全國賽會
+                </v-list-item-title>
+              </v-list-item>
+            </router-link>
 
             <v-list-item v-if="login">
               <v-list-item-icon>
