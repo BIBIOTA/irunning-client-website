@@ -111,23 +111,21 @@ export default {
           );
         });
       this.status = data.Status;
+      this.styleProcess();
+    },
+    styleProcess() {
+      this.lists.forEach((item, i) => {
+        if (item.name === 'AQI') {
+          this.lists[i] = {...item, ...this.getAqiStyle};
+        } else if (item.name === 'PM2.5') {
+          this.lists[i] = {...item, ...this.getPM25Style};
+        } else if (item.name === 'PM10') {
+          this.lists[i] = {...item, ...this.getPM10Style};
+        }
+      });
     },
   },
   watch: {
-    lists: {
-      immediate: true,
-      handler() {
-        this.lists.forEach((item, i) => {
-          if (item.name === 'AQI') {
-            this.lists[i] = {...item, ...this.getAqiStyle};
-          } else if (item.name === 'PM2.5') {
-            this.lists[i] = {...item, ...this.getPM25Style};
-          } else if (item.name === 'PM10') {
-            this.lists[i] = {...item, ...this.getPM10Style};
-          }
-        });
-      },
-    },
     aqi(data) {
       this.putData(data);
     },
