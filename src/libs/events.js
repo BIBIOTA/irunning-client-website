@@ -10,9 +10,9 @@ export const events = {
   /**
    * 取得賽事活動
    */
-  getEvents() {
+  getEvents(formData) {
     const url = '/getEvents';
-    return request(this.fullUrl(url))
+    return request(this.fullUrl(url), formData)
       .then((res) => {
         if (res.status) {
           return res.data;
