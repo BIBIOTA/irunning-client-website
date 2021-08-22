@@ -27,8 +27,8 @@
       </v-row>
       <v-row dense>
         <v-col
-          cols="6"
-          sm="6"
+          cols="4"
+          sm="4"
           >
           <v-menu
             v-model="dateMenu"
@@ -46,6 +46,9 @@
                 readonly
                 v-bind="attrs"
                 v-on="on"
+                clearable
+                height="35"
+                @input="cleardateRangeText"
               ></v-text-field>
             </template>
             <v-date-picker
@@ -53,12 +56,30 @@
               no-title
               scrollable
               range
+              locale="zh-tw"
             ></v-date-picker>
           </v-menu>
         </v-col>
         <v-col
-          cols="6"
-          sm="6"
+          cols="4"
+          sm="4"
+          >
+          <v-select
+            v-model="search.distance"
+            :items="distances"
+            item-text="name"
+            label="賽事里程"
+            multiple
+            chips
+            height="35"
+            clearable
+            @input="searchData(search.date[0], search.date[1], search.distance)"
+            class="select_distances"
+          ></v-select>
+        </v-col>
+        <v-col
+          cols="4"
+          sm="4"
           >
           <v-text-field
             v-model="search.keywords"
@@ -66,6 +87,7 @@
             label="搜尋賽事"
             single-line
             hide-details
+            height="35"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -236,6 +258,7 @@ export default {
         itemsPerPage: -1,
       },
       dateMenu: false,
+      dateRangeText: null,
       search: {
         date: [],
         keywords: '',
@@ -262,6 +285,11 @@ export default {
           text: '',
           value: 'data-table-expand',
         },
+      ],
+      distances: [
+        {name:'全馬', value: 1},
+        {name:'半馬', value: 2},
+        {name:'三鐵', value: 3},
       ],
       events: [],
       dialogTitle: { 
@@ -293,14 +321,29 @@ export default {
       }
       return img;
     },
+    cleardateRangeText() {
+      this.search.date = [];
+      this.dateRangeText = null;
+      this.searchData(this.search.date[0], this.search.date[1], this.search.distances);
+    },
+    getDateRangeText () {
+      if (this.search.date[0] && this.search.date[1]) {
+        this.searchData(this.search.date[0], this.search.date[1], this.search.distances);
+        this.dateRangeText = this.search.date.join(' ~ ')
+      }
+    },
     inputKeywords(value, search, item) {
       return search != null  && Object.keys(item).find(key => (key  === 'event_name' || key  === 'location') && item[key].toLowerCase().indexOf(search) !== -1)
     },
-    searchData(startDay, endDay) {
-      const formData = {
-        startDay,
-        endDay,
-      };
+    searchData(startDay, endDay, distances) {
+      const formData = {};
+      if (startDay && endDay) {
+        _.set(formData, 'startDay', startDay);
+        _.set(formData, 'endDay', endDay);
+      }
+      if (distances) {
+        _.set(formData, 'distances', distances);
+      }
       this.getData(formData);
     },
     getData(formData) {
@@ -331,13 +374,11 @@ export default {
       this.event = arr;
     },
   },
-  computed: {
-    dateRangeText () {
-      if (this.search.date[0] && this.search.date[1]) {
-        this.searchData(this.search.date[0], this.search.date[1]);
-        return this.search.date.join(' ~ ')
+  watch: {
+    'search.date': {
+      handler() {
+        this.getDateRangeText();
       }
-      return null;
     },
   },
   mounted() {
@@ -346,6 +387,14 @@ export default {
 }
 </script>
 <style lang="scss" scope>
+  .select_distances {
+    label.v-label {
+      top: 10px;
+    }
+    label.v-label--active {
+      top: 0px;
+    }
+  }
   .td {
     display: flex;
     align-items: center;
