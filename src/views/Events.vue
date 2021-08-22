@@ -65,7 +65,7 @@
           sm="4"
           >
           <v-select
-            v-model="search.distance"
+            v-model="search.distances"
             :items="distances"
             item-text="name"
             label="賽事里程"
@@ -73,7 +73,7 @@
             chips
             height="35"
             clearable
-            @input="searchData(search.date[0], search.date[1], search.distance)"
+            @input="searchData(search.date[0], search.date[1], search.distances)"
             class="select_distances"
           ></v-select>
         </v-col>
@@ -261,6 +261,7 @@ export default {
       dateRangeText: null,
       search: {
         date: [],
+        distances: '',
         keywords: '',
       },
       headers: [
