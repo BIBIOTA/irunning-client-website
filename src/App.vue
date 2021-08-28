@@ -65,16 +65,16 @@
             </v-list-item>
             </router-link>
 
-            <v-list-item v-if="login">
-              <v-list-item-icon>
-                <v-icon color="green darken-2">mdi-run</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>
-                <!-- <router-link> -->
-                  我的跑步紀錄
-                <!-- </router-link> -->
-              </v-list-item-title>
-            </v-list-item>
+            <router-link to="/Activities"  v-if="login">
+              <v-list-item>
+                <v-list-item-icon>
+                  <v-icon color="green darken-2">mdi-run</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>
+                    我的跑步紀錄
+                </v-list-item-title>
+              </v-list-item>
+            </router-link>
 
             <router-link to="/Events">
               <v-list-item>
