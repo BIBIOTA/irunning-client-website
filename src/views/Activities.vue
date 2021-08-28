@@ -44,7 +44,7 @@
         <p class="text-h4 text--primary">
           {{data.name}}
         </p>
-        <img :src="imgExample" alt="activityImg">
+        <img v-if="data.summary_polyline" :src="getSrc(data.summary_polyline)" alt="activityImg">
         <div class="d-flex justify-space-between mt-5">
           <div class="text--primary">
             距離<br>
@@ -93,6 +93,8 @@ import _ from 'lodash';
 import imgExample from '../assets/Actitivities/activitity_example.png';
 import { activities } from '../libs/activities.js';
 import { mapState } from 'vuex';
+import polyline from '@mapbox/polyline';
+import urljoin from 'url-join';
 
 export default {
   name: 'Activities',
@@ -112,6 +114,32 @@ export default {
     };
   },
   methods: {
+    getSrc(map) {
+      const mapData = polyline.decode(map);
+      let path = '';
+      for (let i = 0; i <= mapData.length -1; i ++) {
+        if (i === 0) {
+        path = `${mapData[i][0]}, ${mapData[i][1]}`;
+        } else {
+          path = `${path} | ${mapData[i][0]}, ${mapData[i][1]}`;
+        }
+      }
+      const formData = {
+        size: '600x300',
+        maptype: 'roadmap',
+        path,
+        key: 'AIzaSyAvjRz8URcOWoCuRfPqY2sab-4q_a-jo78',
+      };
+      let url = '';
+      Object.keys(formData).forEach((key, i) => {
+        if (i === 0) {
+          url = `${key}=${formData[key]}`;
+        } else {
+          url = `${url}&${key}=${formData[key]}`
+        }
+      });
+      return urljoin('https://maps.googleapis.com/maps/api/staticmap', `?${url}`);
+    },
     timeFormat(moving_time, format) {
       return this.moment.utc(moving_time*1000).format(format);
     },
