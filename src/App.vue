@@ -8,15 +8,17 @@
         color="cyan"
         dark
       >
+        <v-toolbar-title>I Running</v-toolbar-title>
+        <v-spacer></v-spacer>
         <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
-        <v-toolbar-title>I Running</v-toolbar-title>
       </v-app-bar>
 
       <v-navigation-drawer
         v-model="drawer"
         absolute
         temporary
+        right
       >
         <v-list
           nav

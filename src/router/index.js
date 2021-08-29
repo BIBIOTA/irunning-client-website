@@ -4,6 +4,7 @@ import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
 import Events from '../views/Events.vue';
 import Activities from '../views/Activities.vue';
+import Activity from '../views/Activity.vue';
 
 Vue.use(VueRouter);
 
@@ -31,6 +32,11 @@ const routes = [
     path: '/Activities',
     name: 'Activities',
     component: Activities,
+  },
+  {
+    path: '/Activities/:id',
+    name: 'Activity',
+    component: Activity,
   },
 ];
 
