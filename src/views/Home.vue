@@ -8,12 +8,12 @@
 </template>
 
 <script>
+import '../scss/all.scss';
 import Aqi from '../components/Aqi.vue';
 import Alert from '../components/Alert.vue';
 import Weather from '../components/Weather.vue';
 import StravaIndex from '../components/StravaIndex.vue';
 import { mapState, mapMutations } from 'vuex';
-import '../scss/all.scss';
 
 export default {
   name: 'Home',

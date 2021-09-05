@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <v-card
+      v-show="!dialog"
       min-width="300"
       class="mx-auto overflow-x-hidden"
       >
@@ -42,18 +43,7 @@
             </v-list-item>
 
             <v-list-item v-else>
-              <v-btn
-                class="mx-auto overflow-hidden"
-                rounded
-                color="#F64906"
-                dark
-                @click="setLogin"
-              >
-                Login 
-                <figure class="flex">
-                  <img style="width: 100px" src="./assets/strava/logo.jpeg" alt="">
-                </figure>
-              </v-btn>
+              <StravaBtn />
             </v-list-item>
 
             <router-link to="/" >
@@ -100,34 +90,93 @@
       </v-navigation-drawer>
       <router-view />
     </v-card>
+    <div
+      v-show="dialog"
+      style="background-color: black; height: 100%; width: 100%">
+      <v-dialog
+        v-model="dialog"
+        fullscreen
+        hide-overlay
+      >
+        <v-carousel
+          height="100vh"
+          hide-delimiter-background
+          @change="imgIndex = imgs[$event].index"
+          :prev-icon="false"
+          :next-icon="(imgIndex === imgs.length - 1) ? false : 'mdi-arrow-right'"
+          >
+          <v-carousel-item
+            v-for="(item,i) in imgs"
+            :key="`imgs_${i}`"
+            :src="item.src"
+            reverse-transition="fade-transition"
+            transition="fade-transition"
+          >
+            <IntroSectionOne v-show="i === 0" :transblack="transblack" />
+            <IntroSectionTwo v-show="i === 1" :transblack="transblack" @closeIntro="closeIntro" />
+            <IntroSectionThree v-show="i === 2" :transblack="transblack"
+            :events="events"
+            @closeIntro="closeIntro" />
+          </v-carousel-item>
+        </v-carousel>
+      </v-dialog>
+    </div>
   </v-app>
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex';
-import Cookies from 'js-cookie'
+import StravaBtn from './components/StravaBtn.vue';
+import IntroSectionOne from './components/IntroSectionOne.vue';
+import IntroSectionTwo from './components/IntroSectionTwo.vue';
+import IntroSectionThree from './components/IntroSectionThree.vue';
+import { index } from './libs/index.js';
+import { mapState, mapMutations } from 'vuex';
+import Cookies from 'js-cookie';
+import localStorage from 'local-storage';
 
 export default {
   data() {
     return {
       drawer: false,
       group: null,
+      dialog: true,
+      transblack: 'rgba(0, 0, 0, 0.3)',
+      imgIndex: 0,
+      imgs: [
+        {
+          index: 0,
+          src : 'https://wallpaperaccess.com/full/1143289.jpg',
+        },
+        {
+          index: 1,
+          src : 'https://wallpaperaccess.com/full/1143289.jpg',
+        },
+        {
+          index: 2,
+          src : 'https://wallpaperaccess.com/full/1143289.jpg',
+        },
+      ],
+      events: [],
     };
   },
+  components: {
+    StravaBtn,
+    IntroSectionOne,
+    IntroSectionTwo,
+    IntroSectionThree,
+  },
   methods: {
-    ...mapActions([
-      'getRequestAccessURL',
-    ]),
     ...mapMutations([
       'setIsLogin',
       'setLoginData',
       'setIsLogin',
     ]),
-    async setLogin() {
-      this.getRequestAccessURL();
-    },
     logout() {
       this.setIsLogin(false);
+    },
+    closeIntro() {
+      this.dialog = false;
+      localStorage.set('intro', true);
     },
   },
   computed: {
@@ -141,6 +190,19 @@ export default {
       this.setIsLogin(true);
       this.setLoginData(member);
     }
+    const intro = localStorage.get('intro');
+    if (intro) {
+      this.dialog = false;
+    }
+  },
+  mounted() {
+    index.getIndexEvents().then((res) => {
+      if (res.status) {
+        this.events = res.data;
+      } else {
+        console.log(res.message);
+      }
+    });
   },
 }
 </script>
