@@ -22,7 +22,7 @@
         追蹤你的跑步紀錄!
       </div>
       <StravaBtn />
-      <v-card width="80%" class="mt-2" style="background-color: transparent;">
+      <v-card width="80%" class="mt-2" style="background-color: transparent;" elevation="0">
         <ul class="dataList pl-0 pr-2 py-8">
           <li>
             <div class="font-weight-bold text-center white--text">

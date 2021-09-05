@@ -1,17 +1,16 @@
 <template>
   <v-card
     class="ma-auto"
-    max-width="300"
     tile
     v-if="memberIndex"
   >
-    <v-row class="py-5 flex align-center">
+    <!-- <v-row class="py-5 flex align-center">
       <v-col class="col-md-12">
         <div class="text-h5 text-center">
           Hello! Ota
         </div>
       </v-col>
-    </v-row>
+    </v-row> -->
     <v-row class="py-5 flex ma-auto">
       <v-col class="col-md-12">
         <v-card class="ma-auto" height="220">
@@ -84,7 +83,7 @@ export default {
     getData(id) {
       member.index(id).then((res) => {
         if (res.status) {
-          this.memberIndex = res.data
+          this.memberIndex = res.data;
         } else {
           this.setError(res.message);
         }

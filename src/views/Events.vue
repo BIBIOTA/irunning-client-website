@@ -9,26 +9,27 @@
           <v-card-title>
             全國賽會
           </v-card-title>
-          <v-card-subtitle class="d-flex align-center mt-2">
-            <span class="mx-2 d-flex text-no-wrap">
+          <v-card-subtitle class="flex-column align-center mt-2">
+            <div class="ma-2 d-flex text-no-wrap grey--text text--darken-2">
               <img class="cetificate" :src="iaaf" />
               IAAF認證賽事
-            </span>
-            <span class="mx-2 text-no-wrap">
+            </div>
+            <div class="ma-2 text-no-wrap grey--text text--darken-2">
               <img class="cetificate" :src="aims" />
               AIMS認證賽事
-            </span>
-            <span class="mx-2 text-no-wrap">
+            </div>
+            <div class="ma-2 text-no-wrap grey--text text--darken-2">
               <img class="cetificate" :src="courseOk" />
               本賽道經AIMS/IAAF丈量員丈量
-            </span>
+            </div>
           </v-card-subtitle>
         </v-col>
       </v-row>
       <v-row dense>
         <v-col
-          cols="4"
-          sm="4"
+          class="mx-auto"
+          cols="11"
+          sm="11"
           >
           <v-menu
             v-model="dateMenu"
@@ -61,8 +62,9 @@
           </v-menu>
         </v-col>
         <v-col
-          cols="4"
-          sm="4"
+          class="mx-auto"
+          cols="11"
+          sm="11"
           >
           <v-select
             v-model="search.distances"
@@ -78,8 +80,9 @@
           ></v-select>
         </v-col>
         <v-col
-          cols="4"
-          sm="4"
+          class="mx-auto"
+          cols="11"
+          sm="11"
           >
           <v-text-field
             v-model="search.keywords"
@@ -101,7 +104,7 @@
         item-key="name"
         class="elevation-1"
         dense
-      >          
+      >   
         <template
           v-slot:body="{ items }"
         >
@@ -110,28 +113,32 @@
               v-for="(item, i) in items"
               :key="`${item.name}_${i}`"
             >
-              <td>
-                <div :class="{ 'text-decoration-line-through': !item.event_status }">
-                  {{item.event_name}}
-                  <img v-if="item.event_certificate" :src="getCertificateImg(item.event_certificate)">
+              <td class="py-2" style="width: 40%">
+                <div>
+                  <div :class="{ 'text-decoration-line-through': !item.event_status }">
+                    {{item.event_name}}
+                    <img v-if="item.event_certificate" :src="getCertificateImg(item.event_certificate)">
+                  </div>
+                  <div>
+                    <template v-for="(data, i) in item.distance">
+                      <v-chip
+                        color="green darken-2"
+                        text-color="white"
+                        x-small
+                        class="mx-1"
+                        v-if="data.event_distance"
+                        :key="`distance_${item.name}_${i}`"
+                      >
+                        {{ data.event_distance }}
+                      </v-chip>
+                    </template>
+                  </div>
                 </div>
-                  <template v-for="(data, i) in item.distance">
-                    <v-chip
-                      color="green darken-2"
-                      text-color="white"
-                      x-small
-                      class="mx-1"
-                      v-if="data.event_distance"
-                      :key="`distance_${item.name}_${i}`"
-                    >
-                      {{ data.event_distance }}
-                    </v-chip>
-                  </template>
               </td>
-              <td>
+              <td style="width: 30%">
                 {{item.event_date}} {{item.event_time ? moment(item.event_time, 'h:mm:ss').format('hh:mm') : ''}}
-                </td>
-              <td class="py-8">{{item.location}}</td>
+              </td>
+              <!-- <td class="py-8">{{item.location}}</td> -->
               <td>
                 <v-dialog
                   transition="dialog-bottom-transition"
@@ -226,10 +233,14 @@
           </tbody>
         </template>
       </v-data-table>
+      <Loading />
+      <NoData />
     </v-card>
   </v-main>
 </template>
 <script>
+import NoData from '../components/NoData.vue';
+import Loading from '../components/Loading.vue';
 import { mapMutations } from 'vuex';
 import { events } from '../libs/events.js';
 import _ from 'lodash';
@@ -270,21 +281,24 @@ export default {
           text: '賽事名稱',
           align: 'start',
           value: 'name',
+          width: '40%',
         },
         {
           sortable: false,
           text: '日期',
           value: 'date',
+          width: '30%',
         },
-        {
-          sortable: false,
-          text: '地點',
-          value: 'location',
-        },
+        // {
+        //   sortable: false,
+        //   text: '地點',
+        //   value: 'location',
+        // },
         {
           sortable: false,
           text: '',
           value: 'data-table-expand',
+          width: '20%',
         },
       ],
       distances: [
@@ -301,9 +315,15 @@ export default {
       event: [],
     }
   },
+  components: {
+    NoData,
+    Loading,
+  },
   methods: {
     ...mapMutations([
       'setError',
+      'setLoading',
+      'setNoData',
     ]),
     getCertificateImg(certificate) {
       let img;
@@ -348,11 +368,17 @@ export default {
       this.getData(formData);
     },
     getData(formData) {
+      this.setLoading(true);
+      this.events = [];
       events.getEvents(formData).then((res) => {
+        this.setLoading(false);
         if (res.status) {
+          this.setNoData(false);
           this.events = res.data;
         } else {
           this.setError(res.message);
+          this.setNoData(true);
+          this.events = [];
         }
       });
     },
@@ -396,11 +422,11 @@ export default {
       top: 0px;
     }
   }
-  .td {
-    display: flex;
-    align-items: center;
+  tbody, tfoot, thead, tr, th, td {
+    vertical-align: middle !important;
   }
   .cetificate {
+    margin-right: 10px;
     height: 20px;
   }
 </style>

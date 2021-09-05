@@ -1,15 +1,17 @@
 <template>
   <div>
-    <v-card
-      max-width="344"
-    >
-      <RunningInfo :data="activity" :moreInfo="true" />
+    <v-card class="ma-4">
+      <RunningInfo :data="activity" :moreInfo="true" v-show="Object.keys(activity).length > 0" />
     </v-card>
+    <Loading />
+    <NoData />
   </div>
 </template>
 <script>
 import RunningInfo from '../components/RunningInfo.vue';
-import { mapState } from 'vuex';
+import NoData from '../components/NoData.vue';
+import Loading from '../components/Loading.vue';
+import { mapState, mapMutations } from 'vuex';
 import { activities } from '../libs/activities.js';
 
 export default {
@@ -21,14 +23,25 @@ export default {
   },
   components: {
     RunningInfo,
+    NoData,
+    Loading,
   },
   methods: {
+    ...mapMutations([
+      'setError',
+      'setLoading',
+      'setNoData',
+    ]),
     getData(user_id, id) {
+      this.setLoading(true);
       activities.getActivity({user_id, id}).then((res) => {
+        this.setLoading(false);
         if (res.status) {
+          this.setNoData(false);
           this.activity = res.data;
         } else {
-          console.log(res.message);
+          this.setError(res.message);
+          this.setNoData(true);
         }
       });
     },

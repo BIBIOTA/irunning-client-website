@@ -1,15 +1,21 @@
 <template>
-  <v-app>
+  <v-app style="max-width: 480px; margin: auto; position:relative">
     <v-card
       v-show="!dialog"
-      min-width="300"
-      class="mx-auto overflow-x-hidden"
+      class="overflow-x-hidden"
+      height="100%"
       >
       <v-app-bar
+        height="70"
         color="cyan"
         dark
       >
-        <v-toolbar-title>I Running</v-toolbar-title>
+        <router-link to="/" style="color: white!important">
+          <v-toolbar-title
+            style="font-family: 'Pacifico', cursive !important;">
+            I Running
+          </v-toolbar-title>
+        </router-link>
         <v-spacer></v-spacer>
         <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
@@ -79,16 +85,17 @@
               </v-list-item>
             </router-link>
 
-            <v-list-item v-if="login">
+            <!-- <v-list-item v-if="login">
               <v-list-item-icon>
                 <v-icon color="green darken-2">mdi-account</v-icon>
               </v-list-item-icon>
               <v-list-item-title>會員中心</v-list-item-title>
-            </v-list-item>
+            </v-list-item> -->
           </v-list-item-group>
         </v-list>
       </v-navigation-drawer>
       <router-view />
+      <Alert />
     </v-card>
     <div
       v-show="dialog"
@@ -129,10 +136,15 @@ import StravaBtn from './components/StravaBtn.vue';
 import IntroSectionOne from './components/IntroSectionOne.vue';
 import IntroSectionTwo from './components/IntroSectionTwo.vue';
 import IntroSectionThree from './components/IntroSectionThree.vue';
+import Alert from './components/Alert.vue';
 import { index } from './libs/index.js';
 import { mapState, mapMutations } from 'vuex';
 import Cookies from 'js-cookie';
 import localStorage from 'local-storage';
+
+import bg1 from './assets/index/runner_mb.png';
+import bg2 from './assets/index/run_weather_mb.png';
+import bg3 from './assets/index/taipei_marathon_mb.png';
 
 export default {
   data() {
@@ -145,15 +157,15 @@ export default {
       imgs: [
         {
           index: 0,
-          src : 'https://wallpaperaccess.com/full/1143289.jpg',
+          src : bg1,
         },
         {
           index: 1,
-          src : 'https://wallpaperaccess.com/full/1143289.jpg',
+          src : bg2,
         },
         {
           index: 2,
-          src : 'https://wallpaperaccess.com/full/1143289.jpg',
+          src : bg3,
         },
       ],
       events: [],
@@ -164,6 +176,7 @@ export default {
     IntroSectionOne,
     IntroSectionTwo,
     IntroSectionThree,
+    Alert,
   },
   methods: {
     ...mapMutations([

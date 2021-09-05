@@ -1,7 +1,6 @@
 <template>
   <v-card
     class="ma-auto"
-    max-width="300"
     tile
   >
     <v-row class="py-5 flex align-center">

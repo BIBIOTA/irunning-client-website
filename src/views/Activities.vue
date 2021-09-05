@@ -35,7 +35,6 @@
     </v-menu>
     <v-card
       class="ma-4"
-      max-width="344"
       v-for="(data, i) in activities"
       :key="`activities_${i}`"
     >
@@ -51,6 +50,8 @@
         </v-btn>
       </v-card-actions>
     </v-card>
+    <Loading />
+    <NoData />
     <div class="text-center">
       <v-pagination
         v-model="pagination.page"
@@ -64,9 +65,11 @@
 <script>
 import _ from 'lodash';
 import RunningInfo from '../components/RunningInfo.vue';
+import NoData from '../components/NoData.vue';
+import Loading from '../components/Loading.vue';
 // import imgExample from '../assets/Actitivities/activitity_example.png';
 import { activities } from '../libs/activities.js';
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 
 export default {
   name: 'Activities',
@@ -87,8 +90,15 @@ export default {
   },
   components: {
     RunningInfo,
+    NoData,
+    Loading,
   },
   methods: {
+    ...mapMutations([
+      'setError',
+      'setLoading',
+      'setNoData',
+    ]),
     routerPush(id) {
       this.$router.push({
         name: 'Activity',
@@ -96,15 +106,24 @@ export default {
       });
     },
     getData(id, page) {
+      this.setLoading(true);
+      this.activities = [];
       activities.getActivities({id, page, ...this.searchData}).then((res) => {
+        this.setLoading(false);
         if (res.status) {
+          this.setNoData(false);
           this.activities = res.data.data;
           this.pagination = {
             page: res.data.current_page,
             total: res.data.last_page,
           };
         } else {
-          console.log(res.message);
+          this.setError(res.message);
+          this.setNoData(true);
+          this.pagination = {
+            page: 1,
+            total: 1,
+          };
         }
       });
     },

@@ -4,6 +4,17 @@ export const setOverlay = (state, data) => {
   state.overlay = data;
 };
 
+export const setNoData = (state, data) => {
+  state.noData = data;
+}
+
+export const setLoading = (state, data) => {
+  if (data) {
+    state.noData = false;
+  }
+  state.loading = data;
+}
+
 export const setAqi = (state, data) => {
   state.aqi = data;
 };

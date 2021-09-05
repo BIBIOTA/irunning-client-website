@@ -1,11 +1,11 @@
 <template>
   <v-card
     class="ma-auto"
-    max-width="300"
     tile
+    elevation="0"
   >
     <v-row class="py-5 flex align-center">
-      <v-col class="col-md-8">
+      <v-col cols="10" class="pr-15">
         <div class="text-h7 text-center">
           天氣
         </div>

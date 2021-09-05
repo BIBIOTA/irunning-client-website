@@ -5,6 +5,8 @@ export default function () {
     overlay: false,
     success: false,
     error: false,
+    loading: false,
+    noData: false,
     // 系統參數
 
     // 會員登入資訊

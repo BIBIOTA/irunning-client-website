@@ -1,81 +1,77 @@
 <template>
-  <v-row class="py-5 flex align-center">
-    <v-col class="col-md-4">
-      <v-dialog
-        transition="dialog-bottom-transition"
-        max-width="600"
-      >
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            class="ml-8"
-            fab
-            dark
-            small
-            v-bind="attrs"
-            v-on="on"
-            color="cyan"
-          >
-            <v-icon dark>
-              mdi-pencil
-            </v-icon>
-          </v-btn>
-        </template>
-        <template v-slot:default="dialog">
-          <v-card>
-            <Overlay :message="'資料讀取中...'" />
-            <v-card-title>
-              請選擇縣市
-            </v-card-title>
-            <v-card-text>
-              <v-select
-                v-model="area.county"
-                :items="cities"
-                label="請選擇縣市"
-                item-text="CityName"
-                @input="getDistrict($event);"
-              ></v-select>
-            </v-card-text>
-            <v-card-title>
-              請選擇鄉鎮區
-            </v-card-title>
-            <v-card-text>
-              <v-select
-                v-model="area.district"
-                :items="districts"
-                label="請選擇鄉鎮區"
-                item-text="AreaName"
-                @input="passVal($event.CityName, $event.AreaName, area.siteName);getWeather($event.CityName, $event.AreaName)"
-                return-object
-              ></v-select>
-            </v-card-text>
-            <v-card-title>
-                選擇測量站
-            </v-card-title>
-            <v-card-text>
-              <v-select
-                v-model="area.siteName"
-                :items="site"
-                label="請選擇測量站"
-                item-text="SiteName"
-                @input="getAqiData(area.county, area.district,$event);"
-              ></v-select>
-            </v-card-text>
-            <v-card-actions class="justify-end">
-              <v-btn
-                color="primary"
-                text
-                @click="() => { 
-                  dialog.value = false;
-                }"
-              >
-                Close
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </template>
-      </v-dialog>
-    </v-col>
-  </v-row>
+  <v-col cols="2">
+    <v-dialog
+      transition="dialog-bottom-transition"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          fab
+          dark
+          small
+          v-bind="attrs"
+          v-on="on"
+          color="cyan"
+        >
+          <v-icon dark>
+            mdi-pencil
+          </v-icon>
+        </v-btn>
+      </template>
+      <template v-slot:default="dialog">
+        <v-card>
+          <Overlay :message="'資料讀取中...'" />
+          <v-card-title>
+            請選擇縣市
+          </v-card-title>
+          <v-card-text>
+            <v-select
+              v-model="area.county"
+              :items="cities"
+              label="請選擇縣市"
+              item-text="CityName"
+              @input="getDistrict($event);"
+            ></v-select>
+          </v-card-text>
+          <v-card-title>
+            請選擇鄉鎮區
+          </v-card-title>
+          <v-card-text>
+            <v-select
+              v-model="area.district"
+              :items="districts"
+              label="請選擇鄉鎮區"
+              item-text="AreaName"
+              @input="passVal($event.CityName, $event.AreaName, area.siteName);getWeather($event.CityName, $event.AreaName)"
+              return-object
+            ></v-select>
+          </v-card-text>
+          <v-card-title>
+              選擇測量站
+          </v-card-title>
+          <v-card-text>
+            <v-select
+              v-model="area.siteName"
+              :items="site"
+              label="請選擇測量站"
+              item-text="SiteName"
+              @input="getAqiData(area.county, area.district,$event);"
+            ></v-select>
+          </v-card-text>
+          <v-card-actions class="justify-end">
+            <v-btn
+              color="primary"
+              text
+              @click="() => { 
+                dialog.value = false;
+              }"
+            >
+              Close
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </template>
+    </v-dialog>
+  </v-col>
 </template>
 
 <script>
@@ -110,7 +106,8 @@ export default {
         if (res.status) {
           this.cities = res.data;
         } else {
-          console.log(res.message);
+          this.cities = [],
+          this.setError(res.message);
         }
       }).then(() => {
         this.getDistrict(this.area.county, this.area.district);
@@ -127,6 +124,7 @@ export default {
           this.getWeather(county, district);
           this.getAqi(siteName);
         } else {
+          this.districts = [],
           this.setWeather(null);
           this.setError(res.message);
         }
