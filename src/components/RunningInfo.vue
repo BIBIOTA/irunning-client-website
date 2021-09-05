@@ -69,7 +69,6 @@
           ref="polyline"
           :path="getPath(data.map.polyline)"
           :options="{ strokeColor:'#388E3C'}"
-          :draggable="true"
         />
       </GmapMap>
     </template>
