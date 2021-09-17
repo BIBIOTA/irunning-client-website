@@ -181,7 +181,6 @@ export default {
   methods: {
     ...mapMutations([
       'setIsLogin',
-      'setLoginData',
       'setIsLogin',
     ]),
     logout() {
@@ -201,7 +200,6 @@ export default {
     const member = Cookies.get('member')?JSON.parse(Cookies.get('member')):false;
     if (member) {
       this.setIsLogin(true);
-      this.setLoginData(member);
     }
     const intro = localStorage.get('intro');
     if (intro) {

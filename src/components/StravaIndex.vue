@@ -66,6 +66,7 @@
 </template>
 
 <script>
+import Cookies from 'js-cookie';
 import { mapState, mapMutations } from 'vuex';
 import { member } from '../libs/member.js';
 
@@ -98,7 +99,10 @@ export default {
   },
   mounted() {
     if (this.login) {
-      this.getData(this.loginData.id);
+      const member = Cookies.get('member')?JSON.parse(Cookies.get('member')):false;
+      if (member) {
+        this.getData(member.id);
+      }
     }
   },
 }

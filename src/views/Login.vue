@@ -17,10 +17,16 @@ export default {
     ...mapMutations([
       'setOverlay',
     ]),
-    async loginProcess(query) {
+    loginProcess(query) {
       if (query.code) {
-        await this.getToken(query.code);
-        this.$router.push({name: 'Home'});
+        this.getToken(query.code).then((res) => {
+          if (res) {
+            this.$router.push({name: 'Home'});
+          } else {
+            this.setOverlay(false);
+            setTimeout(() => { this.$router.push({name: 'Home'}); }, 2000);
+          }
+        });
       }
     },
   },

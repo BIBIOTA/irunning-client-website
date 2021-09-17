@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 export default function () {
   return {
 
@@ -11,7 +13,7 @@ export default function () {
 
     // 會員登入資訊
     login: false,
-    loginData: null,
+    loginData: Cookies.get('member')?JSON.parse(Cookies.get('member')):false,
     // 會員登入資訊
 
     // 資料

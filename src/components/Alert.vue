@@ -1,7 +1,7 @@
 <template>
   <v-row class="justify-center position-relative z-index999">
     <v-alert
-      v-if="error"
+      v-show="error"
       transition="scroll-y-reverse-transition"
       width="70%"
       color="orange"

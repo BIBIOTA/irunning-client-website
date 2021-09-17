@@ -32,7 +32,7 @@ export const getToken = async ({ dispatch, commit}, code) => {
 };
 
 export const login = async ({ commit }, payload) => {
-  loginApi.login(payload).then((res) => {
+  return await loginApi.login(payload).then((res) => {
     if (res.status) {
       Cookies.set('member', JSON.stringify(res.data), { expires: 5 });
       commit('setIsLogin', true);
