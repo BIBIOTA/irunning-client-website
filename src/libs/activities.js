@@ -18,6 +18,11 @@ export const activities = {
           return res.data;
         }
         return res.data;
+      }).catch((err) => {
+        return {
+          message: err,
+          status: false,
+        };
       });
   },
 
@@ -32,6 +37,11 @@ export const activities = {
           return res.data;
         }
         return res.data;
+      }).catch((err) => {
+        return {
+          message: err,
+          status: false,
+        };
       });
   },
 

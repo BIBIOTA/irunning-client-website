@@ -18,6 +18,11 @@ export const events = {
           return res.data;
         }
         return res.data;
+      }).catch((err) => {
+        return {
+          message: err,
+          status: false,
+        };
       });
   },
 
