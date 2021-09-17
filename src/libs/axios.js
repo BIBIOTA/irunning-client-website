@@ -54,7 +54,7 @@ export function request(url, data = false, method = 'get', token = AUTH_TOKEN, h
           // network error
           return Promise.reject('伺服器無回應，請檢查網路')
       } else {
-        return Promise.reject(error.response.message)
+        return Promise.reject(error.response.data.message)
       }
     })
 }
@@ -107,7 +107,7 @@ export function baseRequest(baseURL, url, data = false, method = 'get', token = 
           // network error
           return Promise.reject('伺服器無回應，請檢查網路')
       } else {
-        return Promise.reject(error.response.message)
+        return Promise.reject(error.response.data.message)
       }
     })
 }
