@@ -5,12 +5,14 @@
     </v-card>
     <Loading />
     <NoData />
+    <Backbtn />
   </div>
 </template>
 <script>
 import RunningInfo from '../components/RunningInfo.vue';
 import NoData from '../components/NoData.vue';
 import Loading from '../components/Loading.vue';
+import Backbtn from '../components/Backbtn.vue';
 import { mapState, mapMutations } from 'vuex';
 import { activities } from '../libs/activities.js';
 
@@ -25,6 +27,7 @@ export default {
     RunningInfo,
     NoData,
     Loading,
+    Backbtn,
   },
   methods: {
     ...mapMutations([
