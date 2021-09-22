@@ -1,6 +1,7 @@
 <template>
   <v-col cols="2">
     <v-dialog
+      v-model="dialog"
       transition="dialog-bottom-transition"
     >
       <template v-slot:activator="{ on, attrs }">
@@ -21,7 +22,7 @@
         <v-card>
           <Overlay :message="'資料讀取中...'" />
           <v-card-title>
-            請選擇縣市
+            請填寫居住的縣市
           </v-card-title>
           <v-card-text>
             <v-select
@@ -33,7 +34,7 @@
             ></v-select>
           </v-card-text>
           <v-card-title>
-            請選擇鄉鎮區
+            請填寫居住的鄉鎮區
           </v-card-title>
           <v-card-text>
             <v-select
@@ -46,7 +47,7 @@
             ></v-select>
           </v-card-text>
           <v-card-title>
-              選擇測量站
+              請選擇空氣品質測量站
           </v-card-title>
           <v-card-text>
             <v-select
@@ -79,12 +80,15 @@ import Overlay from './Overlay.vue';
 import { cities } from '../libs/cities.js';
 import { aqi } from '../libs/aqi.js';
 import { weather } from '../libs/weather.js';
+import { member } from '../libs/member.js';
 import { mapState, mapMutations } from 'vuex';
+import Cookies from 'js-cookie';
 
 export default {
   name: 'Weather',
   data() {
     return {
+      dialog: false,
       cities: [],
       districts: [],
       site: [],
@@ -100,6 +104,7 @@ export default {
       'setArea',
       'setWeather',
       'setError',
+      'setLoginData',
     ]),
     getCities() {
       cities.getCities().then((res) => {
@@ -171,11 +176,48 @@ export default {
       const data = { county, district ,siteName };
       this.setArea(data);
     },
+    updateMemberLocation(area) {
+      const data = { ...area, id: this.loginData.id };
+      member.updateMemberLocation(data).then((res) => {
+        if (res.status) {
+          Cookies.set('member', JSON.stringify(res.data));
+        } else {
+          this.setError(res.message);
+        }
+      });
+    },
   },
   computed: {
     ...mapState([
       'area',
+      'loginData',
+      'login'
     ]),
+  },
+  watch: {
+    'loginData': {
+      deep: true,
+      immediate: true,
+      handler(data) {
+        if (this.login) {
+          const { county, district, siteName } = data;
+          if (county && district && siteName) {
+            this.passVal(county, district, siteName);
+          } else {
+            this.dialog = true;
+          }
+        }
+      },
+    },
+    'area': {
+      deep: true,
+      immediate: true,
+      handler(data) {
+        if (this.login) {
+          this.updateMemberLocation(data);
+        }
+      },
+    },
   },
   mounted() {
     this.getCities();
