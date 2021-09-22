@@ -26,7 +26,24 @@
         absolute
         temporary
         right
-      >
+      > 
+        <v-list>
+          <v-list-item v-if="login">
+            <v-btn
+              class="mx-auto overflow-hidden"
+              rounded
+              color="#F64906"
+              dark
+              width="150"
+              @click="logout"
+            >
+              登出 
+            </v-btn>
+          </v-list-item>
+          <v-list-item v-else>
+            <StravaBtn />
+          </v-list-item>
+        </v-list>
         <v-list
           nav
           dense
@@ -35,23 +52,6 @@
             v-model="group"
             active-class="deep-purple--text text--accent-4"
           >
-            <v-list-item v-if="login">
-              <v-btn
-                class="mx-auto overflow-hidden"
-                rounded
-                color="#F64906"
-                dark
-                width="150"
-                @click="logout"
-              >
-                登出 
-              </v-btn>
-            </v-list-item>
-
-            <v-list-item v-else>
-              <StravaBtn />
-            </v-list-item>
-
             <router-link to="/" >
             <v-list-item>
                 <v-list-item-icon>
@@ -180,7 +180,6 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'setIsLogin',
       'setIsLogin',
     ]),
     logout() {
