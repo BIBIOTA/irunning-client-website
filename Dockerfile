@@ -5,6 +5,6 @@ COPY package.json yarn.lock ./
 RUN yarn install && yarn cache clean
 COPY . .
 RUN yarn build
-EXPOSE 8080
+EXPOSE 80
 CMD [ "http-server", "dist" ]
 

@@ -14,7 +14,6 @@
           <v-toolbar-title
             style="font-family: 'Pacifico', cursive !important;">
             I Running
-            CICDTEST4
           </v-toolbar-title>
         </router-link>
         <v-spacer></v-spacer>
