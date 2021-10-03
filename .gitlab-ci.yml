@@ -1,12 +1,12 @@
 image: docker:latest
 stages:
   - deploy
-script:
-  - echo "${VUE_APP_API_KEY}"
-  - echo "${VUE_APP_STRAVA_CLIENT_ID}"
-  - echo "${VUE_APP_STRAVA_CLIENT_SECRET}"
 Deploy:
   stage: deploy
+  script:
+    - echo "${VUE_APP_API_KEY}"
+    - echo "${VUE_APP_STRAVA_CLIENT_ID}"
+    - echo "${VUE_APP_STRAVA_CLIENT_SECRET}"
   image: google/cloud-sdk
   before_script:
     - echo "$GCP_SERVICE_KEY" > gcloud-service-key.json # Google Cloud service accounts
