@@ -10,13 +10,8 @@ Deploy:
   script:
     - gcloud config set project $GCP_PROJECT_ID
     - gcloud builds submit --tag asia.gcr.io/$GCP_PROJECT_ID/irunning
-    - gcloud components install kubectl
-    - gcloud config set compute/zone asia-east1-a
-    - gcloud container clusters create irunning-client-website
-    - gcloud config set container/cluster irunning-client-website
-    - gcloud container clusters get-credentials irunning-client-website \
-      --zone asia-east1-a \
-      --project $GCP_PROJECT_ID
+    # - gcloud run deploy irunning --image=asia.gcr.io/$GCP_PROJECT_ID/irunning --platform managed --port 80 --region asia-east1
+    
   only:
     - master
 
