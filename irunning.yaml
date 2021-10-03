@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: irunning-deployment
+  labels:
+    app: irunning
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: irunning
+  template:
+    metadata:
+      labels:
+        app: irunning
+    spec:
+      containers:
+      - name: irunning
+        image: asia.gcr.io/irunning-324312/irunning:latest
+        ports:
+        - containerPort: 80
