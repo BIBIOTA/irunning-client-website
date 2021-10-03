@@ -8,6 +8,7 @@ Deploy:
     - echo "$GCP_SERVICE_KEY" > gcloud-service-key.json # Google Cloud service accounts
     - gcloud auth activate-service-account --key-file gcloud-service-key.json
   script:
+    - sudo apt-get install kubectl
     - gcloud config set project $GCP_PROJECT_ID
     - gcloud builds submit --tag asia.gcr.io/$GCP_PROJECT_ID/irunning
     - gcloud components update
