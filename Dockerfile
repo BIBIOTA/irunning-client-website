@@ -3,6 +3,12 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install && yarn cache clean
 COPY . .
+ARG VUE_APP_API_KEY=$VUE_APP_API_KEY
+ARG VUE_APP_STRAVA_CLIENT_ID=$VUE_APP_STRAVA_CLIENT_ID
+ARG VUE_APP_STRAVA_CLIENT_SECRET=$VUE_APP_STRAVA_CLIENT_SECRET
+RUN echo $VUE_APP_API_KEY > /app/.env
+RUN echo $VUE_APP_STRAVA_CLIENT_ID > /app/.env
+RUN echo $VUE_APP_STRAVA_CLIENT_SECRET > /app/.env
 RUN yarn build
 CMD [ "node" ]
 
