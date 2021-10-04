@@ -14,7 +14,7 @@
           <v-toolbar-title
             style="font-family: 'Pacifico', cursive !important;">
             I Running
-            TEST2
+            TEST3
           </v-toolbar-title>
         </router-link>
         <v-spacer></v-spacer>
