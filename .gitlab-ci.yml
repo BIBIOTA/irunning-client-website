@@ -5,8 +5,9 @@ Deploy:
   stage: deploy
   image: google/cloud-sdk
   before_script:
-    - chmod +x ./setup_env.sh
-    - ./setup_env.sh
+    - echo "$VUE_APP_API_KEY"
+    - echo "$VUE_APP_STRAVA_CLIENT_ID"
+    - echo "$VUE_APP_STRAVA_CLIENT_SECRET"
     - echo "$GCP_SERVICE_KEY" > gcloud-service-key.json # Google Cloud service accounts
     - gcloud auth activate-service-account --key-file gcloud-service-key.json
   script:
