@@ -19,10 +19,11 @@ spec:
         image: asia.gcr.io/irunning-324312/irunning:latest
         ports:
         - containerPort: 80
-      resources:
-        requests:
-          cpu: 100m
-          memory: 216Mi
-        limits:
-          cpu: 100m
-          memory: 216Mi
+        resources:
+          requests:
+            cpu: 100m
+            memory: 216Mi
+          limits:
+            cpu: 100m
+            memory: 216Mi
+
