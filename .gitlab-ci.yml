@@ -14,6 +14,7 @@ Deploy:
   script:
     - gcloud config set project $GCP_PROJECT_ID
     - gcloud builds submit --tag asia.gcr.io/$GCP_PROJECT_ID/irunning
+    - kubectl set image deployment/irunning-deployment irunning=asia.gcr.io/irunning-324312/irunning:latest
   only:
     - master
 

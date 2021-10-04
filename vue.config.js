@@ -26,3 +26,7 @@
 //     },
 //   ],
 // }
+
+module.exports = {
+  publicPath: process.env.NODE_ENV === 'production' ? '/irunning-client-website/' : '/',
+};
