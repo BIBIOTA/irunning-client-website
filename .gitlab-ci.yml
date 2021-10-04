@@ -3,10 +3,6 @@ stages:
   - deploy
 Deploy:
   stage: deploy
-  script:
-    - echo "${VUE_APP_API_KEY}"
-    - echo "${VUE_APP_STRAVA_CLIENT_ID}"
-    - echo "${VUE_APP_STRAVA_CLIENT_SECRET}"
   image: google/cloud-sdk
   before_script:
     - echo "$GCP_SERVICE_KEY" > gcloud-service-key.json # Google Cloud service accounts
@@ -14,7 +10,6 @@ Deploy:
   script:
     - gcloud config set project $GCP_PROJECT_ID
     - gcloud builds submit --tag asia.gcr.io/$GCP_PROJECT_ID/irunning
-    - kubectl set image deployment/irunning-deployment irunning=asia.gcr.io/irunning-324312/irunning:latest
   only:
     - master
 
