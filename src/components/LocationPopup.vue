@@ -2,6 +2,7 @@
   <v-col cols="2">
     <v-dialog
       v-model="dialog"
+      max-width="480"
       transition="dialog-bottom-transition"
     >
       <template v-slot:activator="{ on, attrs }">

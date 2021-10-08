@@ -35,6 +35,7 @@ export const login = async ({ commit }, payload) => {
   return await loginApi.login(payload).then((res) => {
     if (res.status) {
       Cookies.set('member', JSON.stringify(res.data), { expires: 5 });
+      commit('setLoginData', res.data);
       commit('setIsLogin', true);
       return true;
     } else {

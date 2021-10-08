@@ -3,7 +3,7 @@
     <v-card
       v-show="!dialog"
       class="overflow-x-hidden"
-      height="100%"
+      height="100vh"
       >
       <v-app-bar
         height="70"
@@ -14,7 +14,6 @@
           <v-toolbar-title
             style="font-family: 'Pacifico', cursive !important;">
             I Running
-            TEST4
           </v-toolbar-title>
         </router-link>
         <v-spacer></v-spacer>

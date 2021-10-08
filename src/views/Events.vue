@@ -142,7 +142,7 @@
               <td>
                 <v-dialog
                   transition="dialog-bottom-transition"
-                  max-width="600"
+                  max-width="480"
                 >
                   <template v-slot:default="dialog">
                     <v-card>
