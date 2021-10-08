@@ -8,6 +8,7 @@ import * as VueGoogleMaps from 'vue2-google-maps'
 import './style/reset.css'
 import './style/twicon.css'
 import 'vuetify/dist/vuetify.min.css'
+import '@mdi/font/css/materialdesignicons.css' // Ensure you are using css-loader
 
 Vue.config.productionTip = false
 
@@ -155,7 +156,7 @@ new Vue({
   store,
   router,
   icons: {
-    iconfont: 'mdiSvg', // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg'
+    iconfont: 'mdi', // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg'
   },
   render: h => h(App)
 }).$mount('#app')
