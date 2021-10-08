@@ -7,7 +7,7 @@ const errors = require('request-promise/errors')
 strava.config({
   "client_id"     : process.env.VUE_APP_STRAVA_CLIENT_ID,
   "client_secret" : process.env.VUE_APP_STRAVA_CLIENT_SECRET,
-  "redirect_uri"  : "http://localhost:8070/Login",
+  "redirect_uri"  : `${process.env.VUE_APP_REDIRECT_URI}/Login`,
 });
 
 export const getRequestAccessURL = async () => {
