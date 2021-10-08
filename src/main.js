@@ -7,7 +7,6 @@ import moment from 'moment'
 import * as VueGoogleMaps from 'vue2-google-maps'
 import './style/reset.css'
 import './style/twicon.css'
-import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import 'vuetify/dist/vuetify.min.css'
 
 Vue.config.productionTip = false
