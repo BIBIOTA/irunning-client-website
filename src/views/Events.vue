@@ -75,7 +75,7 @@
             chips
             height="35"
             clearable
-            @input="searchData(search.date[0], search.date[1], search.distances)"
+            @input="searchData(search.date[0], search.date[1], search.distances, search.keywords)"
             class="select_distances"
           ></v-select>
         </v-col>
@@ -91,15 +91,29 @@
             single-line
             hide-details
             height="35"
+            @keyup.enter="searchData(search.date[0], search.date[1], search.distances, search.keywords)"
           ></v-text-field>
+        </v-col>
+        <v-col
+          class="d-flex justify-end py-4"
+          cols="12"
+          sm="11"
+          >
+          <v-btn
+            color="#F64906"
+            elevation="2"
+            medium
+            class="white--text"
+            @click="searchData(search.date[0], search.date[1], search.distances, search.keywords)"
+          >
+              查詢
+          </v-btn>
         </v-col>
       </v-row>
       <v-data-table
         :headers="headers"
         :items="events"
         :options.sync="pagination"
-        :search="search.keywords"
-        :custom-filter="inputKeywords"
         hide-default-footer
         item-key="name"
         class="elevation-1"
@@ -354,18 +368,15 @@ export default {
     cleardateRangeText() {
       this.search.date = [];
       this.dateRangeText = null;
-      this.searchData(this.search.date[0], this.search.date[1], this.search.distances);
+      this.searchData(this.search.date[0], this.search.date[1], this.search.distances, this.search.keywords);
     },
     getDateRangeText () {
       if (this.search.date[0] && this.search.date[1]) {
-        this.searchData(this.search.date[0], this.search.date[1], this.search.distances);
+        this.searchData(this.search.date[0], this.search.date[1], this.search.distances, this.search.keywords);
         this.dateRangeText = this.search.date.join(' ~ ')
       }
     },
-    inputKeywords(value, search, item) {
-      return search != null  && Object.keys(item).find(key => (key  === 'event_name' || key  === 'location') && item[key].toLowerCase().indexOf(search) !== -1)
-    },
-    searchData(startDay, endDay, distances) {
+    searchData(startDay, endDay, distances, keywords) {
       const formData = {};
       if (startDay && endDay) {
         _.set(formData, 'startDay', startDay);
@@ -373,6 +384,9 @@ export default {
       }
       if (distances) {
         _.set(formData, 'distances', distances);
+      }
+      if (keywords) {
+        _.set(formData, 'keywords', keywords);
       }
       _.set(formData, 'page', 1);
       this.getData(formData);
