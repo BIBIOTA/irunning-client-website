@@ -4,6 +4,7 @@
 <script>
 import Overlay from '../components/Overlay.vue';
 import { mapActions, mapMutations } from 'vuex';
+import localStorage from 'local-storage';
 
 export default {
   name: 'Login',
@@ -21,6 +22,7 @@ export default {
       if (query.code) {
         this.getToken(query.code).then((res) => {
           if (res) {
+            localStorage.set('intro', true);
             this.$router.push({name: 'Home'});
           } else {
             this.setOverlay(false);
