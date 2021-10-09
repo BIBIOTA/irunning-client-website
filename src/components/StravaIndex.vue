@@ -85,8 +85,6 @@ export default {
       member.index(id).then((res) => {
         if (res.status) {
           this.memberIndex = res.data;
-        } else {
-          this.setError(res.message);
         }
       });
     },
