@@ -195,7 +195,7 @@
                                 </template>
                               </td>
                               <td v-else-if="item.name === '報名連結'">
-                                <a :href="item.value" target="_blank">
+                                <a :href="item.value" target="_blank" v-if="item.value">
                                   <v-btn
                                     color="cyan"
                                     elevation="2"
