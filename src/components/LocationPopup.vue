@@ -137,6 +137,7 @@ export default {
       });
     },
     getWeather(county, district) {
+      this.setWeather({});
       weather.getWeather(county, district).then((res) => {
         if (res.status) {
           this.setWeather(res.data);
