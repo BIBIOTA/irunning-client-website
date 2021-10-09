@@ -155,7 +155,6 @@
                       <v-data-table
                         v-if="event"
                         :items="event"
-                        :options.sync="pagination"
                         hide-default-footer
                       >
                         <template
@@ -237,8 +236,8 @@
       <NoData />
       <div class="text-center">
         <v-pagination
-          v-model="pagination.page"
-          :length="pagination.total"
+          v-model="page"
+          :length="total"
           :total-visible="6"
           circle
         ></v-pagination>
@@ -273,9 +272,9 @@ export default {
       iaaf,
       aims,
       courseOk,
+      page: 1,
+      total: 1,
       pagination: {
-        page: 1,
-        total: 1,
         itemsPerPage: -1,
       },
       dateMenu: false,
@@ -375,7 +374,7 @@ export default {
       if (distances) {
         _.set(formData, 'distances', distances);
       }
-      _.set(formData, 'page', this.pagination.page);
+      _.set(formData, 'page', 1);
       this.getData(formData);
     },
     getData(formData) {
@@ -386,10 +385,8 @@ export default {
         if (res.status) {
           this.setNoData(false);
           this.events = res.data.data;
-          this.pagination = {
-            page: res.data.current_page,
-            total: res.data.last_page,
-          };
+          this.page = res.data.current_page;
+          this.total = res.data.last_page;
         } else {
           this.setError(res.message);
           this.setNoData(true);
@@ -417,23 +414,20 @@ export default {
     },
   },
   watch: {
-    'pagination.page': {
-      immediate: true,
-      handler(newPage, oldPage) {
-        if ((newPage && oldPage) && (newPage !== oldPage)) {
-          const formData = { page: newPage };
-          const { date, distances } = this.search;
-          const [startDay, endDay] = date;
-          if (startDay && endDay) {
-            _.set(formData, 'startDay', startDay);
-            _.set(formData, 'endDay', endDay);
-          }
-          if (distances) {
-            _.set(formData, 'distances', distances);
-          }
-          this.getData(formData);
+    page(newPage, oldPage) {
+      if ((newPage && oldPage) && (newPage !== oldPage)) {
+        const formData = { page: newPage };
+        const { date, distances } = this.search;
+        const [startDay, endDay] = date;
+        if (startDay && endDay) {
+          _.set(formData, 'startDay', startDay);
+          _.set(formData, 'endDay', endDay);
         }
-      },
+        if (distances) {
+          _.set(formData, 'distances', distances);
+        }
+        this.getData(formData);
+      }
     },
     'search.date': {
       handler() {

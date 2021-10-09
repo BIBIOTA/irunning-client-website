@@ -130,12 +130,12 @@ export default {
     cleardateRangeText() {
       this.search.date = [];
       this.dateRangeText = null;
-      this.getData(this.loginData.id, this.pagination.page);
+      this.getData(this.loginData.id, 1);
     },
     getDateRangeText () {
       if (this.search.date[0] && this.search.date[1]) {
         this.dateRangeText = this.search.date.join(' ~ ')
-        this.getData(this.loginData.id, this.pagination.page);
+        this.getData(this.loginData.id, 1);
       }
     },
   },
