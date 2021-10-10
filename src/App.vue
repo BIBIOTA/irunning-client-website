@@ -202,7 +202,7 @@ export default {
       this.setIsLogin(true);
     }
     const intro = localStorage.get('intro');
-    if (intro) {
+    if (intro || this.$route.name === 'Login') {
       this.dialog = false;
     }
   },
