@@ -178,9 +178,10 @@
                             <tr
                               v-for="(item, i) in items"
                               :key="`event_${i}`"
+                              class="bb-grey"
                             >
-                              <td class="py-4">{{item.name}}</td>
-                              <td v-if="item.name === '里程'">
+                              <td class="py-4 bd-none">{{item.name}}</td>
+                              <td class="bd-none" v-if="item.name === '里程'">
                                 <template v-for="(data, i) in item.value">
                                   <v-chip
                                     color="green darken-2"
@@ -194,7 +195,7 @@
                                   </v-chip>
                                 </template>
                               </td>
-                              <td v-else-if="item.name === '報名連結'">
+                              <td class="bd-none" v-else-if="item.name === '報名連結'">
                                 <a :href="item.value" target="_blank" v-if="item.value">
                                   <v-btn
                                     color="cyan"
@@ -206,7 +207,7 @@
                                   </v-btn>
                                 </a>
                               </td>
-                              <td v-else>
+                              <td class="bd-none" v-else>
                                 {{item.value}}
                               </td>
                             </tr>
@@ -466,6 +467,12 @@ export default {
   }
   tbody, tfoot, thead, tr, th, td {
     vertical-align: middle !important;
+  }
+  .bb-grey {
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+  }
+  .bd-none {
+    border: none !important;
   }
   .cetificate {
     margin-right: 10px;

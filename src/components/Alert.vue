@@ -6,7 +6,7 @@
       width="70%"
       color="orange"
       type="error"
-      class="text-center"
+      class="text-center text-no-wrap"
     >
       {{error}}
     </v-alert>
