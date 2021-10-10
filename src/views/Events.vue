@@ -95,7 +95,7 @@
           ></v-text-field>
         </v-col>
         <v-col
-          class="d-flex justify-end py-4"
+          class="d-flex justify-end py-4 pr-4"
           cols="12"
           sm="11"
           >
