@@ -32,27 +32,27 @@
     <template v-if="moreInfo">
       <v-divider></v-divider>
       <v-card-text>
-        <div class="text--primary d-flex" v-show="data.average_heartrate">
+        <div class="text--primary d-flex" v-if="data.average_heartrate">
           平均心率
           <v-spacer></v-spacer>
           {{data.average_heartrate}} bpm
         </div>
-        <div class="text--primary d-flex" v-show="data.max_heartrate">
+        <div class="text--primary d-flex" v-if="data.max_heartrate">
           最大心率
           <v-spacer></v-spacer>
           {{data.max_heartrate}} bpm
         </div>
-        <div class="text--primary d-flex" v-show="data.average_cadence">
+        <div class="text--primary d-flex" v-if="data.average_cadence">
           平均踏頻
           <v-spacer></v-spacer>
           {{Math.round(data.average_cadence * 2)}} spm
         </div>
-        <div class="text--primary d-flex" v-show="data.calories">
+        <div class="text--primary d-flex" v-if="data.calories">
           卡路里
           <v-spacer></v-spacer>
           {{data.calories}}
         </div>
-        <div class="text--primary d-flex" v-show="data.device_name">
+        <div class="text--primary d-flex" v-if="data.device_name">
           紀錄裝置
           <v-spacer></v-spacer>
           {{data.device_name}}
