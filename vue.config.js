@@ -18,6 +18,6 @@ module.exports = {
       },
   },
   productionSourceMap: false, // production 環境下，是否生成 sourceMap。對 js 而言，預設為 true，建議可關閉
-  publicPath: './',
+  publicPath: '/',
   transpileDependencies: ['vuetify'], // babel 預設不會讀取 node_modules，若你有套件需要編譯的，可在這邊設定
 };
