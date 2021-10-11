@@ -11,8 +11,8 @@
       justify="center"
       column
     >
-      <v-card color="primary" v-show="events.length > 0">
-        <v-list-item v-for="(event, i) in events" :key="`events_${i}`">
+      <v-card color="#F64906" v-show="events.length > 0">
+        <v-list-item v-for="(event, i) in events" :key="`events_${i}`" class="px-10">
           <v-list-item-content>
             <v-list-item-title class="white--text">{{event.event_name}}</v-list-item-title>
           </v-list-item-content>
