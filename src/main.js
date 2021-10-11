@@ -8,7 +8,6 @@ import * as VueGoogleMaps from 'vue2-google-maps'
 import './style/reset.css'
 import './style/twicon.css'
 import 'vuetify/dist/vuetify.min.css'
-import '@mdi/font/css/materialdesignicons.css' // Ensure you are using css-loader
 
 Vue.config.productionTip = false
 

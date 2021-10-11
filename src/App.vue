@@ -143,9 +143,9 @@ import { mapState, mapMutations } from 'vuex';
 import Cookies from 'js-cookie';
 import localStorage from 'local-storage';
 
-import bg1 from './assets/index/runner_mb.png';
-import bg2 from './assets/index/run_weather_mb.png';
-import bg3 from './assets/index/taipei_marathon_mb.png';
+import bg1 from './assets/index/runner_mb.webp';
+import bg2 from './assets/index/run_weather_mb.webp';
+import bg3 from './assets/index/taipei_marathon_mb.webp';
 
 export default {
   data() {
