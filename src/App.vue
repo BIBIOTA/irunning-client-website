@@ -97,7 +97,7 @@
       <router-view />
       <Alert />
     </v-card>
-    <div
+    <!-- <div
       v-show="dialog"
       style="background-color: black; height: 100%; width: 100%">
       <v-dialog
@@ -128,55 +128,55 @@
           </v-carousel-item>
         </v-carousel>
       </v-dialog>
-    </div>
+    </div> -->
   </v-app>
 </template>
 
 <script>
 import StravaBtn from './components/StravaBtn.vue';
-import IntroSectionOne from './components/IntroSectionOne.vue';
-import IntroSectionTwo from './components/IntroSectionTwo.vue';
-import IntroSectionThree from './components/IntroSectionThree.vue';
+// import IntroSectionOne from './components/IntroSectionOne.vue';
+// import IntroSectionTwo from './components/IntroSectionTwo.vue';
+// import IntroSectionThree from './components/IntroSectionThree.vue';
 import Alert from './components/Alert.vue';
 import { index } from './libs/index.js';
 import { mapState, mapMutations } from 'vuex';
 import Cookies from 'js-cookie';
 import localStorage from 'local-storage';
 
-import bg1 from './assets/index/runner_mb.webp';
-import bg2 from './assets/index/run_weather_mb.webp';
-import bg3 from './assets/index/taipei_marathon_mb.webp';
+// import bg1 from './assets/index/runner_mb.webp';
+// import bg2 from './assets/index/run_weather_mb.webp';
+// import bg3 from './assets/index/taipei_marathon_mb.webp';
 
 export default {
   data() {
     return {
       drawer: false,
       group: null,
-      dialog: true,
-      transblack: 'rgba(0, 0, 0, 0.3)',
-      imgIndex: 0,
-      imgs: [
-        {
-          index: 0,
-          src : bg1,
-        },
-        {
-          index: 1,
-          src : bg2,
-        },
-        {
-          index: 2,
-          src : bg3,
-        },
-      ],
+      // dialog: true,
+      // transblack: 'rgba(0, 0, 0, 0.3)',
+      // imgIndex: 0,
+      // imgs: [
+      //   {
+      //     index: 0,
+      //     src : bg1,
+      //   },
+      //   {
+      //     index: 1,
+      //     src : bg2,
+      //   },
+      //   {
+      //     index: 2,
+      //     src : bg3,
+      //   },
+      // ],
       events: [],
     };
   },
   components: {
     StravaBtn,
-    IntroSectionOne,
-    IntroSectionTwo,
-    IntroSectionThree,
+    // IntroSectionOne,
+    // IntroSectionTwo,
+    // IntroSectionThree,
     Alert,
   },
   methods: {
@@ -201,10 +201,10 @@ export default {
     if (member) {
       this.setIsLogin(true);
     }
-    const intro = localStorage.get('intro');
-    if (intro || this.$route.name === 'Login') {
-      this.dialog = false;
-    }
+    // const intro = localStorage.get('intro');
+    // if (intro || this.$route.name === 'Login') {
+    //   this.dialog = false;
+    // }
   },
   mounted() {
     index.getIndexEvents().then((res) => {
