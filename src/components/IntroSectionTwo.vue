@@ -19,7 +19,7 @@
         hide-delimiters
         :show-arrows="false"
         >
-        <template v-for="ap in dayAndNight">
+        <template>
           <v-carousel-item
             v-for="(count) in imgCount"
             :key="`weather_${ap}_${count}`"
@@ -27,7 +27,7 @@
             <figure class="d-flex justify-center">
               <v-img
                 max-width="100"
-                :src="require(`@/assets/weather/${ap}/${count}.svg`)"
+                :src="require(`@/assets/weather/${getDayOrNight()}/${count}.svg`)"
               />
             </figure>
           </v-carousel-item>
@@ -64,14 +64,29 @@ export default {
   },
   data() {
     return {
-      dayAndNight: ['day', 'night'],
     };
+  },
+  methods: {
+    getDayOrNight() {
+      const hours = new Date().getHours()
+      if (hours > 6 && hours < 18) {
+        return 'day';
+      } else {
+        return 'night';
+      }
+    },
+    getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min) + min);
+    }
   },
   created() {
     const imgCount = [];
-    for (let i = 1; i <= 42; i += 1) {
-      if (i !== 40) {
-        imgCount.push(i);
+    for (let i = 1; i <= 5; i += 1) {
+      const ramdom = this.getRandomInt(1, 42);
+      if (ramdom !== 40) {
+        imgCount.push(ramdom);
       }
     }
     this.imgCount = imgCount;
