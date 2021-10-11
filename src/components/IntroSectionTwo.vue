@@ -27,7 +27,7 @@
             <figure class="d-flex justify-center">
               <v-img
                 max-width="100"
-                :src="require(`../assets/weather/${ap}/${count}.svg`)"
+                :src="require(`@/assets/weather/${ap}/${count}.svg`)"
               />
             </figure>
           </v-carousel-item>

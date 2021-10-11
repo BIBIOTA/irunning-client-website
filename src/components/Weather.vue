@@ -27,7 +27,7 @@
       <ul class="dataList pl-0">
         <li>
           <figure v-if="weather.WxValue">
-            <img :src="require(`../assets/weather/${getDayOrNight()}/${parseInt(weather.WxValue, 10)}.svg`)" alt="">
+            <img :src="require(`@/assets/weather/${getDayOrNight()}/${parseInt(weather.WxValue, 10)}.svg`)" alt="">
           </figure>
         </li>
         <li class="justify-center">
