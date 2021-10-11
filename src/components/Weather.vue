@@ -27,7 +27,7 @@
       <ul class="dataList pl-0">
         <li>
           <figure v-if="weather.WxValue">
-            <img :src="require(`@/assets/weather/${getDayOrNight()}/${parseInt(weather.WxValue, 10)}.svg`)" alt="">
+            <img :src="getWeatherImg(weather.WxValue)" alt="">
           </figure>
         </li>
         <li class="justify-center">
@@ -62,6 +62,9 @@ export default {
       } else {
         return 'night';
       }
+    },
+    getWeatherImg(WxValue) {
+      return `${process.env.VUE_APP_API_STORAGE}/weather/${this.getDayOrNight()}/${parseInt(WxValue, 10)}.svg`
     },
   },
   components: {

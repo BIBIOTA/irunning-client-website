@@ -27,7 +27,7 @@
             <figure class="d-flex justify-center">
               <v-img
                 max-width="100"
-                :src="require(`@/assets/weather/${getDayOrNight()}/${count}.svg`)"
+                :src="getWeatherImg(count)"
               />
             </figure>
           </v-carousel-item>
@@ -79,7 +79,10 @@ export default {
       min = Math.ceil(min);
       max = Math.floor(max);
       return Math.floor(Math.random() * (max - min) + min);
-    }
+    },
+    getWeatherImg(WxValue) {
+      return `${process.env.VUE_APP_API_STORAGE}/weather/${this.getDayOrNight()}/${parseInt(WxValue, 10)}.svg`
+    },
   },
   created() {
     const imgCount = [];
