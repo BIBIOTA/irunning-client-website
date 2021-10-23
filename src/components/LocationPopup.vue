@@ -85,7 +85,7 @@ import { member } from '../libs/member.js';
 import { mapState, mapMutations } from 'vuex';
 import Cookies from 'js-cookie';
 import * as d3 from 'd3';
-import TwGeoJson from '../assets/twGeoJson.json';
+import axios from 'axios';
 
 export default {
   name: 'Weather',
@@ -209,17 +209,20 @@ export default {
 
       function showPosition(position) {
         const point = [position.coords.longitude, position.coords.latitude];
-        const geoOut = TwGeoJson.features.filter((d) => {return d3.geoContains(d, point)});
-        if (geoOut.length === 1) {
-          const [geo] = geoOut;
-          const { C_Name, T_Name } = geo.properties;
-          vm.getDistrict(C_Name, T_Name);
-          vm.getWeather(C_Name, T_Name);
-          vm.getAqi(point);
-        }
-        const text = "Latitude: " + position.coords.latitude + 
-        "<br>Longitude: " + position.coords.longitude;
-        console.log(text);
+        /* https://data.moi.gov.tw/moiod/Data/DataDetail.aspx?oid=CA6D10B1-C474-41DB-8B53-28E7E4E18977 */
+        axios.get(`https://api.nlsc.gov.tw/other/TownVillagePointQuery/${position.coords.longitude}/${position.coords.latitude}/4326`).then((res) => {
+          console.log(res);
+          if (res.status) {
+            const { ctyName, townName } = res.data;
+            console.log(ctyName, townName);
+            vm.getDistrict(ctyName, townName);
+            vm.getAqi(point);
+          }
+        }).catch((err) => {
+          console.log(err);
+          vm.setError('發生例外錯誤: 無法取得所在行政區');
+        });
+        console.log(point);
       }
     },
   },
