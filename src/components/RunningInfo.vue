@@ -109,7 +109,7 @@ export default {
         size: '600x300',
         maptype: 'roadmap',
         path: 'color:0x1D491E%7c'+path,
-        key: 'AIzaSyAvjRz8URcOWoCuRfPqY2sab-4q_a-jo78',
+        key: process.env.VUE_APP_GAPI,
       };
       let url = '';
       Object.keys(formData).forEach((key, i) => {
