@@ -84,6 +84,8 @@ import { weather } from '../libs/weather.js';
 import { member } from '../libs/member.js';
 import { mapState, mapMutations } from 'vuex';
 import Cookies from 'js-cookie';
+import * as d3 from 'd3';
+import TwGeoJson from '../assets/twGeoJson.json';
 
 export default {
   name: 'Weather',
@@ -128,7 +130,7 @@ export default {
           const siteName = this.area.siteName ? this.area.siteName : null;
           this.passVal(county, district, siteName);
           this.getWeather(county, district);
-          this.getAqi(siteName);
+          this.getAqi();
         } else {
           this.districts = [],
           this.setWeather(null);
@@ -147,17 +149,21 @@ export default {
         }
       });
     },
-    getAqi(siteName) {
+    getAqi(point = []) {
       aqi.getAqi(this.area.county).then((res) => {
         if (res.status) {
           this.site = res.data;
+          let aqiSite = res.data[0];
+          let distance = null;
           res.data.forEach((data) => {
-            if (siteName === data.SiteName) {
-              this.setAqi(data);
-            } else {
-              this.passVal(this.area.county, this.area.district, res.data[0].SiteName);
-              this.setAqi(res.data[0]);
+            if (point.length > 0) {
+              const caculateDistance = d3.geoDistance(point, [data.Longitude, data.Latitude]) * 10000;
+              if (!distance || distance < caculateDistance) {
+                aqiSite = data;
+              }
             }
+            this.passVal(this.area.county, this.area.district, aqiSite.SiteName);
+            this.setAqi(aqiSite);
           });
           this.setOverlay(false);
         } else {
@@ -188,6 +194,34 @@ export default {
         }
       });
     },
+    getLocation() {
+      const vm = this;
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+      } else if (this.login) {
+        const { county, district, siteName } = this.loginData;
+        if (county && district && siteName) {
+          this.passVal(county, district, siteName);
+        } else {
+          this.dialog = true;
+        }
+      }
+
+      function showPosition(position) {
+        const point = [position.coords.longitude, position.coords.latitude];
+        const geoOut = TwGeoJson.features.filter((d) => {return d3.geoContains(d, point)});
+        if (geoOut.length === 1) {
+          const [geo] = geoOut;
+          const { C_Name, T_Name } = geo.properties;
+          vm.getDistrict(C_Name, T_Name);
+          vm.getWeather(C_Name, T_Name);
+          vm.getAqi(point);
+        }
+        const text = "Latitude: " + position.coords.latitude + 
+        "<br>Longitude: " + position.coords.longitude;
+        console.log(text);
+      }
+    },
   },
   computed: {
     ...mapState([
@@ -197,20 +231,6 @@ export default {
     ]),
   },
   watch: {
-    'loginData': {
-      deep: true,
-      immediate: true,
-      handler(data) {
-        if (this.login) {
-          const { county, district, siteName } = data;
-          if (county && district && siteName) {
-            this.passVal(county, district, siteName);
-          } else {
-            this.dialog = true;
-          }
-        }
-      },
-    },
     'area': {
       deep: true,
       immediate: true,
@@ -222,6 +242,7 @@ export default {
     },
   },
   mounted() {
+    this.getLocation();
     this.getCities();
   },
 }

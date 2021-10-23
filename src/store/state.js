@@ -18,9 +18,9 @@ export default function () {
 
     // 資料
     area: {
-      county: '',
-      district: '',
-      siteName: '',
+      county: '臺北市',
+      district: '北投區',
+      siteName: '士林',
     },
     aqi: {},
     weather: {},

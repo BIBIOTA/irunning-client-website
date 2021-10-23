@@ -11,7 +11,7 @@ import '../scss/all.scss';
 import Aqi from '../components/Aqi.vue';
 import Weather from '../components/Weather.vue';
 import StravaIndex from '../components/StravaIndex.vue';
-import { mapState, mapMutations } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   name: 'Home',
@@ -24,11 +24,7 @@ export default {
     Weather,
     StravaIndex,
   },
-  methods: {
-    ...mapMutations([
-      'setArea',
-    ]),
-  },
+  methods: {},
   watch: {
     login() {
       this.$router.go();
@@ -39,9 +35,5 @@ export default {
       'login',
     ]),
   },
-  created() {
-    const data = {county: '臺北市', district:'北投區', siteName:'士林'};
-    this.setArea(data);
-  }
 };
 </script>

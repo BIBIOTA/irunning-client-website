@@ -21,8 +21,8 @@
         >
         <template>
           <v-carousel-item
-            v-for="(count) in imgCount"
-            :key="`weather_${ap}_${count}`"
+            v-for="(count, k) in imgCount"
+            :key="`weather_${k}_${count}`"
           >
             <figure class="d-flex justify-center">
               <v-img
