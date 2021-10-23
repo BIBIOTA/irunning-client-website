@@ -19,6 +19,9 @@ export default {
       'setOverlay',
     ]),
     loginProcess(query) {
+      if (query.error) {
+        this.$router.push({name: 'Home'});
+      }
       if (query.code) {
         this.getToken(query.code).then((res) => {
           if (res) {

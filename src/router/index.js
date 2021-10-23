@@ -5,6 +5,7 @@ import Login from '../views/Login.vue';
 import Events from '../views/Events.vue';
 import Activities from '../views/Activities.vue';
 import Activity from '../views/Activity.vue';
+import Cookies from 'js-cookie';
 
 Vue.use(VueRouter);
 
@@ -31,11 +32,13 @@ const routes = [
   {
     path: '/Activities',
     name: 'Activities',
+    meta: { isLogin: true },
     component: Activities,
   },
   {
     path: '/Activities/:id',
     name: 'Activity',
+    meta: { isLogin: true },
     component: Activity,
   },
 ];
@@ -51,6 +54,10 @@ const router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
+  const member = Cookies.get('member') ?? false;
+  if (to?.meta?.isLogin && !member ) {
+    next({ name: 'Home' });
+  }
   const el = document.getElementsByTagName('body')[0];
   el.classList.remove('lock');
   next();

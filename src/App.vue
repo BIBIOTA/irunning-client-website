@@ -185,6 +185,11 @@ export default {
     ]),
     logout() {
       this.setIsLogin(false);
+      if (this.$route.meta?.isLogin) {
+        this.$router.push({
+          name: 'Home',
+        });
+      }
     },
     closeIntro() {
       this.dialog = false;
