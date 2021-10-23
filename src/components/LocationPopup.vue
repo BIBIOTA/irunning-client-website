@@ -205,6 +205,8 @@ export default {
         } else {
           this.dialog = true;
         }
+      } else {
+        this.getCities();
       }
 
       function showPosition(position) {
@@ -245,7 +247,6 @@ export default {
   },
   mounted() {
     this.getLocation();
-    this.getCities();
   },
 }
 </script>
