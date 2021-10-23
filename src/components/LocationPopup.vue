@@ -126,7 +126,7 @@ export default {
       cities.getDistricts(county).then((res) => {
         if (res.status) {
           this.districts = res.data;
-          const district = propsDistrict ? propsDistrict : this.districts[0].AreaName;
+          const district = res.data.filter((data) => data.AreaName === propsDistrict).length > 0 ? propsDistrict : this.districts[0].AreaName;
           const siteName = this.area.siteName ? this.area.siteName : null;
           this.passVal(county, district, siteName);
           this.getWeather(county, district);
