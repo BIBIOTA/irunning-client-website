@@ -153,8 +153,8 @@ export default {
       aqi.getAqi(this.area.county).then((res) => {
         if (res.status) {
           this.site = res.data;
+          let aqiSite = res.data[0];
           if (point.length > 0) {
-            let aqiSite = res.data[0];
             const distance = null;
             res.data.forEach((data) => {
               const caculateDistance = d3.geoDistance(point, [data.Longitude, data.Latitude]) * 10000;
@@ -162,13 +162,9 @@ export default {
                 aqiSite = data;
               }
             });
-            this.passVal(this.area.county, this.area.district, aqiSite.SiteName);
-            this.setAqi(aqiSite);
-          } else {
-            const aqiSite = res.data[0];
-            this.passVal(this.area.county, this.area.district, aqiSite.SiteName);
-            this.setAqi(aqiSite);
           }
+          this.passVal(this.area.county, this.area.district, aqiSite.SiteName);
+          this.setAqi(aqiSite);
           this.setOverlay(false);
         } else {
           this.setAqi({});
@@ -221,7 +217,7 @@ export default {
           if (res.status) {
             const { ctyName, townName } = res.data;
             console.log(ctyName, townName);
-            vm.getDistrict(ctyName, townName);
+            vm.getDistrict(ctyName, townName, point);
           }
         }).catch((err) => {
           console.log(err);
