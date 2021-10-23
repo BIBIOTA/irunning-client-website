@@ -109,7 +109,7 @@ export default {
       'setError',
       'setLoginData',
     ]),
-    getCities() {
+    getCities(county = null, propsDistrict = null, point = []) {
       cities.getCities().then((res) => {
         if (res.status) {
           this.cities = res.data;
@@ -118,7 +118,7 @@ export default {
           this.setError(res.message);
         }
       }).then(() => {
-        this.getDistrict(this.area.county, this.area.district);
+        this.getDistrict(county ?? this.area.county, propsDistrict ?? this.area.district, point);
       });
     },
     getDistrict(county, propsDistrict = null, point = []) {
@@ -157,7 +157,7 @@ export default {
           if (point.length > 0) {
             let distance = null;
             res.data.forEach((data) => {
-              const caculateDistance = Math.floor(d3.geoDistance(point, [data.Longitude, data.Latitude] * 10000));
+              const caculateDistance = d3.geoDistance(point, [data.Longitude, data.Latitude]);
               if (!distance || distance > caculateDistance) {
                 distance = caculateDistance;
                 aqiSite = data;
@@ -218,7 +218,7 @@ export default {
           if (res.status) {
             const { ctyName, townName } = res.data;
             console.log(ctyName, townName);
-            vm.getDistrict(ctyName, townName, point);
+            vm.getCities(ctyName, townName, point);
           }
         }).catch((err) => {
           console.log(err);
