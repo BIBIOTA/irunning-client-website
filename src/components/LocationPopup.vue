@@ -158,7 +158,7 @@ export default {
             let distance = null;
             res.data.forEach((data) => {
               const caculateDistance = Math.floor(d3.geoDistance(point, [data.Longitude, data.Latitude] * 10000));
-              if (!distance || distance < caculateDistance) {
+              if (!distance || distance > caculateDistance) {
                 distance = caculateDistance;
                 aqiSite = data;
               }
