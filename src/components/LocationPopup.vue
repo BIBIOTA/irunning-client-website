@@ -121,7 +121,7 @@ export default {
         this.getDistrict(this.area.county, this.area.district);
       });
     },
-    getDistrict(county, propsDistrict = null) {
+    getDistrict(county, propsDistrict = null, point = []) {
       this.setOverlay(true);
       cities.getDistricts(county).then((res) => {
         if (res.status) {
@@ -130,7 +130,7 @@ export default {
           const siteName = this.area.siteName ? this.area.siteName : null;
           this.passVal(county, district, siteName);
           this.getWeather(county, district);
-          this.getAqi();
+          this.getAqi(point);
         } else {
           this.districts = [],
           this.setWeather(null);
@@ -216,7 +216,6 @@ export default {
             const { ctyName, townName } = res.data;
             console.log(ctyName, townName);
             vm.getDistrict(ctyName, townName);
-            vm.getAqi(point);
           }
         }).catch((err) => {
           console.log(err);
