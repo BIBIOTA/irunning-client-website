@@ -9,6 +9,11 @@ import Cookies from 'js-cookie';
 
 Vue.use(VueRouter);
 
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch((err) => err)
+}
+
 const routes = [
   {
     path: '*', // 當連到不是我們自訂義的路由時
@@ -30,7 +35,7 @@ const routes = [
     component: Events,
   },
   {
-    path: '/Activities',
+    path: '/Activities/:page',
     name: 'Activities',
     meta: { isLogin: true },
     component: Activities,

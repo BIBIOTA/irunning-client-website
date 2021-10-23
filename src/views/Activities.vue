@@ -130,14 +130,27 @@ export default {
     cleardateRangeText() {
       this.search.date = [];
       this.dateRangeText = null;
+      this.getQuery();
       this.getData(this.loginData.id, 1);
     },
     getDateRangeText () {
       if (this.search.date[0] && this.search.date[1]) {
         this.dateRangeText = this.search.date.join(' ~ ')
+        this.getQuery();
         this.getData(this.loginData.id, 1);
       }
     },
+    getQuery() {
+      const { startDay, endDay } = this.searchData;
+      this.$router.push({ params: { page: this.pagination.page }, query: { startDay, endDay } });
+    },
+    setQuery() {
+      const { startDay, endDay } = this.$route.query;
+      if (startDay && endDay) {
+        this.search.date = [startDay, endDay];
+      }
+      this.$router.push({ params: { page: this.pagination.page }, query: { startDay, endDay } });
+    }
   },
   computed: {
     ...mapState([
@@ -164,6 +177,7 @@ export default {
       immediate: true,
       handler(newPage, oldPage) {
         if ((newPage && oldPage) && (newPage !== oldPage)) {
+          this.getQuery();
           this.activities = null;
           this.getData(this.loginData.id, newPage);
         }
@@ -177,7 +191,8 @@ export default {
   },
   mounted() {
     if (this.login) {
-      this.getData(this.loginData.id, 1);
+      this.setQuery();
+      this.getData(this.loginData.id, this.$route.params?.page ?? 1);
     }
   },
 }

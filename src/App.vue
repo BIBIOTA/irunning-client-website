@@ -63,7 +63,7 @@
             </v-list-item>
             </router-link>
 
-            <router-link to="/Activities"  v-if="login">
+            <router-link :to="{ name: 'Activities', params: { page: 1 } }"  v-if="login">
               <v-list-item>
                 <v-list-item-icon>
                   <v-icon color="green darken-2">mdi-run</v-icon>
