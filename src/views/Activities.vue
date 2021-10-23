@@ -27,6 +27,7 @@
       </template>
       <v-date-picker
         v-model="search.date"
+        @input="getDateRange"
         no-title
         scrollable
         range
@@ -55,6 +56,7 @@
     <div class="text-center">
       <v-pagination
         v-model="pagination.page"
+        @input="changePage($event)"
         :length="pagination.total"
         :total-visible="6"
         circle
@@ -130,27 +132,55 @@ export default {
     cleardateRangeText() {
       this.search.date = [];
       this.dateRangeText = null;
-      this.getQuery();
-      this.getData(this.loginData.id, 1);
+      this.setSearchDataAndResetPage();
     },
-    getDateRangeText () {
+    getDateRange () {
       if (this.search.date[0] && this.search.date[1]) {
-        this.dateRangeText = this.search.date.join(' ~ ')
-        this.getQuery();
-        this.getData(this.loginData.id, 1);
+        this.setSearchDataAndResetPage();
+        this.getDateRangeText();
       }
     },
-    getQuery() {
-      const { startDay, endDay } = this.searchData;
-      this.$router.push({ params: { page: this.pagination.page }, query: { startDay, endDay } });
+    getDateRangeText() {
+      this.dateRangeText = this.search.date.join(' ~ ');
     },
-    setQuery() {
+    setQuery(formData) {
+      const { page, date } = formData;
+      const query = {};
+      if (date) {
+        const [startDay, endDay] = date;
+        _.set(query, 'startDay', startDay);
+        _.set(query, 'endDay', endDay);
+      }
+      this.$router.push({
+        params: { page },
+        query,
+      });
+    },
+    getQuery() {
       const { startDay, endDay } = this.$route.query;
       if (startDay && endDay) {
         this.search.date = [startDay, endDay];
+        this.getDateRangeText();
       }
-      this.$router.push({ params: { page: this.pagination.page }, query: { startDay, endDay } });
-    }
+    },
+    setSearchDataAndResetPage() {
+      this.page = 1;
+      const query = this.searchData;
+      this.routerSet(this.page, query)
+      this.getData(this.loginData.id, 1);
+    },
+    routerSet(page, query) {
+      this.$router.push({
+        params: { page },
+        query: { ...query },
+      });
+    },
+    async changePage(newPage) {
+      this.page = newPage;
+      await this.routerSet(this.page, this.$route.query);
+      this.activities = null;
+      await this.getData(this.loginData.id, newPage);
+    },
   },
   computed: {
     ...mapState([
@@ -172,26 +202,10 @@ export default {
       return formData;
     },
   },
-  watch: {
-    'pagination.page': {
-      immediate: true,
-      handler(newPage, oldPage) {
-        if ((newPage && oldPage) && (newPage !== oldPage)) {
-          this.getQuery();
-          this.activities = null;
-          this.getData(this.loginData.id, newPage);
-        }
-      },
-    },
-    'search.date': {
-      handler() {
-        this.getDateRangeText();
-      }
-    },
-  },
-  mounted() {
+  async mounted() {
     if (this.login) {
-      this.setQuery();
+      this.page = await parseInt(this.$route.params.page);
+      await this.getQuery();
       this.getData(this.loginData.id, this.$route.params?.page ?? 1);
     }
   },
