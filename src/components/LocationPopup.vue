@@ -155,10 +155,11 @@ export default {
           this.site = res.data;
           let aqiSite = res.data[0];
           if (point.length > 0) {
-            const distance = null;
+            let distance = null;
             res.data.forEach((data) => {
-              const caculateDistance = d3.geoDistance(point, [data.Longitude, data.Latitude]) * 10000;
+              const caculateDistance = Math.floor(d3.geoDistance(point, [data.Longitude, data.Latitude] * 10000));
               if (!distance || distance < caculateDistance) {
+                distance = caculateDistance;
                 aqiSite = data;
               }
             });
