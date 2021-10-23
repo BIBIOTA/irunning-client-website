@@ -162,9 +162,9 @@ export default {
                 aqiSite = data;
               }
             }
-            this.passVal(this.area.county, this.area.district, aqiSite.SiteName);
-            this.setAqi(aqiSite);
           });
+          this.passVal(this.area.county, this.area.district, aqiSite.SiteName);
+          this.setAqi(aqiSite);
           this.setOverlay(false);
         } else {
           this.setAqi({});
