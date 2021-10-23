@@ -54,6 +54,7 @@
             </template>
             <v-date-picker
               v-model="search.date"
+              @input="getDateRange()"
               no-title
               scrollable
               range
@@ -75,7 +76,7 @@
             chips
             height="35"
             clearable
-            @input="searchData(search.date[0], search.date[1], search.distances, search.keywords)"
+            @input="setSearchDataAndResetPage()"
             class="select_distances"
           ></v-select>
         </v-col>
@@ -91,7 +92,7 @@
             single-line
             hide-details
             height="35"
-            @keyup.enter="searchData(search.date[0], search.date[1], search.distances, search.keywords)"
+            @keyup.enter="setSearchDataAndResetPage()"
           ></v-text-field>
         </v-col>
         <v-col
@@ -104,7 +105,7 @@
             elevation="2"
             medium
             class="white--text"
-            @click="searchData(search.date[0], search.date[1], search.distances, search.keywords)"
+            @click="setSearchDataAndResetPage()"
           >
               查詢
           </v-btn>
@@ -252,6 +253,7 @@
       <div class="text-center">
         <v-pagination
           v-model="page"
+          @input="changePage($event)"
           :length="total"
           :total-visible="6"
           circle
@@ -369,16 +371,22 @@ export default {
     cleardateRangeText() {
       this.search.date = [];
       this.dateRangeText = null;
-      this.searchData(this.search.date[0], this.search.date[1], this.search.distances, this.search.keywords);
+      this.setSearchDataAndResetPage();
     },
-    getDateRangeText () {
+    getDateRange () {
       if (this.search.date[0] && this.search.date[1]) {
-        this.searchData(this.search.date[0], this.search.date[1], this.search.distances, this.search.keywords);
-        this.dateRangeText = this.search.date.join(' ~ ')
+        this.setSearchDataAndResetPage();
+        this.getDateRangeText();
       }
     },
-    searchData(startDay, endDay, distances, keywords) {
+    getDateRangeText() {
+      this.dateRangeText = this.search.date.join(' ~ ');
+    },
+    getData() {
       const formData = {};
+       _.set(formData, 'page', this.$route.params.page);
+      const { date, distances, keywords } = this.search;
+      const [startDay, endDay] = date;
       if (startDay && endDay) {
         _.set(formData, 'startDay', startDay);
         _.set(formData, 'endDay', endDay);
@@ -389,10 +397,6 @@ export default {
       if (keywords) {
         _.set(formData, 'keywords', keywords);
       }
-      _.set(formData, 'page', 1);
-      this.getData(formData);
-    },
-    getData(formData) {
       this.setLoading(true);
       this.events = [];
       events.getEvents(formData).then((res) => {
@@ -402,6 +406,7 @@ export default {
           this.events = res.data.data;
           this.page = res.data.current_page;
           this.total = res.data.last_page;
+          this.setQuery(formData);
         } else {
           this.setError(res.message);
           this.setNoData(true);
@@ -427,32 +432,70 @@ export default {
       });
       this.event = arr;
     },
-  },
-  watch: {
-    page(newPage, oldPage) {
-      if ((newPage && oldPage) && (newPage !== oldPage)) {
-        const formData = { page: newPage };
-        const { date, distances } = this.search;
-        const [startDay, endDay] = date;
-        if (startDay && endDay) {
-          _.set(formData, 'startDay', startDay);
-          _.set(formData, 'endDay', endDay);
-        }
-        if (distances) {
-          _.set(formData, 'distances', distances);
-        }
-        this.getData(formData);
+    getSearchData() {
+      const formData = {};
+      const { date, distances, keywords } = this.search;
+      const [startDay, endDay] = date;
+      if (startDay && endDay) {
+        _.set(formData, 'startDay', startDay);
+        _.set(formData, 'endDay', endDay);
       }
+      if (distances) {
+        _.set(formData, 'distances', distances);
+      }
+      if (keywords) {
+        _.set(formData, 'keywords', keywords);
+      }
+      return formData;
     },
-    'search.date': {
-      handler() {
+    setQuery(formData) {
+      const { page, date, ...data } = formData;
+      const query = { ...data };
+      if (date) {
+        const [startDay, endDay] = date;
+        _.set(query, 'startDay', startDay);
+        _.set(query, 'endDay', endDay);
+      }
+      this.$router.push({
+        params: { page },
+        query,
+      });
+    },
+    getQuery() {
+      const { startDay, endDay, distances, keywords } = this.$route.query;
+      if (startDay && endDay) {
+        this.search.date = [startDay, endDay];
         this.getDateRangeText();
       }
+      if (distances) {
+        this.search.distances = distances;
+      }
+      if (keywords) {
+        this.search.keywords = keywords;
+      }
+    },
+    setSearchDataAndResetPage() {
+      this.page = 1;
+      const query = this.getSearchData();
+      this.routerSet(this.page, query)
+      this.getData();
+    },
+    routerSet(page, query) {
+      this.$router.push({
+        params: { page },
+        query: { ...query },
+      });
+    },
+    async changePage(newPage) {
+      this.page = newPage;
+      await this.routerSet(this.page, this.$route.query);
+      await this.getData();
     },
   },
-  mounted() {
-    const formData = { page: 1 };
-    this.getData(formData);
+  async mounted() {
+    this.page = await parseInt(this.$route.params.page);
+    await this.getQuery();
+    await this.getData();
   },
 }
 </script>

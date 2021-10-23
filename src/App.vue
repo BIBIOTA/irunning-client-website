@@ -74,7 +74,7 @@
               </v-list-item>
             </router-link>
 
-            <router-link to="/Events">
+            <router-link :to="{ name: 'Events', params: { page: 1 } }">
               <v-list-item>
                 <v-list-item-icon>
                   <v-icon class="twicon-main-island" color="green darken-2"></v-icon>
