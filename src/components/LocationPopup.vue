@@ -220,12 +220,12 @@ export default {
             vm.getCities(C_Name, T_Name, point);
           } else {
             vm.setError(res.message);
-            this.getCities();
+            vm.getCities();
           }
         }).catch((err) => {
           console.log(err);
           vm.setError('發生例外錯誤: 無法取得所在行政區');
-          this.getCities();
+          vm.getCities();
         });
         console.log(point);
       }
