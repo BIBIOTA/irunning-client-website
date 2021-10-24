@@ -82,10 +82,10 @@ import { cities } from '../libs/cities.js';
 import { aqi } from '../libs/aqi.js';
 import { weather } from '../libs/weather.js';
 import { member } from '../libs/member.js';
+import { node } from '../libs/node.js';
 import { mapState, mapMutations } from 'vuex';
 import Cookies from 'js-cookie';
 import * as d3 from 'd3';
-import axios from 'axios';
 
 export default {
   name: 'Weather',
@@ -212,17 +212,17 @@ export default {
 
       function showPosition(position) {
         const point = [position.coords.longitude, position.coords.latitude];
-        /* https://data.moi.gov.tw/moiod/Data/DataDetail.aspx?oid=CA6D10B1-C474-41DB-8B53-28E7E4E18977 */
-        axios.get(`https://api.nlsc.gov.tw/other/TownVillagePointQuery/${position.coords.longitude}/${position.coords.latitude}/4326`).then((res) => {
+        node.district(point).then((res) => {
           console.log(res);
           if (res.status) {
-            const { ctyName, townName } = res.data;
-            console.log(ctyName, townName);
-            vm.getCities(ctyName, townName, point);
+            const { C_Name, T_Name } = res.data;
+            console.log(C_Name, T_Name);
+            vm.getCities(C_Name, T_Name, point);
           }
         }).catch((err) => {
           console.log(err);
           vm.setError('發生例外錯誤: 無法取得所在行政區');
+          this.getCities();
         });
         console.log(point);
       }
