@@ -212,7 +212,7 @@ export default {
 
       function showPosition(position) {
         const point = [position.coords.longitude, position.coords.latitude];
-        node.district(point).then((res) => {
+        node.district({ lng: position.coords.longitude, lat: position.coords.latitude }).then((res) => {
           console.log(res);
           if (res.status) {
             const { C_Name, T_Name } = res.data;

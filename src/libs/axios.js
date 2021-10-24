@@ -114,13 +114,7 @@ export function baseRequest(baseURL, url, data = false, method = 'get', token = 
 }
 
 /* node封裝 */
-export function nodeRequest(url, data = false, method = 'get', token = AUTH_TOKEN, headers = {}) {
-  if (token !== null) {
-    headers = {
-      ...headers,
-      authorization: `Bearer ${token}`,
-    };
-  }
+export function nodeRequest(url, data = false, method = 'get', headers = {}) {
   let req = {
     /* eslint-disable no-undef */
     baseURL: NODE_API_URL, // process.env.API,
@@ -150,7 +144,6 @@ export function nodeRequest(url, data = false, method = 'get', token = AUTH_TOKE
         Object.keys(loginData).forEach((key) => {
           Cookies.remove(key, loginData[key]);
         });
-        AUTH_TOKEN = null;
         const domain = window.location.origin;
         const currhash = window.location.hash;
         if (currhash !== '#/') {
