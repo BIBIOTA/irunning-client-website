@@ -218,6 +218,9 @@ export default {
             const { C_Name, T_Name } = res.data;
             console.log(C_Name, T_Name);
             vm.getCities(C_Name, T_Name, point);
+          } else {
+            vm.setError(res.message);
+            this.getCities();
           }
         }).catch((err) => {
           console.log(err);
