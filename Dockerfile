@@ -1,5 +1,12 @@
-FROM node:14.13.1 as publish
+FROM node:14-alpine as publish
+RUN apk update \
+    && apk add --update python make g++ \
+    && npm install -g npm \
+    && npm install -g @vue/cli \
+    && npm install -g pm2 \
+    && apk add yarn \
 WORKDIR /app
+COPY client/ /app/
 RUN echo "VUE_APP_API_KEY=https://irunningapi.bibiota.com/api" >> /app/.env
 RUN echo "VUE_APP_NODE_API_KEY=https://irunning-node.bibiota.com/api" >> /app/.env
 RUN echo "VUE_APP_API_STORAGE=https://irunningapi.bibiota.com/storage" >> /app/.env
@@ -11,17 +18,16 @@ RUN echo "VUE_APP_ENV=production" >> /app/.env
 RUN echo "VUE_APP_GAPI=AIzaSyAvjRz8URcOWoCuRfPqY2sab-4q_a-jo78" >> /app/.env
 COPY package.json yarn.lock ./
 RUN yarn install && yarn cache clean
-COPY . .
+RUN yarn
 RUN yarn build
-CMD [ "node" ]
-
-# nginx state for serving content
-FROM nginx:alpine
-# Set working directory to nginx asset directory
-WORKDIR /usr/share/nginx/html
-# Remove default nginx static assets
-RUN rm -rf ./*
-# Copy static assets from builder stage
+FROM node:14-alpine
+WORKDIR /app
+EXPOSE 8080
+RUN apk update \
+    && apk add yarn
+COPY client-ssr/ /app/
+RUN chown -R node:node /app
+USER node
+RUN yarn
 COPY --from=publish /app/dist .
-# Containers run nginx with global directives and daemon off
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+CMD [ "node", "server.js" ]
