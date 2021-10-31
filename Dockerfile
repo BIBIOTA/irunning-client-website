@@ -11,6 +11,7 @@ RUN echo "VUE_APP_ENV=production" >> /app/.env
 RUN echo "VUE_APP_GAPI=AIzaSyAvjRz8URcOWoCuRfPqY2sab-4q_a-jo78" >> /app/.env
 COPY package.json yarn.lock ./
 RUN yarn install && yarn cache clean
+COPY . .
 RUN yarn
 RUN yarn build
 FROM node:14-alpine
