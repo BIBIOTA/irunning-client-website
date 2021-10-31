@@ -9,6 +9,7 @@ RUN echo "VUE_APP_REDIRECT_URI=https://irunning.bibiota.com" >> /app/.env
 RUN echo "BASE_URL=https://irunning.bibiota.com" >> /app/.env
 RUN echo "VUE_APP_ENV=production" >> /app/.env
 RUN echo "VUE_APP_GAPI=AIzaSyAvjRz8URcOWoCuRfPqY2sab-4q_a-jo78" >> /app/.env
+RUN echo "PORT=80" >> /app/.env
 COPY package.json yarn.lock ./
 RUN yarn install && yarn cache clean
 COPY . .
@@ -17,6 +18,6 @@ RUN yarn build
 FROM node:14-alpine
 WORKDIR /app
 COPY --from=publish /app/dist .
-CMD [ "node", "server.js" ]
+CMD [ "node", "index.js" ]
 
 
