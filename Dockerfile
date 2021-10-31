@@ -15,12 +15,7 @@ RUN yarn
 RUN yarn build
 FROM node:14-alpine
 WORKDIR /app
-EXPOSE 8080
-RUN apk update \
-    && apk add yarn
-COPY client-ssr/ /app/
-RUN chown -R node:node /app
-USER node
-RUN yarn
 COPY --from=publish /app/dist .
 CMD [ "node", "server.js" ]
+
+
