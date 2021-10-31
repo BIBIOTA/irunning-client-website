@@ -9,15 +9,22 @@ RUN echo "VUE_APP_REDIRECT_URI=https://irunning.bibiota.com" >> /app/.env
 RUN echo "BASE_URL=https://irunning.bibiota.com" >> /app/.env
 RUN echo "VUE_APP_ENV=production" >> /app/.env
 RUN echo "VUE_APP_GAPI=AIzaSyAvjRz8URcOWoCuRfPqY2sab-4q_a-jo78" >> /app/.env
-RUN echo "PORT=80" >> /app/.env
 COPY package.json yarn.lock ./
 RUN yarn install && yarn cache clean
 COPY . .
 RUN yarn
 RUN yarn build
-FROM node:14-alpine
-WORKDIR /app
+CMD [ "node" ]
+
+# nginx state for serving content
+FROM nginx:alpine
+# Set working directory to nginx asset directory
+WORKDIR /usr/share/nginx/html
+# Remove default nginx static assets
+RUN rm -rf ./*
+# Copy static assets from builder stage
 COPY --from=publish /app/dist .
-CMD [ "node", "index.js" ]
+# Containers run nginx with global directives and daemon off
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
 
 
