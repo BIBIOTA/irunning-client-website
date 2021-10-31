@@ -1,12 +1,5 @@
 FROM node:14-alpine as publish
-RUN apk update \
-    && apk add --update python make g++ \
-    && npm install -g npm \
-    && npm install -g @vue/cli \
-    && npm install -g pm2 \
-    && apk add yarn \
 WORKDIR /app
-COPY client/ /app/
 RUN echo "VUE_APP_API_KEY=https://irunningapi.bibiota.com/api" >> /app/.env
 RUN echo "VUE_APP_NODE_API_KEY=https://irunning-node.bibiota.com/api" >> /app/.env
 RUN echo "VUE_APP_API_STORAGE=https://irunningapi.bibiota.com/storage" >> /app/.env
