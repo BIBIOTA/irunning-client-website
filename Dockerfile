@@ -3,7 +3,7 @@ WORKDIR /app
 RUN echo "VUE_APP_API_KEY=https://irunningapi.bibiota.com/api" >> /app/.env
 RUN echo "VUE_APP_NODE_API_KEY=https://irunning-node.bibiota.com/api" >> /app/.env
 RUN echo "VUE_APP_API_STORAGE=https://irunningapi.bibiota.com/storage" >> /app/.env
-RUN echo "VUE_APP_STRAVA_CLIENT_ID=68055" >>> /app/.env
+RUN echo "VUE_APP_STRAVA_CLIENT_ID=68055" >> /app/.env
 RUN echo "VUE_APP_STRAVA_CLIENT_SECRET=4222100739f8aeecfe2bd2c2df077e5ec5a6b46c" >> /app/.env
 RUN echo "VUE_APP_REDIRECT_URI=https://irunning.bibiota.com" >> /app/.env
 RUN echo "BASE_URL=https://irunning.bibiota.com" >> /app/.env
