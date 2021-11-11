@@ -20,13 +20,10 @@ CMD [ "node" ]
 FROM nginx:alpine
 # Set working directory to nginx asset directory
 WORKDIR /usr/share/nginx/html
-# Copy nginx.conf
-RUN rm /etc/nginx/nginx.conf /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx/nginx.conf
-
 # Remove default nginx static assets
 RUN rm -rf ./*
-
+#Copy nginx.conf
+COPY default.conf /etc/nginx/conf.d/default.conf
 # Copy static assets from builder stage
 COPY --from=publish /app/dist .
 # Containers run nginx with global directives and daemon off
