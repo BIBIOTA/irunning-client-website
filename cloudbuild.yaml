@@ -1,9 +1,9 @@
 steps:
     # build the container image
-  - name: 'gcr.io/cloud-builders/docker'
+  - name: 'asia.gcr.io/cloud-builders/docker'
     args: [ 'build', '-t', 'asia.gcr.io/$GCP_PROJECT_ID/irunning', '.' ]
     # push the container image
-  - name: 'gcr.io/cloud-builders/docker'
+  - name: 'asia.gcr.io/cloud-builders/docker'
     args: [ 'push', 'asia.gcr.io/$GCP_PROJECT_ID/irunning']
     # deploy to Cloud Run
   #- name: "gcr.io/cloud-builders/gcloud"
