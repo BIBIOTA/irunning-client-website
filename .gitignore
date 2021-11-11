@@ -25,3 +25,5 @@ pnpm-debug.log*
 #id_rsa
 *_rsa_*
 *.pub
+
+.env
