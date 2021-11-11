@@ -1,9 +1,0 @@
-version: "3"
-services:
-  web:
-    build:
-      dockerfile: Dockerfile
-    environment:
-      VUE_APP_API_KEY: ${VUE_APP_API_KEY}
-  ports:
-    - "80:80"

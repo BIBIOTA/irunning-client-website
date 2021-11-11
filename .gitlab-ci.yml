@@ -1,12 +1,7 @@
 image: docker:latest
 stages:
-  - build
   - deploy
-build:
-  stage: build
-  script:
-    - docker-compose build
-deploy:
+Deploy:
   stage: deploy
   image: google/cloud-sdk
   before_script:
