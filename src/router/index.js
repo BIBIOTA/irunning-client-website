@@ -41,7 +41,7 @@ const routes = [
     component: Activities,
   },
   {
-    path: '/Activities/:id',
+    path: '/Activity/:id',
     name: 'Activity',
     meta: { isLogin: true },
     component: Activity,
