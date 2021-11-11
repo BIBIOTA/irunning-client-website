@@ -1,10 +1,10 @@
 steps:
-    # build the container image
-  - name: 'asia.gcr.io/cloud-builders/docker'
-    args: [ 'build', '-t', 'asia.gcr.io/$GCP_PROJECT_ID/irunning', '.' ]
-    # push the container image
-  - name: 'asia.gcr.io/cloud-builders/docker'
-    args: [ 'push', 'asia.gcr.io/$GCP_PROJECT_ID/irunning']
-    # deploy to Cloud Run
-  #- name: "gcr.io/cloud-builders/gcloud"
-  #  args: ['run', 'deploy', 'erp-ui', '--image', 'gcr.io/$PROJECT_ID/demo-app', '--region', 'europe-west4', '--platform', 'managed', '--allow-unauthenticated']
+- name: node:14
+  entrypoint: npm
+  args: ["install"]
+- name: node:14
+  entrypoint: yarn
+  args: ["run", "docs:build"]
+- name: "gcr.io/cloud-builders/gcloud"
+  args: ["app", "deploy"]
+timeout: "1600s"
