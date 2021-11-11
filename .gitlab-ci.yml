@@ -7,7 +7,7 @@ Build:
   variables:
     VUE_APP_API_KEY: https://irunningapi.bibiota.com/api
   script:
-    - docker build --build-arg VUE_APP_API_KEY=$VUE_APP_API_KEY
+    - docker build --build-arg VUE_APP_API_KEY="$VUE_APP_API_KEY" .
 Deploy:
   stage: deploy
   image: google/cloud-sdk
