@@ -1,10 +1,7 @@
-steps:
-- name: node:14
-  entrypoint: npm
-  args: ["install"]
-- name: node:14
-  entrypoint: yarn
-  args: ["run", "docs:build"]
-- name: "gcr.io/cloud-builders/gcloud"
-  args: ["app", "deploy"]
-timeout: "1600s"
+step:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '--tag=asia.gcr.io/$GCP_PROJECT_ID/irunning', '--build-arg="SERVER_CONF=$_SERVER_CONF"', '.']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'asia.gcr.io/$GCP_PROJECT_ID/irunning']
+substitutions:
+  VUE_APP_API_KEY: https://irunningapi.bibiota.com/api
