@@ -4,6 +4,8 @@ stages:
 Deploy:
   stage: deploy
   image: google/cloud-sdk
+  env:
+  - 'VUE_APP_API_KEY=$VUE_APP_API_KEY'
   before_script:
     - echo "$GCP_SERVICE_KEY" > gcloud-service-key.json # Google Cloud service accounts
     - gcloud auth activate-service-account --key-file gcloud-service-key.json
