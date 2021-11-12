@@ -13,4 +13,3 @@ Deploy:
        --config=cloudbuild.yaml
   only:
     - master
-
