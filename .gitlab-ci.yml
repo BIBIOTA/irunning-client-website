@@ -8,7 +8,7 @@ stages:
 build:
   stage: build
   script:
-    - docker build
+    - docker build .
                 --build-arg var1
                 --build-arg var2
 Deploy:
