@@ -8,9 +8,9 @@ stages:
 build:
   stage: build
   script:
-    - docker build . -t
-                          --build-arg var1
-                          --build-arg var2
+    - docker build
+                --build-arg var1
+                --build-arg var2
 Deploy:
   stage: deploy
   image: google/cloud-sdk
