@@ -3,10 +3,8 @@ stages:
   - build
   - deploy
 build:
-  # the context (working directory) is the current directory
-  # change this to the directory containing the dockerfile if in a different place
+  stage: build
   context: .
-  # the dockerfile to be run
   dockerfile: Dockerfile
   args:
     - VUE_APP_API_KEY=${VUE_APP_API_KEY}
