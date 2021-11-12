@@ -22,12 +22,12 @@ steps:
       '--build-arg',
       'VUE_APP_GAPI=$_VUE_APP_GAPI',
       '-t',
-      'gcr.io/$GCP_PROJECT_ID/irunning',
+      'gcr.io/$_GCP_PROJECT_ID/irunning',
       '.',
     ]
     # push the container image
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'push', 'gcr.io/$GCP_PROJECT_ID/irunning']
+    args: [ 'push', 'gcr.io/$_GCP_PROJECT_ID/irunning']
     # deploy to gke
   # - name: "gcr.io/cloud-builders/gke-deploy"
   #   args:
