@@ -1,6 +1,6 @@
 step:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '--tag=asia.gcr.io/$GCP_PROJECT_ID/irunning', '--build-arg="SERVER_CONF=$_SERVER_CONF"', '.']
+    args: ['build', '--tag=asia.gcr.io/$GCP_PROJECT_ID/irunning', '--build-arg="VUE_APP_API_KEY=$VUE_APP_API_KEY"', '.']
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'asia.gcr.io/$GCP_PROJECT_ID/irunning']
 substitutions:
