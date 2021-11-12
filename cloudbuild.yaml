@@ -2,7 +2,9 @@ steps:
     # build the container image
   - name: 'gcr.io/cloud-builders/docker'
     args: [
-      'docker build --build-arg=VUE_APP_API_KEY=${VUE_APP_API_KEY}',
+      'build',
+      '--build-args',
+      'VUE_APP_API_KEY=${VUE_APP_API_KEY}',
       'gcr.io/$PROJECT_ID/irunning',
       '.',
     ]
@@ -16,3 +18,5 @@ steps:
   #   - --filename=irunning
   #   - --location=asia-east1
   #   - --cluster=irunning
+substitutions:
+    VUE_APP_API_KEY: https://irunningapi.bibiota.com/api
