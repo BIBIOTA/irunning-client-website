@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: irunning
-        image: asia.gcr.io/irunning-324312/irunning:latest
+        image: asia.gcr.io/silent-unison-330622/irunning:latest
         ports:
         - containerPort: 80
         resources:
