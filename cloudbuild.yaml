@@ -4,7 +4,7 @@ steps:
     args: [
       'build',
       '--build-arg',
-      'VUE_APP_API_KEY=$VUE_APP_API_KEY',
+      'VUE_APP_API_KEY=${$VUE_APP_API_KEY}',
       '-t',
       'gcr.io/$GCP_PROJECT_ID/irunning',
       '.',
@@ -19,5 +19,3 @@ steps:
   #   - --filename=irunning
   #   - --location=asia-east1
   #   - --cluster=irunning
-substitutions:
-  VUE_APP_API_KEY: https://irunningapi.bibiota.com/api
