@@ -1,9 +1,6 @@
 FROM node:14-alpine as publish
 WORKDIR /app
 ARG var1
-ARG var2
-
-RUN echo "Print var1 $var1"
 RUN echo "Print var2 $var2"
 RUN echo "VUE_APP_API_KEY=https://irunningapi.bibiota.com/api" >> /app/.env
 RUN echo "VUE_APP_NODE_API_KEY=https://irunning-node.bibiota.com/api" >> /app/.env

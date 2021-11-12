@@ -1,16 +1,6 @@
-variables:
-  var1: ex_variable_1
-  var2: ex_variable_1
 image: docker:latest
 stages:
-  - build
   - deploy
-build:
-  stage: build
-  script:
-    - docker build .
-                --build-arg var1
-                --build-arg var2
 Deploy:
   stage: deploy
   image: google/cloud-sdk
@@ -19,7 +9,8 @@ Deploy:
     - gcloud auth activate-service-account --key-file gcloud-service-key.json
   script:
     - gcloud config set project $GCP_PROJECT_ID
-    - gcloud builds submit --tag asia.gcr.io/$GCP_PROJECT_ID/irunning
+    - gcloud builds submit
+       --config=cloudbuild.yaml
   only:
     - master
 
