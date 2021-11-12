@@ -4,7 +4,7 @@ steps:
     args: [
       'build',
       '--build-arg',
-      'VUE_APP_API_KEY=${VUE_APP_API_KEY}',
+      'VUE_APP_API_KEY=https://irunningapi.bibiota.com/api',
       '-t',
       'gcr.io/$PROJECT_ID/irunning',
       '.',
