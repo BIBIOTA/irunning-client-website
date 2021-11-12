@@ -3,8 +3,9 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [
       'build',
-      '--build-args',
+      '--build-arg',
       'VUE_APP_API_KEY=${VUE_APP_API_KEY}',
+      '-t',
       'gcr.io/$PROJECT_ID/irunning',
       '.',
     ]
