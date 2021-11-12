@@ -1,13 +1,6 @@
 image: docker:latest
 stages:
-  - build
   - deploy
-build:
-  stage: build
-  context: .
-  dockerfile: Dockerfile
-  args:
-    - VUE_APP_API_KEY=${VUE_APP_API_KEY}
 deploy:
   stage: deploy
   image: google/cloud-sdk
@@ -17,6 +10,8 @@ deploy:
   script:
     - gcloud config set project $GCP_PROJECT_ID
     - gcloud builds submit --tag asia.gcr.io/$GCP_PROJECT_ID/irunning
+  args:
+    - VUE_APP_API_KEY=${VUE_APP_API_KEY}
   only:
     - master
 
