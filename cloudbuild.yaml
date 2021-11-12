@@ -7,7 +7,7 @@ steps:
     args: [ 'push', 'gcr.io/$PROJECT_ID/irunning']
     # deploy to gke
   - name: "gcr.io/cloud-builders/gke-deploy"
-    args
+    args:
     - run
     - --filename=irunning
     - --location=asia-east2
