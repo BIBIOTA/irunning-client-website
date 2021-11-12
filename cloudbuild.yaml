@@ -2,9 +2,7 @@ steps:
     # build the container image
   - name: 'gcr.io/cloud-builders/docker'
     args: [
-      'build',
-      '--build-args',
-      'VUE_APP_API_KEY=${VUE_APP_API_KEY}',
+      'docker build --build-arg=VUE_APP_API_KEY=${VUE_APP_API_KEY}',
       'gcr.io/$PROJECT_ID/irunning',
       '.',
     ]
