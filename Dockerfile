@@ -1,8 +1,9 @@
 FROM node:14-alpine as publish
 WORKDIR /app
-ARG var1
-RUN echo "Print var2 $var2"
-RUN echo "VUE_APP_API_KEY=https://irunningapi.bibiota.com/api" >> /app/.env
+ARG VUE_APP_API_KEY
+ENV VUE_APP_API_KEY=${VUE_APP_API_KEY}
+RUN echo VUE_APP_API_KEY >> /app/.env
+# RUN echo "VUE_APP_API_KEY=https://irunningapi.bibiota.com/api" >> /app/.env
 RUN echo "VUE_APP_NODE_API_KEY=https://irunning-node.bibiota.com/api" >> /app/.env
 RUN echo "VUE_APP_API_STORAGE=https://irunningapi.bibiota.com/storage" >> /app/.env
 RUN echo "VUE_APP_STRAVA_CLIENT_ID=68055" >> /app/.env
