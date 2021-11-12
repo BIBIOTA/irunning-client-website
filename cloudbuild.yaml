@@ -3,13 +3,11 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [
       'build',
-      '-t',
+      '--build-args',
+      'VUE_APP_API_KEY=${VUE_APP_API_KEY}',
       'gcr.io/$PROJECT_ID/irunning',
       '.',
-      "--build-args", "VUE_APP_API_KEY=${VUE_APP_API_KEY}"
     ]
-    env:
-      - 'VUE_APP_API_KEY=$VUE_APP_API_KEY'
     # push the container image
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'push', 'gcr.io/$PROJECT_ID/irunning']
