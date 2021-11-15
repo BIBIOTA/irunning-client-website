@@ -60,7 +60,7 @@
       </v-card-text>
       <GmapMap
         ref="map"
-        v-if="data && data.start_latlng"
+        v-if="data && data.start_latlng && data.map.polyline"
         :center="{lng: 0, lat: 0}"
         map-type-id="terrain"
         style="width: 100%; height: 300px"
