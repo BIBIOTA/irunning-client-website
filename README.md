@@ -4,22 +4,28 @@
 
 <br />
 
-前端: Vue-cli、Veutify
+前端: Vue-cli、Vuetify
 <br />
-後端: Laravel
+前端第三方串接: Strava、Google Map Api
+<br />
+後端: Laravel、Node.js
+<br />
+後端第三方串接: Strava、中央氣象局、政府開放平台
 <br />
 爬蟲: Node.js
 <br />
-第三方串接: Strava、中央氣象局、政府開放平台、Google Map Api
+環境:
+client-website: Google Kubernetes Engine (GKE)
+node.js: Google Kubernetes Engine (GKE)
+server-api: Google Compute Engine (GCE)
 
-
-目前功能:
+功能:
 <br />
 1.與運動社群應用程式Strava串接及第三方登入，取得個人的跑步紀錄
 <br />
-2.與中央氣象局API串接，取得台灣各地的即時天氣資訊
+2.與中央氣象局、政府開放平台API串接，取得台灣各地及目前所在地(GPS Location)的即時天氣資訊及空氣品質
 <br />
-3.透過Node.js爬蟲，取得全國路跑賽事資訊並建立資料庫、搜尋功能
+3.透過Node.js爬蟲，取得全國路跑賽事資訊並建立資料庫、搜尋賽事
 <br />
 全國馬拉松賽事資料來源:
 <br />
