@@ -189,7 +189,8 @@ export default {
       const data = { ...area, id: this.loginData.id };
       member.updateMemberLocation(data).then((res) => {
         if (res.status) {
-          Cookies.set('member', JSON.stringify(res.data));
+          const expires = this.moment(res.data.member_token.expires_at).toDate();
+          Cookies.set('member', JSON.stringify(res.data), { expires });
         } else {
           this.setError(res.message);
         }

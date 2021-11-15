@@ -1,6 +1,7 @@
 import strava from 'strava-v3';
 import { loginApi } from '../libs/login.js';
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
+import moment from 'moment';
 
 const errors = require('request-promise/errors')
 
@@ -34,7 +35,8 @@ export const getToken = async ({ dispatch, commit}, code) => {
 export const login = async ({ commit }, payload) => {
   return await loginApi.login(payload).then((res) => {
     if (res.status) {
-      Cookies.set('member', JSON.stringify(res.data), { expires: 5 });
+      const expires = moment(res.data.expires_at).toDate();
+      Cookies.set('member', JSON.stringify(res.data), { expires });
       commit('setLoginData', res.data);
       commit('setIsLogin', true);
       return true;
