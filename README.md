@@ -1,6 +1,6 @@
 <h1>Irunning手機網頁應用程式</h1>
 
-<a href="https://irunning.bibiota.com/">https://irunning.bibiota.com/</a>
+<a href="https://irunning.bibiota.com/" target="_blank">https://irunning.bibiota.com/</a>
 
 <br />
 strava testing account:
