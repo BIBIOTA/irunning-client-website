@@ -413,6 +413,8 @@ export default {
         } else {
           this.setError(res.message);
           this.setNoData(true);
+          this.page = 1;
+          this.total = 1;
           this.events = [];
         }
       });

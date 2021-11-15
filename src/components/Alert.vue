@@ -1,12 +1,12 @@
 <template>
-  <v-row class="justify-center position-relative z-index999">
+  <v-row class="justify-center position-relative z-index999 mx-10">
     <v-alert
-      v-show="error"
+      v-if="error"
       transition="scroll-y-reverse-transition"
-      width="70%"
+      width="100%"
       color="orange"
       type="error"
-      class="text-center text-no-wrap"
+      class="text-center"
     >
       {{error}}
     </v-alert>

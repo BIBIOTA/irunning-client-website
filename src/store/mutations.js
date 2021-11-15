@@ -29,7 +29,7 @@ export const setWeather = (state, data) => {
 
 export const setError = (state, data) => {
   state.error = data;
-  setTimeout(() => { 
+  setTimeout(() => {
     state.error = false;
   }, 3000);
 };
