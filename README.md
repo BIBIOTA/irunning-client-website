@@ -16,8 +16,11 @@
 <br />
 環境:
 client-website: Google Kubernetes Engine (GKE)
+<br />
 node.js: Google Kubernetes Engine (GKE)
+<br />
 server-api: Google Compute Engine (GCE)
+<br />
 
 功能:
 <br />
