@@ -1,8 +1,12 @@
 <template>
   <v-main>
-    <StravaIndex />
-    <Weather />
-    <Aqi />
+    <v-card>
+      <v-col dense>
+        <StravaIndex />
+        <Weather />
+        <Aqi />
+      </v-col>
+    </v-card>
   </v-main>
 </template>
 

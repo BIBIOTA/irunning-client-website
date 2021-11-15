@@ -1,5 +1,5 @@
 <template>
-  <v-card
+  <div
     class="ma-auto"
     tile
     v-if="memberIndex"
@@ -62,7 +62,7 @@
         </v-card>
       </v-col>
     </v-row>
-  </v-card>
+  </div>
 </template>
 
 <script>

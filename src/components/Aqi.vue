@@ -1,8 +1,5 @@
 <template>
-  <v-card
-    class="ma-auto"
-    tile
-  >
+  <div>
     <v-row class="py-5 flex align-center">
       <v-col class="col-md-8">
         <div class="text-h7 text-center">
@@ -42,7 +39,7 @@
         {{status}}
       </div>
     </template>
-  </v-card>
+  </div>
 </template>
 
 <script>

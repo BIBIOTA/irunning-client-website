@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <v-main>
     <v-card class="ma-4">
       <RunningInfo :data="activity" :moreInfo="true" v-show="Object.keys(activity).length > 0" />
     </v-card>
     <Loading />
     <NoData />
     <Backbtn />
-  </div>
+  </v-main>
 </template>
 <script>
 import RunningInfo from '../components/RunningInfo.vue';

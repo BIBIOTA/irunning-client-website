@@ -1,68 +1,72 @@
 <template>
-  <div>
-    <v-card-title>
-      我的跑步紀錄
-    </v-card-title>
-    <v-menu
-      v-model="dateMenu"
-      :close-on-content-click="false"
-      :nudge-right="40"
-      transition="scale-transition"
-      offset-y
-      min-width="auto"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-text-field
-          v-model="dateRangeText"
-          label="查詢活動"
-          prepend-icon="mdi-calendar"
-          readonly
-          v-bind="attrs"
-          v-on="on"
-          clearable
-          class="mx-4"
-          height="35"
-          @input="cleardateRangeText"
-        ></v-text-field>
-      </template>
-      <v-date-picker
-        v-model="search.date"
-        @input="getDateRange"
-        no-title
-        scrollable
-        range
-        locale="zh-tw"
-      ></v-date-picker>
-    </v-menu>
-    <v-card
-      class="ma-4"
-      v-for="(data, i) in activities"
-      :key="`activities_${i}`"
-    >
-      <RunningInfo :data="data" />
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn
-          text
-          color="cyan"
-          @click="routerPush(data.id)"
+  <v-main>
+    <v-card>
+      <v-col dense>
+        <v-card-title>
+          我的跑步紀錄
+        </v-card-title>
+        <v-menu
+          v-model="dateMenu"
+          :close-on-content-click="false"
+          :nudge-right="40"
+          transition="scale-transition"
+          offset-y
+          min-width="auto"
         >
-          查看活動
-        </v-btn>
-      </v-card-actions>
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+              v-model="dateRangeText"
+              label="查詢活動"
+              prepend-icon="mdi-calendar"
+              readonly
+              v-bind="attrs"
+              v-on="on"
+              clearable
+              class="mx-4"
+              height="35"
+              @input="cleardateRangeText"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+            v-model="search.date"
+            @input="getDateRange"
+            no-title
+            scrollable
+            range
+            locale="zh-tw"
+          ></v-date-picker>
+        </v-menu>
+        <v-card
+          class="ma-2"
+          v-for="(data, i) in activities"
+          :key="`activities_${i}`"
+        >
+          <RunningInfo :data="data" />
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              text
+              color="cyan"
+              @click="routerPush(data.id)"
+            >
+              查看活動
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+        <Loading />
+        <NoData />
+        <div class="text-center">
+          <v-pagination
+            v-model="pagination.page"
+            @input="changePage($event)"
+            :length="pagination.total"
+            :total-visible="6"
+            circle
+          ></v-pagination>
+        </div>
+      </v-col>
     </v-card>
-    <Loading />
-    <NoData />
-    <div class="text-center">
-      <v-pagination
-        v-model="pagination.page"
-        @input="changePage($event)"
-        :length="pagination.total"
-        :total-visible="6"
-        circle
-      ></v-pagination>
-    </div>
-  </div>
+  </v-main>
 </template>
 <script>
 import _ from 'lodash';

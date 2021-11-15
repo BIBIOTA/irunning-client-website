@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-col>
     <v-card-text>
       <div>{{moment(data.start_date_local).format('LL')}} {{moment(data.start_date_local).format('LT')}}</div>
       <p class="text-h4 text--primary">
@@ -72,7 +72,7 @@
         />
       </GmapMap>
     </template>
-  </div>
+  </v-col>
 </template>
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script> 
 <script>
