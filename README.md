@@ -3,6 +3,13 @@
 <a href="https://irunning.bibiota.com/">https://irunning.bibiota.com/</a>
 
 <br />
+strava testing account:
+<br />
+username / password
+<br />
+irunning.test@gmail.com / irunning.test@gmail.com
+<br />
+
 
 前端: Vue-cli、Vuetify
 <br />
