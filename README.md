@@ -8,11 +8,14 @@
 <br />
 前端第三方串接: Strava、Google Map Api
 <br />
+<br />
 後端: Laravel、Node.js
 <br />
 後端第三方串接: Strava、中央氣象局、政府開放平台
 <br />
+<br />
 爬蟲: Node.js
+<br />
 <br />
 環境:
 client-website: Google Kubernetes Engine (GKE)
@@ -20,6 +23,7 @@ client-website: Google Kubernetes Engine (GKE)
 node.js: Google Kubernetes Engine (GKE)
 <br />
 server-api: Google Compute Engine (GCE)
+<br />
 <br />
 
 功能:
