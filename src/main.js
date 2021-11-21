@@ -127,7 +127,7 @@ Vue.prototype.moment = moment
 
 Vue.use(VueGoogleMaps, {
   load: {
-    key: 'AIzaSyAvjRz8URcOWoCuRfPqY2sab-4q_a-jo78',
+    key: process.env.VUE_APP_GAPI,
     libraries: 'places', // This is required if you use the Autocomplete plugin
     // OR: libraries: 'places,drawing'
     // OR: libraries: 'places,drawing,visualization'
