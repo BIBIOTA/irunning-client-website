@@ -188,6 +188,11 @@ export default {
       }
     }
   },
+  mounted() {
+    if (Object.keys(this.aqi).length > 0) {
+      this.putData(this.aqi);
+    }
+  },
 }
 </script>
 
