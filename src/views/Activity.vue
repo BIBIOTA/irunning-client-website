@@ -35,9 +35,9 @@ export default {
       'setLoading',
       'setNoData',
     ]),
-    getData(user_id, id) {
+    getData(memberUuid, runningUuid) {
       this.setLoading(true);
-      activities.getActivity({user_id, id}).then((res) => {
+      activities.getActivity(memberUuid, runningUuid).then((res) => {
         this.setLoading(false);
         if (res.status) {
           this.setNoData(false);
