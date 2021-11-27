@@ -1,10 +1,11 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
-import Login from '../views/Login.vue';
-import Events from '../views/Events.vue';
 import Activities from '../views/Activities.vue';
 import Activity from '../views/Activity.vue';
+import Events from '../views/Events.vue';
+import Home from '../views/Home.vue';
+import Login from '../views/Login.vue';
+import MemberForm from '../views/MemberForm.vue';
 import Cookies from 'js-cookie';
 
 Vue.use(VueRouter);
@@ -28,6 +29,12 @@ const routes = [
     path: '/Login',
     name: 'Login',
     component: Login,
+  },
+  {
+    path: '/Member/:formType',
+    name: 'Member',
+    meta: { isLogin: true },
+    component: MemberForm,
   },
   {
     path: '/Events/:page',
