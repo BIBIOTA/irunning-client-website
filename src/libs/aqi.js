@@ -3,16 +3,11 @@ import { request } from './axios';
 export const aqi = {
   baseUrl: '/aqi',
 
-  fullUrl(url) {
-    return `${this.baseUrl}${url}`;
-  },
-
   /**
    * 取得空氣品質資料
    */
   getAqi(County) {
-    const url = '/getAqiList';
-    return request(this.fullUrl(url), { County })
+    return request(this.baseUrl, { County })
       .then((res) => {
         if (res.status) {
           return res.data;
