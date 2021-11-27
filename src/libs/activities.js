@@ -11,8 +11,7 @@ export const activities = {
    * 取得跑步紀錄
    */
   getActivities(data) {
-    const url = '/';
-    return request(this.fullUrl(url), data)
+    return request(this.baseUrl, data)
       .then((res) => {
         if (res.status) {
           return res.data;
