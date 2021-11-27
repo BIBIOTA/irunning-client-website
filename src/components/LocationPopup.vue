@@ -79,6 +79,7 @@
 <script>
 import Overlay from './Overlay.vue';
 import { cities } from '../libs/cities.js';
+import { districts } from '../libs/districts.js';
 import { aqi } from '../libs/aqi.js';
 import { weather } from '../libs/weather.js';
 import { member } from '../libs/member.js';
@@ -123,7 +124,7 @@ export default {
     },
     getDistrict(county, propsDistrict = null, point = []) {
       this.setOverlay(true);
-      cities.getDistricts(county).then((res) => {
+      districts.getDistricts(county).then((res) => {
         if (res.status) {
           this.districts = res.data;
           const district = res.data.filter((data) => data.AreaName === propsDistrict).length > 0 ? propsDistrict : this.districts[0].AreaName;

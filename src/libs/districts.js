@@ -1,13 +1,13 @@
 import { request } from './axios';
 
-export const cities = {
-  baseUrl: '/cities',
+export const districts = {
+  baseUrl: '/districts',
 
   /**
-   * 取得所有縣市資料
+   * 取得縣市下的鄉鎮區
    */
-  getCities() {
-    return request(this.baseUrl)
+   getDistricts(CityName) {
+    return request(this.baseUrl, { CityName })
       .then((res) => {
         if (res.status) {
           return res.data;
