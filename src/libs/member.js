@@ -11,7 +11,7 @@ export const member = {
    * 取得會員跑步資訊
    */
    index(id) {
-    const url = '/index';
+    const url = '/getIndexRunInfo';
     return request(this.fullUrl(url), { id })
       .then((res) => {
         if (res.status) {
