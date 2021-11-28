@@ -82,10 +82,8 @@ import { cities } from '../libs/cities.js';
 import { districts } from '../libs/districts.js';
 import { aqi } from '../libs/aqi.js';
 import { weather } from '../libs/weather.js';
-import { member } from '../libs/member.js';
 import { node } from '../libs/node.js';
 import { mapState, mapMutations } from 'vuex';
-import Cookies from 'js-cookie';
 import * as d3 from 'd3';
 
 export default {
@@ -186,17 +184,6 @@ export default {
       const data = { county, district ,siteName };
       this.setArea(data);
     },
-    updateMemberLocation(area) {
-      const data = { ...area, id: this.loginData.id };
-      member.updateMemberLocation(data).then((res) => {
-        if (res.status) {
-          const expires = this.moment(res.data.member_token.expires_at).toDate();
-          Cookies.set('member', JSON.stringify(res.data), { expires });
-        } else {
-          this.setError(res.message);
-        }
-      });
-    },
     getLocation() {
       const vm = this;
       if (navigator.geolocation) {
@@ -239,17 +226,6 @@ export default {
       'loginData',
       'login'
     ]),
-  },
-  watch: {
-    'area': {
-      deep: true,
-      immediate: true,
-      handler(data) {
-        if (this.login) {
-          this.updateMemberLocation(data);
-        }
-      },
-    },
   },
   mounted() {
     this.getLocation();

@@ -3,7 +3,7 @@
 </template>
 <script>
 import Overlay from '../components/Overlay.vue';
-import { mapActions, mapMutations } from 'vuex';
+import { mapState, mapActions, mapMutations } from 'vuex';
 import localStorage from 'local-storage';
 
 export default {
@@ -26,7 +26,11 @@ export default {
         this.getToken(query.code).then((res) => {
           if (res) {
             localStorage.set('intro', true);
-            this.$router.push({name: 'Home'});
+            if (this.loginData.is_register === 1) {
+              this.$router.push({name: 'Home'});
+            } else {
+              this.$router.push({name: 'MemberForm', params: { formType: 'register' } });
+            }
           } else {
             this.setOverlay(false);
             setTimeout(() => { this.$router.push({name: 'Home'}); }, 2000);
@@ -34,6 +38,11 @@ export default {
         });
       }
     },
+  },
+  computed: {
+    ...mapState([
+      'loginData',
+    ]),
   },
   mounted() {
     this.setOverlay(true);

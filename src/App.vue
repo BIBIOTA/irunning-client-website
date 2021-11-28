@@ -85,12 +85,17 @@
               </v-list-item>
             </router-link>
 
-            <!-- <v-list-item v-if="login">
-              <v-list-item-icon>
-                <v-icon color="green darken-2">mdi-account</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>會員中心</v-list-item-title>
-            </v-list-item> -->
+            <router-link :to="{ name: 'Member' }"  v-if="login">
+              <v-list-item>
+                <v-list-item-icon>
+                  <v-icon color="green darken-2">mdi-account</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>
+                    會員資料
+                </v-list-item-title>
+              </v-list-item>
+            </router-link>
+
           </v-list-item-group>
         </v-list>
       </v-navigation-drawer>

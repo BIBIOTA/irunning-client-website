@@ -5,6 +5,7 @@ import Activity from '../views/Activity.vue';
 import Events from '../views/Events.vue';
 import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
+import Member from '../views/Member.vue';
 import MemberForm from '../views/MemberForm.vue';
 import Cookies from 'js-cookie';
 
@@ -31,8 +32,14 @@ const routes = [
     component: Login,
   },
   {
-    path: '/Member/:formType',
+    path: '/Member',
     name: 'Member',
+    meta: { isLogin: true },
+    component: Member,
+  },
+  {
+    path: '/Member/:formType',
+    name: 'MemberForm',
     meta: { isLogin: true },
     component: MemberForm,
   },

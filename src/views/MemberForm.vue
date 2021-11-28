@@ -21,22 +21,28 @@
               <v-text-field
                 v-model="form.username"
                 :rules="[realChName]"
-                label="姓名"
+                label="姓名*"
+                required
+              ></v-text-field>
+
+              <v-text-field
+                v-model="form.nickname"
+                label="暱稱*"
                 required
               ></v-text-field>
 
               <v-text-field
                 v-model="form.email"
                 :rules="[checkEMail]"
-                label="Email"
+                label="Email*"
                 required
               ></v-text-field>
 
               <v-select
-                v-model="form.city"
+                v-model="form.county"
                 :items="cities"
                 :rules="[required]"
-                label="居住城市"
+                label="居住城市*"
                 item-text="CityName"
                 required
               ></v-select>
@@ -45,7 +51,7 @@
                 v-model="form.district"
                 :items="districts"
                 :rules="[required]"
-                label="居住鄉鎮區"
+                label="居住鄉鎮區*"
                 item-text="AreaName"
                 required
               ></v-select>
@@ -54,17 +60,31 @@
                 v-model="form.runnerType"
                 :items="runnerType"
                 :rules="[required]"
-                label="跑步經驗"
+                label="跑步經驗*"
                 item-text="text"
                 item-value="value"
                 required
               ></v-select>
 
+              <p>
+                * 初階跑者: 10公里路跑經驗。
+                <br />
+                * 中階跑者: 21公里半馬經驗。
+                <br />
+                * 進階跑者: 42公里全馬以上經驗。
+              </p>
+
               <v-checkbox
-                v-model="form.join_rank"
+                v-model="form.joinRank"
                 label="是否參加排行榜"
+                :false-value="0"
+                :true-value="1"
                 required
               ></v-checkbox>
+
+              <p>
+                * 如勾選參加排行榜，您的暱稱以及年度、每月、每週跑步紀錄會顯示於排行榜上。
+              </p>
 
             </v-form>
           </v-col>
@@ -90,8 +110,9 @@
 <script>
 import { cities } from '../libs/cities.js';
 import { districts } from '../libs/districts.js';
+import { member } from '../libs/member.js';
 import { required, realChName, checkEMail } from '../consts/validator.js';
-import { mapMutations } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 
 export default {
   name: 'MemberForm',
@@ -101,11 +122,12 @@ export default {
       valid: true,
       form: {
         username: '',
+        nickname: '',
         email: '',
-        city: null,
+        county: null,
         district: null,
         runnerType: 0,
-        join_rank: false,
+        joinRank: 0,
       },
       cities: [],
       districts: [],
@@ -139,27 +161,54 @@ export default {
       }
     },
     submit() {
-      console.log(this.form);
+      const { id } = this.loginData;
+      member.update(id, this.form).then((res) => {
+        if (res.status) {
+          if (this.$route.params.formType === 'register') {
+            this.$router.push({ name: 'Home' });
+          } else {
+            this.$router.push({ name: 'Member' });
+          }
+        } else {
+          this.setError(res.message);
+        }
+      });
+    },
+    getData() {
+      const { id } = this.loginData;
+      member.read(id).then((res) => {
+        if (res.status) {
+          Object.keys(res.data).forEach((key) => {
+            if (key in this.form) {
+              this.form[key] = res.data[key];
+            }
+          });
+        } else {
+          this.setError(res.message);
+        }
+      }).then(() => {
+        this.getCities();
+      });
     },
     getCities() {
       cities.getCities().then((res) => {
         if (res.status) {
           this.cities = res.data;
-          if (!this.form.city) {
-            this.form.city = this.cities[0]?.CityName;
+          if (!this.form.county) {
+            this.form.county = this.cities[0]?.CityName;
           }
         } else {
           this.cities = [],
           this.setError(res.message);
         }
       }).then(() => {
-        this.getDistrict(this.form.city);
+        this.getDistrict(this.form.county);
       });
     },
-    getDistrict(city) {
-      if (city) {
+    getDistrict(county) {
+      if (county) {
         this.form.district = '';
-        districts.getDistricts(city).then((res) => {
+        districts.getDistricts(county).then((res) => {
           if (res.status) {
             this.districts = res.data;
             this.form.district = this.districts[0]?.AreaName;
@@ -172,19 +221,26 @@ export default {
     },
   },
   watch: {
-    computedCity(city) {
-      if (city) {
-        this.getDistrict(city);
+    computedCounty(county) {
+      if (county) {
+        this.getDistrict(county);
       }
     }
   },
   computed: {
-    computedCity() {
-      return this.form.city;
+    ...mapState([
+      'loginData',
+    ]),
+    computedCounty() {
+      return this.form.county;
     },
   },
   mounted() {
-    this.getCities();
+    if (this.$route.params.formType === 'register') {
+      this.getCities();
+    } else {
+      this.getData();
+    }
   }
 }
 </script>
