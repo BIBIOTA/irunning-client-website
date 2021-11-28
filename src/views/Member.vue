@@ -70,10 +70,11 @@ export default {
           title: '跑步經驗',
           value: '初階跑者',
         },
-        joinRank: {
-          title: '排行榜',
-          value: '參加中',
-        },
+        // TODO 排行榜
+        // joinRank: {
+        //   title: '排行榜',
+        //   value: '參加中',
+        // },
       },
     }
   },

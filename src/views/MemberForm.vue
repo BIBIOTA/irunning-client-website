@@ -74,7 +74,8 @@
                 * 進階跑者: 42公里全馬以上經驗。
               </p>
 
-              <v-checkbox
+              <!-- TODO 排行榜 -->
+              <!-- <v-checkbox
                 v-model="form.joinRank"
                 label="是否參加排行榜"
                 :false-value="0"
@@ -84,7 +85,7 @@
 
               <p>
                 * 如勾選參加排行榜，您的暱稱以及年度、每月、每週跑步紀錄會顯示於排行榜上。
-              </p>
+              </p> -->
 
             </v-form>
           </v-col>
@@ -127,7 +128,7 @@ export default {
         county: null,
         district: null,
         runnerType: 0,
-        joinRank: 0,
+        // joinRank: 0,
       },
       cities: [],
       districts: [],
