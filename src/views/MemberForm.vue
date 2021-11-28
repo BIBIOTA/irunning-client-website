@@ -153,6 +153,7 @@ export default {
     checkEMail,
     ...mapMutations([
       'setError',
+      'setArea'
     ]),
     async validate () {
       const validateCheck = await this.$refs.form.validate();
@@ -169,6 +170,7 @@ export default {
           } else {
             this.$router.push({ name: 'Member' });
           }
+          this.setArea(this.form);
         } else {
           this.setError(res.message);
         }

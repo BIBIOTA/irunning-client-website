@@ -43,7 +43,7 @@
               :items="districts"
               label="請選擇鄉鎮區"
               item-text="AreaName"
-              @input="passVal($event.CityName, $event.AreaName, area.siteName);getWeather($event.CityName, $event.AreaName)"
+              @input="setAreaData($event.CityName, $event.AreaName, area.siteName);getWeather($event.CityName, $event.AreaName)"
               return-object
             ></v-select>
           </v-card-text>
@@ -106,7 +106,6 @@ export default {
       'setArea',
       'setWeather',
       'setError',
-      'setLoginData',
     ]),
     getCities(county = null, propsDistrict = null, point = []) {
       cities.getCities().then((res) => {
@@ -126,8 +125,7 @@ export default {
         if (res.status) {
           this.districts = res.data;
           const district = res.data.filter((data) => data.AreaName === propsDistrict).length > 0 ? propsDistrict : this.districts[0].AreaName;
-          const siteName = this.area.siteName ? this.area.siteName : null;
-          this.passVal(county, district, siteName);
+          this.setAreaData(county, district, this.area.siteName);
           this.getWeather(county, district);
           this.getAqi(point);
         } else {
@@ -136,6 +134,43 @@ export default {
           this.setError(res.message);
         }
       });
+    },
+    getAqi(point = []) {
+      aqi.getAqi(this.area.county).then((res) => {
+        if (res.status) {
+          this.site = res.data;
+          let aqiSite = this.hasAqiData(res) ?? res.data[0];
+          if (point.length > 0) {
+            let distance = null;
+            res.data.forEach((data) => {
+              const caculateDistance = d3.geoDistance(point, [data.Longitude, data.Latitude]);
+              if (!distance || distance > caculateDistance) {
+                distance = caculateDistance;
+                aqiSite = data;
+              }
+            });
+          }
+          this.setAqi(aqiSite);
+          this.setAreaData(this.area.county, this.area.district, aqiSite);
+          this.setOverlay(false);
+        } else {
+          this.setAqi({});
+          this.setError(res.message);
+        }
+      });
+    },
+    hasAqiData (res) {
+      if (res.data.filter((item) => item.SiteName === this.area.siteName).length === 1) {
+        return res.data.filter((item) => item.SiteName === this.area.siteName)[0];
+      }
+    },
+    getAqiData(county, district, siteName) {
+      this.site.forEach((data) => {
+        if (siteName === data.SiteName) {
+          this.setAqi(data);
+        }
+      });
+      this.setAreaData(county, district, siteName);
     },
     getWeather(county, district) {
       this.setWeather({});
@@ -148,82 +183,60 @@ export default {
         }
       });
     },
-    getAqi(point = []) {
-      aqi.getAqi(this.area.county).then((res) => {
-        if (res.status) {
-          this.site = res.data;
-          let aqiSite = res.data[0];
-          if (point.length > 0) {
-            let distance = null;
-            res.data.forEach((data) => {
-              const caculateDistance = d3.geoDistance(point, [data.Longitude, data.Latitude]);
-              if (!distance || distance > caculateDistance) {
-                distance = caculateDistance;
-                aqiSite = data;
-              }
-            });
-          }
-          this.passVal(this.area.county, this.area.district, aqiSite.SiteName);
-          this.setAqi(aqiSite);
-          this.setOverlay(false);
-        } else {
-          this.setAqi({});
-          this.setError(res.message);
-        }
-      });
-    },
-    getAqiData(county, district, siteName) {
-      this.site.forEach((data) => {
-        if (siteName === data.SiteName) {
-          this.setAqi(data);
-        }
-      });
-      this.passVal(county, district, siteName);
-    },
-    passVal(county, district, siteName) {
-      const data = { county, district ,siteName };
+    setAreaData(county, district, siteName = null) {
+      const data = { county, district, siteName };
       this.setArea(data);
     },
     getLocation() {
-      const vm = this;
+      this.getCities();
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-      } else if (this.login) {
-        const { county, district, siteName } = this.loginData;
-        if (county && district && siteName) {
-          this.passVal(county, district, siteName);
-        } else {
-          this.dialog = true;
-        }
+        this.getCurrentPosition();
       } else {
+        this.getMyLocation();
+      }
+    },
+    getCurrentPosition() {
+      let point = null;
+      navigator.geolocation.getCurrentPosition((position) => {
+        if (position?.coords?.longitude && position?.coords?.latitude) {
+          point = [position.coords.longitude, position.coords.latitude];
+          this.getGeoLocation(point);
+        }
+      });
+      if (point === null) {
+        this.getMyLocation();
+      }
+    },
+    getMyLocation() {
+      const { county, district, siteName } = this.area;
+      if (county && district && siteName) {
+        this.getAqiData(county, district, siteName);
+      } else if (county && district) {
+        this.setAreaData(county, district, siteName ?? null);
+      }
+    },
+    getGeoLocation (point) {
+      const [lng, lat] = point;
+      node.district({ lng, lat }).then((res) => {
+        console.log(res);
+        if (res.status) {
+          const { C_Name, T_Name } = res.data;
+          console.log(C_Name, T_Name);
+          this.getCities(C_Name, T_Name, point);
+        } else {
+          this.setError(res.message);
+          this.getCities();
+        }
+      }).catch((err) => {
+        console.log(err);
+        this.setError('發生例外錯誤: 無法取得所在行政區');
         this.getCities();
-      }
-
-      function showPosition(position) {
-        const point = [position.coords.longitude, position.coords.latitude];
-        node.district({ lng: position.coords.longitude, lat: position.coords.latitude }).then((res) => {
-          console.log(res);
-          if (res.status) {
-            const { C_Name, T_Name } = res.data;
-            console.log(C_Name, T_Name);
-            vm.getCities(C_Name, T_Name, point);
-          } else {
-            vm.setError(res.message);
-            vm.getCities();
-          }
-        }).catch((err) => {
-          console.log(err);
-          vm.setError('發生例外錯誤: 無法取得所在行政區');
-          vm.getCities();
-        });
-        console.log(point);
-      }
+      });
     },
   },
   computed: {
     ...mapState([
       'area',
-      'loginData',
       'login'
     ]),
   },

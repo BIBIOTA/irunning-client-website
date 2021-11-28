@@ -1,4 +1,5 @@
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
+import moment from 'moment';
 
 export const setOverlay = (state, data) => {
   state.overlay = data;
@@ -20,7 +21,10 @@ export const setAqi = (state, data) => {
 };
 
 export const setArea = (state, data) => {
-  state.area = data;
+  state.area.county = data.county;
+  state.area.district = data.district
+  state.area.siteName = data.siteName;
+  Cookies.set('area', JSON.stringify(state.area));
 };
 
 export const setWeather = (state, data) => {
@@ -38,9 +42,15 @@ export const setIsLogin = (state, status) => {
   state.login = status;
   if (!status) {
     Cookies.remove('member');
+    Cookies.remove('area');
   }
 };
 
 export const setLoginData = (state, data) => {
   state.loginData = data;
+}
+
+export const setCookies = (state, data) => {
+  const expires = moment(data.expires_at).toDate();
+  Cookies.set('member', JSON.stringify(data), { expires });
 }
