@@ -86,15 +86,6 @@ export default {
   components: {
   },
   methods: {
-    getIndex(name) {
-      let index;
-      this.lists.forEach((item, i) => {
-        if (item.name === name) {
-          index = i;
-        }
-      });
-      return index;
-    },
     putData(data) {
       this.lists.forEach((item) => {
           Object.keys(data).forEach((key) =>  {
@@ -130,9 +121,17 @@ export default {
     ...mapState([
       'aqi',
     ]),
+    computedAqi() {
+      return this.aqi.AQI;
+    },
+    computedPM25() {
+      return this.aqi['PM2-5'];
+    },
+    computedPM10() {
+      return this.aqi.PM10;
+    },
     getAqiStyle() {
-      const index = this.getIndex('AQI');
-      const value = this.lists[index].value;
+      const value = this.computedAqi;
       if (value <= 50) {
         return this.style.good;
       } else if (value >= 51 && value <= 100) {
@@ -150,8 +149,7 @@ export default {
       }
     },
     getPM25Style() {
-    const index = this.getIndex('PM2.5');
-      const value = this.lists[index].value;
+      const value = this.computedPM25;
       if (value <= 15.4) {
         return this.style.good;
       } else if (value >= 15.5 && value <= 35.4) {
@@ -169,8 +167,7 @@ export default {
       }
     },
     getPM10Style() {
-    const index = this.getIndex('PM10');
-      const value = this.lists[index].value;
+      const value = this.computedPM10;
       if (value <= 50) {
         return this.style.good;
       } else if (value >= 51 && value <= 100) {
