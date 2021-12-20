@@ -48,27 +48,27 @@ export default {
       data: {
         username: {
           title: '姓名',
-          value: '太田裕揮'
+          value: ''
         },
         nickname: {
           title: '暱稱',
-          value: '測試人',
+          value: '',
         },
         email: {
           title: 'email',
-          value: 'test@test.com',
+          value: '',
         },
         county: {
           title: '居住城市',
-          value: '臺北市',
+          value: '',
         },
         district: {
           title: '居住鄉鎮區',
-          value: '信義區',
+          value: '',
         },
         runnerType: {
           title: '跑步經驗',
-          value: '初階跑者',
+          value: '',
         },
         // TODO 排行榜
         // joinRank: {

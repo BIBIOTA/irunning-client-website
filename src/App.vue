@@ -12,6 +12,7 @@
       >
         <router-link to="/" style="color: white!important">
           <v-toolbar-title
+            @click="group = 0"
             style="font-family: 'Pacifico', cursive !important;">
             I Running
           </v-toolbar-title>
@@ -52,15 +53,28 @@
             v-model="group"
             active-class="deep-purple--text text--accent-4"
           >
-            <router-link to="/" >
-            <v-list-item>
-                <v-list-item-icon>
-                  <v-icon color="green darken-2">mdi-home</v-icon>
-                </v-list-item-icon>
-                <v-list-item-title>
-                  首頁
-                </v-list-item-title>
-            </v-list-item>
+            <template v-for="(data, i) in list">
+              <router-link
+                :to="data.to" :key="`list_${i}`" v-if="!data.isLogin || login">
+                <v-list-item>
+                    <v-list-item-icon>
+                      <v-icon :color="data.icon.color" :class="data.icon.class">{{data.icon.value}}</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                      {{data.name}}
+                    </v-list-item-title>
+                </v-list-item>
+              </router-link>
+            </template>
+            <!-- <router-link to="/">
+              <v-list-item>
+                  <v-list-item-icon>
+                    <v-icon color="green darken-2">mdi-home</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-title>
+                    首頁
+                  </v-list-item-title>
+              </v-list-item>
             </router-link>
 
             <router-link :to="{ name: 'Activities', params: { page: 1 } }"  v-if="login">
@@ -94,7 +108,7 @@
                     會員資料
                 </v-list-item-title>
               </v-list-item>
-            </router-link>
+            </router-link> -->
 
           </v-list-item-group>
         </v-list>
@@ -152,11 +166,54 @@ import bg1 from './assets/index/runner_mb.webp';
 import bg2 from './assets/index/run_weather_mb.webp';
 import bg3 from './assets/index/taipei_marathon_mb.webp';
 
+const iconColor = 'green darken-2';
+
 export default {
   data() {
     return {
       drawer: false,
       group: null,
+      list: [
+        {
+          name: '首頁',
+          isLogin: false,
+          to: '/',
+          icon: {
+            color: iconColor,
+            value: 'mdi-home',
+          }
+        },
+        {
+          name: '我的跑步紀錄',
+          isLogin: true,
+          to: {
+            name: 'Activities',
+            params: { page: 1 },
+          },
+          icon: {
+            color: iconColor,
+            value: 'mdi-run',
+          }
+        },
+        {
+          name: '全國賽會',
+          isLogin: false,
+          to: { name: 'Events', params: { page: 1 } },
+          icon: {
+            color: iconColor,
+            class: 'twicon-main-island',
+          }
+        },
+        {
+          name: '會員資料',
+          isLogin: true,
+          to: { name: 'Member' },
+          icon: {
+            color: iconColor,
+            value: 'mdi-account',
+          }
+        },
+      ],
       dialog: true,
       transblack: 'rgba(0, 0, 0, 0.3)',
       imgIndex: 0,
