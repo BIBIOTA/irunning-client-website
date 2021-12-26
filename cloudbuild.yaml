@@ -33,7 +33,8 @@ steps:
     args:
     - 'set'
     - 'image'
-    - 'deployment/${_DEPLOYMENT}'
+    - 'deployment'
+    - '${_DEPLOYMENT}'
     - '${_CONTAINER}=gcr.io/$_GCP_PROJECT_ID/${_IMAGE}:$BUILD_ID'
     env:
     - 'CLOUDSDK_COMPUTE_ZONE=${_ZONE}'
