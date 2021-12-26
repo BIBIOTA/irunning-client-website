@@ -22,7 +22,7 @@ steps:
       '--build-arg',
       'VUE_APP_GAPI=$_VUE_APP_GAPI',
       '-t',
-      'gcr.io/$_GCP_PROJECT_ID/irunning',
+      'gcr.io/$_GCP_PROJECT_ID/${_IMAGE}:$BUILD_ID',
       '.',
     ]
     # push the container image
@@ -33,7 +33,8 @@ steps:
     args:
     - 'set'
     - 'image'
-    - 'deployment/${_DEPLOYMENT}'
+    - 'deployment'
+    - '${_DEPLOYMENT}'
     - '${_CONTAINER}=gcr.io/$_GCP_PROJECT_ID/${_IMAGE}:$BUILD_ID'
     env:
     - 'CLOUDSDK_COMPUTE_ZONE=${_ZONE}'
