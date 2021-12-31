@@ -6,8 +6,8 @@ export const aqi = {
   /**
    * 取得空氣品質資料
    */
-  getAqi(County) {
-    return request(this.baseUrl, { County })
+  getAqis(city_id) {
+    return request(this.baseUrl, { city_id })
       .then((res) => {
         if (res.status) {
           return res.data;

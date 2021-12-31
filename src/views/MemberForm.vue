@@ -43,7 +43,7 @@
                 :items="cities"
                 :rules="[required]"
                 label="居住城市*"
-                item-text="CityName"
+                item-text="city_name"
                 required
               ></v-select>
 
@@ -52,7 +52,7 @@
                 :items="districts"
                 :rules="[required]"
                 label="居住鄉鎮區*"
-                item-text="AreaName"
+                item-text="district_name"
                 required
               ></v-select>
 
@@ -205,16 +205,16 @@ export default {
           this.setError(res.message);
         }
       }).then(() => {
-        this.getDistrict(this.form.county);
+        this.getDistrict(this.computedCityId);
       });
     },
-    getDistrict(county) {
-      if (county) {
+    getDistrict(city_id) {
+      if (city_id) {
         this.form.district = '';
-        districts.getDistricts(county).then((res) => {
+        districts.getDistricts(city_id).then((res) => {
           if (res.status) {
             this.districts = res.data;
-            this.form.district = this.districts[0]?.AreaName;
+            this.form.district = this.districts[0]?.district_name;
           } else {
             this.districts = [],
             this.setError(res.message);
@@ -226,7 +226,7 @@ export default {
   watch: {
     computedCounty(county) {
       if (county) {
-        this.getDistrict(county);
+        this.getDistrict(this.computedCityId);
       }
     }
   },
@@ -234,6 +234,17 @@ export default {
     ...mapState([
       'loginData',
     ]),
+    computedCityId() {
+      let city_id = null;
+      if (this.form.county && this.cities.length > 0) {
+        this.cities.forEach((item) => {
+          if (item.city_name === this.form.county) {
+            city_id = item.id;
+          }
+        });
+      }
+      return city_id;
+    },
     computedCounty() {
       return this.form.county;
     },

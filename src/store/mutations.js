@@ -21,10 +21,16 @@ export const setAqi = (state, data) => {
 };
 
 export const setArea = (state, data) => {
-  state.area.county = data.county;
-  state.area.district = data.district
-  state.area.siteName = data.siteName;
-  Cookies.set('area', JSON.stringify(state.area));
+  const { city_name = null, district_name = null, aqi_name = null } = data;
+  if (city_name) {
+    state.area.city_name = data.city_name
+  }
+  if (district_name) {
+    state.area.district_name = data.district_name
+  }
+  if (aqi_name) {
+    state.area.aqi_name = data.aqi_name
+  }
 };
 
 export const setWeather = (state, data) => {

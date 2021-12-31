@@ -6,8 +6,8 @@ export const weather = {
   /**
    * 取得所有天氣資料
    */
-  getWeather(CityName, AreaName) {
-    return request(this.baseUrl, { CityName, AreaName })
+  getWeather(district_id) {
+    return request(this.baseUrl, { district_id })
       .then((res) => {
         if (res.status) {
           return res.data;

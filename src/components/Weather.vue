@@ -10,7 +10,7 @@
           天氣
         </div>
         <div class="text-h7 text-center">
-          {{area.county}} {{area.district}}
+          {{area.city_name}} {{area.district_name}}
         </div>
       </v-col>
       <LocationPopup />
@@ -26,16 +26,24 @@
     <template v-else>
       <ul class="dataList pl-0">
         <li>
-          <figure v-if="weather.WxValue">
-            <img :src="getWeatherImg(weather.WxValue)" alt="">
+          <figure v-if="weather.Wx">
+            <img :src="getWeatherImg(weather.Wx)" alt="">
           </figure>
         </li>
-        <li class="justify-center">
-          <h1 class="green--text text--darken-2 text-h3 font-weight-bold">{{weather.temperature}}</h1>
+        <li class="justify-center" v-if="weather.T">
+          <h1 class="green--text text--darken-2 text-h3 font-weight-bold">{{weather.T}} °C</h1>
         </li>
       </ul>
-      <div class="pa-5 text-center" v-if="weather.Wx && weather.CI && weather.PoP6h">
-        {{weather.Wx}} {{weather.CI}} 降雨機率: {{weather.PoP6h}}
+      <div class="pa-5 text-center">
+        <template v-if="weather.WxValue">
+          {{weather.WxValue}} 
+        </template>
+        <template v-if="weather.CI">
+          {{weather.CI}} 
+        </template>
+        <template v-if="weather.PoP6h">
+          降雨機率: {{weather.PoP6h}}%
+        </template>
       </div>
       <v-card-text class="text-right"  v-if="weather.updated_at">
           資料更新時間: {{new Date(weather.updated_at).toLocaleString()}}

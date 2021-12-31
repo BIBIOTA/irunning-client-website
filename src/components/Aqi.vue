@@ -91,7 +91,7 @@ export default {
           Object.keys(data).forEach((key) =>  {
             if (key === item.name) {
               item.value = data[key];
-            } else if (item.name === 'PM2.5' && key === 'PM2-5') {
+            } else if (item.name === 'PM2.5' && key === 'PM2_5') {
               item.value = data[key];
             }
           }
@@ -125,7 +125,7 @@ export default {
       return this.aqi.AQI;
     },
     computedPM25() {
-      return this.aqi['PM2-5'];
+      return this.aqi['PM2_5'];
     },
     computedPM10() {
       return this.aqi.PM10;
