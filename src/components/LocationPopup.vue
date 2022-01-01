@@ -31,7 +31,7 @@
               :items="cities"
               label="請選擇縣市"
               item-text="city_name"
-              @input="getDistrict(computedCityId);getAqis(computedCityId)"
+              @input="getDistricts(computedCityId);getAqis(computedCityId)"
             ></v-select>
           </v-card-text>
           <v-card-title>
@@ -121,11 +121,13 @@ export default {
       });
     },
     /* ===== 取得鄉鎮區資料 ======= */
-    getDistrict(city_id) {
+    getDistricts(city_id, defaultlocation = null) {
       return districts.getDistricts(city_id).then((res) => {
         if (res.status) {
           this.districts = res.data;
-          this.area.district_name = res.data[0].district_name;
+          if (!defaultlocation) {
+            this.area.district_name = res.data[0].district_name;
+          }
           return this.districts;
         } else {
           this.districts = [];
@@ -150,9 +152,11 @@ export default {
           this.setAqi(aqi);
           this.setArea({ aqi_name: aqi.SiteName });
           this.setOverlay(false);
+          return res.data;
         } else {
           this.setAqi({});
           this.setError(res.message);
+          return false;
         }
       });
     },
@@ -169,21 +173,30 @@ export default {
       return aqi;
     },
     getAqi(Sitename) {
-      const data = this.aqis.find((item) => item.SiteName === Sitename);
-      this.setAqi(data);
-      this.setArea({ aqi_name: Sitename });
+      if (Sitename) {
+        const data = this.aqis.find((item) => item.SiteName === Sitename);
+        if (data) {
+          this.setAqi(data);
+          this.setArea({ aqi_name: Sitename });
+          return data;
+        }
+        return false;
+      }
+      return false;
     },
     /* ===== 取得空氣品質資料 end ======= */
 
     /* ===== 取得天氣資料 ======= */
     getWeather(district_id) {
       this.setWeather({});
-      weather.getWeather(district_id).then((res) => {
+      return weather.getWeather(district_id).then((res) => {
         if (res.status) {
           this.setWeather(res.data);
+          return res.data;
         } else {
           this.setWeather({});
           this.setError(res.message);
+          return false;
         }
       });
     },
@@ -191,41 +204,53 @@ export default {
 
     /* ===== GPS function ====== */
     getCurrentPosition() {
-      return new Promise((resolve, reject) =>
-        navigator.permissions ?
-
-          // Permission API is implemented
-          navigator.permissions.query({
-            name: 'geolocation'
-          }).then(permission =>
-            // is geolocation granted?
-            permission.state === "granted"
-              ? navigator.geolocation.getCurrentPosition(pos => resolve([pos.coords.longitude, pos.coords.latitude])) 
-              : resolve(null)
-          ) :
-
-        // Permission API was not implemented
-        reject(new Error("Permission API is not supported"))
-      )
+      if (navigator.geolocation) {
+        const point = new Promise((resolve, reject) =>
+          navigator.permissions ?
+  
+            // Permission API is implemented
+            navigator.permissions.query({
+              name: 'geolocation'
+            }).then(permission =>
+              // is geolocation granted?
+              permission.state === "granted"
+                ? navigator.geolocation.getCurrentPosition(pos => resolve([pos.coords.longitude, pos.coords.latitude])) 
+                : resolve(null)
+            ) :
+  
+          // Permission API was not implemented
+          reject(new Error("Permission API is not supported"))
+        )
+        if (point) {
+          this.point = point;
+          return point;
+        }
+      }
+      return false;
     },
     getGeoLocationCityAndDistrict (point) {
-      const [lng, lat] = point;
-      return node.district({ lng, lat }).then((res) => {
-        if (res.status) {
-          const { C_Name, T_Name } = res.data;
-          return {
-            city_name: C_Name,
-            district_name: T_Name,
-          };
-        } else {
-          this.setError(res.message);
+      if (point) {
+        const [lng, lat] = point;
+        return node.district({ lng, lat }).then((res) => {
+          if (res.status) {
+            const { C_Name, T_Name } = res.data;
+            return {
+              city_name: C_Name,
+              district_name: T_Name,
+            };
+          } else {
+            this.setError(res.message);
+            return false;
+          }
+        }).catch((err) => {
+          console.log(err);
+          this.setError('發生例外錯誤: 無法取得所在行政區');
           return false;
-        }
-      }).catch((err) => {
-        console.log(err);
-        this.setError('發生例外錯誤: 無法取得所在行政區');
+        });
+      } else {
+        this.setError('發生例外錯誤: 沒有GPS資料');
         return false;
-      });
+      }
     },
     /* ===== GPS function end ====== */
   },
@@ -274,21 +299,19 @@ export default {
       district_name: '北投區',
       aqi_name: '士林',
     };
-    await this.getCities();
     /* 如果確認有開啟定位，取得GPS位置，呼叫api取得目前所在的縣市及鄉鎮區 */
-    if (navigator.geolocation) {
-      const point = await this.getCurrentPosition();
-      if (point) {
-        const geoLocationCityAndDistrict = await this.getGeoLocationCityAndDistrict(point);
-        if (geoLocationCityAndDistrict) {
-          defautLocation.city_name = geoLocationCityAndDistrict.city_name;
-          defautLocation.district_name = geoLocationCityAndDistrict.district_name;
-        }
-        this.point = point;
+    const point = await this.getCurrentPosition();
+    if (point) {
+      const geoLocationCityAndDistrict = await this.getGeoLocationCityAndDistrict(point);
+      if (geoLocationCityAndDistrict) {
+        defautLocation.city_name = geoLocationCityAndDistrict.city_name;
+        defautLocation.district_name = geoLocationCityAndDistrict.district_name;
+        defautLocation.aqi_name = null;
       }
     }
-    await this.getDistrict(this.computedCityId);
     await this.setArea(defautLocation);
+    await this.getCities();
+    await this.getDistricts(this.computedCityId, defautLocation.district_name);
     await this.getWeather(this.computedDistrictId);
     await this.getAqis(this.computedCityId);
   },
