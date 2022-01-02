@@ -17,10 +17,10 @@ export default function () {
     // 會員登入資訊
 
     // 資料
-    area: Cookies.get('area')?JSON.parse(Cookies.get('area')):{
-      county: '臺北市',
-      district: '北投區',
-      siteName: '士林',
+    area: {
+      city_name: '臺北市',
+      district_name: '北投區',
+      aqi_name: '士林',
     },
     aqi: {},
     weather: {},

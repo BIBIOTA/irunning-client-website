@@ -6,8 +6,8 @@ export const districts = {
   /**
    * 取得縣市下的鄉鎮區
    */
-   getDistricts(CityName) {
-    return request(this.baseUrl, { CityName })
+   getDistricts(city_id) {
+    return request(this.baseUrl, { city_id })
       .then((res) => {
         if (res.status) {
           return res.data;
