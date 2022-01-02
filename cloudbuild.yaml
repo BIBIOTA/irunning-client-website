@@ -1,27 +1,27 @@
 steps:
   # build node
-  - name: node
-    entrypoint: npm
-    args: ['install']
-  # create env and npm test
-  - name: node
-    entrypoint: yarn
+  - name: 'node'
+    entrypoint: 'npm'
     args: [
-      'run',
-      'create-env',
-      'test:unit'
+      'install'
+    ]
+  # create env and npm test
+  - name: 'node'
+    entrypoint: 'npm'
+    args: [
+      'run', 'test:unit'
     ]
     env:
-      - 'VUE_APP_API_KEY=$_VUE_APP_API_KEY',
-      - 'VUE_APP_NODE_API_KEY=$_VUE_APP_NODE_API_KEY',
-      - 'VUE_APP_API_KEY=$_VUE_APP_API_KEY',
-      - 'VUE_APP_API_STORAGE=$_VUE_APP_API_STORAGE',
-      - 'VUE_APP_STRAVA_CLIENT_ID=$_VUE_APP_STRAVA_CLIENT_ID',
-      - 'VUE_APP_STRAVA_CLIENT_SECRET=$_VUE_APP_STRAVA_CLIENT_SECRET',
-      - 'VUE_APP_REDIRECT_URI=$_VUE_APP_REDIRECT_URI',
-      - 'BASE_URL=$_BASE_URL',
-      - 'VUE_APP_ENV=$_VUE_APP_ENV',
-      - 'VUE_APP_GAPI=$_VUE_APP_GAPI'
+    - 'VUE_APP_API_KEY=$_VUE_APP_API_KEY'
+    - 'VUE_APP_NODE_API_KEY=$_VUE_APP_NODE_API_KEY'
+    - 'VUE_APP_API_KEY=$_VUE_APP_API_KEY'
+    - 'VUE_APP_API_STORAGE=$_VUE_APP_API_STORAGE'
+    - 'VUE_APP_STRAVA_CLIENT_ID=$_VUE_APP_STRAVA_CLIENT_ID'
+    - 'VUE_APP_STRAVA_CLIENT_SECRET=$_VUE_APP_STRAVA_CLIENT_SECRET'
+    - 'VUE_APP_REDIRECT_URI=$_VUE_APP_REDIRECT_URI'
+    - 'BASE_URL=$_BASE_URL'
+    - 'VUE_APP_ENV=$_VUE_APP_ENV'
+    - 'VUE_APP_GAPI=$_VUE_APP_GAPI'
     # build the container image
   - name: 'gcr.io/cloud-builders/docker'
     args: [
