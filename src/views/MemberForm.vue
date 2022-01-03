@@ -210,11 +210,12 @@ export default {
     },
     getDistrict(city_id) {
       if (city_id) {
-        this.form.district = '';
         districts.getDistricts(city_id).then((res) => {
           if (res.status) {
             this.districts = res.data;
-            this.form.district = this.districts[0]?.district_name;
+            if (!(this.districts.find((item) => item.district_name === this.form.district))) {
+              this.form.district = this.districts[0]?.district_name;
+            }
           } else {
             this.districts = [],
             this.setError(res.message);
