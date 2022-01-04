@@ -243,8 +243,6 @@ describe('LocationPopup.vue', () => {
       WxValue: expect.any(String),
       city: expect.any(String),
       district: expect.any(String),
-      end_time: expect.any(String),
-      start_time: expect.any(String),
       updated_at: expect.any(String),
     });
 
