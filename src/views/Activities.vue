@@ -111,10 +111,10 @@ export default {
         params: {id},
       });
     },
-    getData(id, page) {
+    getData(page) {
       this.setLoading(true);
       this.activities = [];
-      activities.getActivities({id, page, ...this.searchData}).then((res) => {
+      activities.getActivities({page, ...this.searchData}).then((res) => {
         this.setLoading(false);
         if (res.status) {
           this.setNoData(false);
@@ -171,7 +171,7 @@ export default {
       this.page = 1;
       const query = this.searchData;
       this.routerSet(this.page, query)
-      this.getData(this.loginData.id, 1);
+      this.getData(1);
     },
     routerSet(page, query) {
       this.$router.push({
@@ -183,13 +183,12 @@ export default {
       this.page = newPage;
       await this.routerSet(this.page, this.$route.query);
       this.activities = null;
-      await this.getData(this.loginData.id, newPage);
+      await this.getData(newPage);
     },
   },
   computed: {
     ...mapState([
       'login',
-      'loginData',
     ]),
     searchData() {
       const formData = {};
@@ -210,7 +209,7 @@ export default {
     if (this.login) {
       this.page = await parseInt(this.$route.params.page);
       await this.getQuery();
-      this.getData(this.loginData.id, this.$route.params?.page ?? 1);
+      this.getData(this.$route.params?.page ?? 1);
     }
   },
 }

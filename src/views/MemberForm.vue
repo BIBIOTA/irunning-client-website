@@ -113,7 +113,7 @@ import { cities } from '../libs/cities.js';
 import { districts } from '../libs/districts.js';
 import { member } from '../libs/member.js';
 import { required, realChName, checkEMail } from '../consts/validator.js';
-import { mapState, mapMutations } from 'vuex';
+import { mapMutations } from 'vuex';
 
 export default {
   name: 'MemberForm',
@@ -163,8 +163,7 @@ export default {
       }
     },
     submit() {
-      const { id } = this.loginData;
-      member.update(id, this.form).then((res) => {
+      member.update(this.form).then((res) => {
         if (res.status) {
           if (this.$route.params.formType === 'register') {
             this.$router.push({ name: 'Home' });
@@ -178,8 +177,7 @@ export default {
       });
     },
     getData() {
-      const { id } = this.loginData;
-      member.read(id).then((res) => {
+      member.read().then((res) => {
         if (res.status) {
           Object.keys(res.data).forEach((key) => {
             if (key in this.form) {
@@ -232,9 +230,6 @@ export default {
     }
   },
   computed: {
-    ...mapState([
-      'loginData',
-    ]),
     computedCityId() {
       let city_id = null;
       if (this.form.county && this.cities.length > 0) {

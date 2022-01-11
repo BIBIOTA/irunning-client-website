@@ -28,8 +28,8 @@ export const activities = {
   /**
    * 取得單一跑步紀錄
    */
-  getActivity(memberUuid, runningUuid) {
-    const url = `/${memberUuid}/${runningUuid}`;
+  getActivity(runningUuid) {
+    const url = `/${runningUuid}`;
     return request(this.fullUrl(url))
       .then((res) => {
         if (res.status) {

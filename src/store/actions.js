@@ -1,6 +1,5 @@
 import strava from 'strava-v3';
 import { loginApi } from '../libs/login.js';
-
 const errors = require('request-promise/errors')
 
 strava.config({
@@ -18,25 +17,34 @@ export const getRequestAccessURL = async () => {
   window.location.href = stravaUrl;
 };
 
-export const getToken = async ({ dispatch, commit}, code) => {
-  const payload = await strava.oauth.getToken(code)
+export const getToken = ({ commit }, code) => {
+  return strava.oauth.getToken(code)
+    .then((payload) => {
+      return payload;
+    })
     .catch(errors.StatusCodeError, function (e) {
     commit('setError', e);
+    return false;
   })
-  const res = await dispatch('login', payload);
-  if (res) {
-    return true
-  }
-  return false;
 };
 
-export const login = async ({ commit }, payload) => {
-  return await loginApi.login(payload).then((res) => {
+export const login = ({ commit }, payload) => {
+  return loginApi.login(payload).then(async(res) => {
     if (res.status) {
-      commit('setCookies', res.data);
-      commit('setArea', res.data);
-      commit('setLoginData', res.data);
-      commit('setIsLogin', true);
+      await commit('setCookies', res.data);
+      await commit('setIsLogin', true);
+      return true;
+    } else {
+      commit('setError', res.message);
+      return false;
+    }
+  });
+};
+
+export const actionLogout = async ({ commit }) => {
+  return await loginApi.logout().then((res) => {
+    if (res.status) {
+      commit('setIsLogin', false);
       return true;
     } else {
       commit('setError', res.message);

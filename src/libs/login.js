@@ -7,12 +7,25 @@ export const loginApi = {
     return `${this.baseUrl}${url}`;
   },
 
-  /**
-   * 取得空氣品質資料
-   */
-   login(data) {
+  login(data) {
     const url = '/login';
     return request(this.fullUrl(url), data, 'post')
+      .then((res) => {
+        if (res.status) {
+          return res.data;
+        }
+        return res.data;
+      }).catch((err) => {
+        return {
+          message: err,
+          status: false,
+        };
+      });
+  },
+
+  logout() {
+    const url = '/logout';
+    return request(this.fullUrl(url), null, 'post')
       .then((res) => {
         if (res.status) {
           return res.data;
