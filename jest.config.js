@@ -14,6 +14,7 @@ module.exports = {
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
     "^vuetify/lib$": "vuetify",
+    ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2|gif)$": "jest-transform-stub",
   },
   modulePaths: [
     "<rootDir>/src",

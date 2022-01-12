@@ -402,7 +402,7 @@ export default {
       }
       this.setLoading(true);
       this.events = [];
-      events.getEvents(formData).then((res) => {
+      return events.getEvents(formData).then((res) => {
         this.setLoading(false);
         if (res.status) {
           this.setNoData(false);
@@ -417,6 +417,7 @@ export default {
           this.total = 1;
           this.events = [];
         }
+        return res;
       });
     },
     async processEventData(data) {
