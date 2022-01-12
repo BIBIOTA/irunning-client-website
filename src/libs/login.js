@@ -1,7 +1,7 @@
 import { request } from './axios';
 
 export const loginApi = {
-  baseUrl: '/login',
+  baseUrl: '',
 
   fullUrl(url) {
     return `${this.baseUrl}${url}`;
