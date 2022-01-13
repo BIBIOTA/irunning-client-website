@@ -1,9 +1,10 @@
 import axios from 'axios';
 import qs from 'qs';
+import Cookies from 'js-cookie';
 
 const API_URL = process.env.VUE_APP_API_KEY;
 const NODE_API_URL = process.env.VUE_APP_NODE_API_KEY;
-let AUTH_TOKEN = null;
+let AUTH_TOKEN = Cookies.get('member') ?? null;
 
 // Api封裝
 export function request(url, data = false, method = 'get', token = AUTH_TOKEN, headers = {}) {

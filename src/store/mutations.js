@@ -48,15 +48,11 @@ export const setIsLogin = (state, status) => {
   state.login = status;
   if (!status) {
     Cookies.remove('member');
-    Cookies.remove('area');
   }
 };
 
-export const setLoginData = (state, data) => {
-  state.loginData = data;
-}
-
 export const setCookies = (state, data) => {
-  const expires = moment(data.expires_at).toDate();
-  Cookies.set('member', JSON.stringify(data), { expires });
+  const addExpired = Date.now() + (+data.expires_in * 1000);
+  const expires = moment(addExpired).toDate();
+  Cookies.set('member', data.access_token, { expires });
 }

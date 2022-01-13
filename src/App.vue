@@ -158,7 +158,7 @@ import IntroSectionTwo from './components/IntroSectionTwo.vue';
 import IntroSectionThree from './components/IntroSectionThree.vue';
 import Alert from './components/Alert.vue';
 import { index } from './libs/index.js';
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
 import Cookies from 'js-cookie';
 import localStorage from 'local-storage';
 
@@ -245,13 +245,26 @@ export default {
     ...mapMutations([
       'setIsLogin',
     ]),
+    ...mapActions([
+      'actionLogout',
+    ]),
     logout() {
-      this.setIsLogin(false);
-      if (this.$route.meta?.isLogin) {
-        this.$router.push({
-          name: 'Home',
-        });
-      }
+      this.actionLogout().then((result) => {
+        if (result) {
+          if (this.$route.meta?.isLogin) {
+            this.$router.push({
+              name: 'Home',
+            });
+          }
+        } else {
+          this.setIsLogin(false);
+          if (this.$route.meta?.isLogin) {
+            this.$router.push({
+              name: 'Home',
+            });
+          }
+        }
+      });
     },
     closeIntro() {
       this.dialog = false;
@@ -264,7 +277,7 @@ export default {
     ]),
   },
   created() {
-    const member = Cookies.get('member')?JSON.parse(Cookies.get('member')):false;
+    const member = Cookies.get('member') ?? false;
     if (member) {
       this.setIsLogin(true);
     }

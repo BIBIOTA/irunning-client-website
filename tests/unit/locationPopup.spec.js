@@ -12,12 +12,6 @@ describe('LocationPopup.vue', () => {
     vuetify = new Vuetify()
   })
 
-  const failStructrue = expect.objectContaining({
-    status: expect.any(false),
-    message: expect.any(String),
-    data: expect.any(null),
-  })
-
   it('getCities', async () => {
     const wrapper = mount(LocationPopup, {
       localVue,

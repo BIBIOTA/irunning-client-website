@@ -81,8 +81,8 @@ export default {
     ...mapMutations([
       'setError',
     ]),
-    getData(id) {
-      member.index(id).then((res) => {
+    getData() {
+      member.index().then((res) => {
         if (res.status) {
           this.memberIndex = res.data;
         }
@@ -92,14 +92,13 @@ export default {
   computed: {
     ...mapState([
       'login',
-      'loginData',
     ]),
   },
   mounted() {
     if (this.login) {
-      const member = Cookies.get('member')?JSON.parse(Cookies.get('member')):false;
+      const member = Cookies.get('member') ?? false;
       if (member) {
-        this.getData(member.id);
+        this.getData();
       }
     }
   },

@@ -38,7 +38,7 @@
 </template>
 <script>
 import { member } from '../libs/member.js';
-import { mapState, mapMutations } from 'vuex';
+import { mapMutations } from 'vuex';
 
 export default {
   name: 'Member',
@@ -83,8 +83,7 @@ export default {
       'setError',
     ]),
     getData() {
-      const { id } = this.loginData;
-      member.read(id).then((res) => {
+      member.read().then((res) => {
         if (res.status) {
           console.log(res);
           Object.keys(res.data).forEach((key) => {
@@ -125,12 +124,6 @@ export default {
           return '';
       }
     },
-  },
-  watch: {},
-  computed: {
-    ...mapState([
-      'loginData',
-    ]),
   },
   mounted() {
     this.getData();

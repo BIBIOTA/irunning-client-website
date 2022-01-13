@@ -35,9 +35,9 @@ export default {
       'setLoading',
       'setNoData',
     ]),
-    getData(memberUuid, runningUuid) {
+    getData(runningUuid) {
       this.setLoading(true);
-      activities.getActivity(memberUuid, runningUuid).then((res) => {
+      activities.getActivity(runningUuid).then((res) => {
         this.setLoading(false);
         if (res.status) {
           this.setNoData(false);
@@ -52,12 +52,11 @@ export default {
   computed: {
     ...mapState([
       'login',
-      'loginData',
     ]),
   },
   mounted() {
     if (this.login) {
-      this.getData(this.loginData.id, this.$route.params.id);
+      this.getData(this.$route.params.id);
     }
   },
 }

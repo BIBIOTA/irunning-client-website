@@ -402,7 +402,7 @@ export default {
       }
       this.setLoading(true);
       this.events = [];
-      events.getEvents(formData).then((res) => {
+      return events.getEvents(formData).then((res) => {
         this.setLoading(false);
         if (res.status) {
           this.setNoData(false);
@@ -417,6 +417,7 @@ export default {
           this.total = 1;
           this.events = [];
         }
+        return res;
       });
     },
     async processEventData(data) {
@@ -468,16 +469,18 @@ export default {
     },
     getQuery() {
       const { startDay, endDay, distances, keywords } = this.$route.query;
+
       if (startDay && endDay) {
         this.search.date = [startDay, endDay];
         this.getDateRangeText();
       }
       if (distances) {
-        this.search.distances = distances;
+        this.search.distances = distances.map((value) => +value);
       }
       if (keywords) {
         this.search.keywords = keywords;
       }
+      return this.search;
     },
     setSearchDataAndResetPage() {
       this.page = 1;

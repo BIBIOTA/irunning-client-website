@@ -3,7 +3,7 @@
 </template>
 <script>
 import Overlay from '../components/Overlay.vue';
-import { mapState, mapActions, mapMutations } from 'vuex';
+import { mapActions, mapMutations } from 'vuex';
 import localStorage from 'local-storage';
 
 export default {
@@ -14,35 +14,34 @@ export default {
   methods: {
     ...mapActions([
       'getToken',
+      'login',
     ]),
     ...mapMutations([
       'setOverlay',
     ]),
-    loginProcess(query) {
+    async loginProcess(query) {
       if (query.error) {
         this.$router.push({name: 'Home'});
       }
       if (query.code) {
-        this.getToken(query.code).then((res) => {
+        const payload = await this.getToken(query.code);
+        if (payload) {
+          const res = await this.login(payload);
           if (res) {
             localStorage.set('intro', true);
-            if (this.loginData.is_register === 1) {
-              this.$router.push({name: 'Home'});
-            } else {
-              this.$router.push({name: 'MemberForm', params: { formType: 'register' } });
-            }
+            window.location.href = '/';
           } else {
-            this.setOverlay(false);
-            setTimeout(() => { this.$router.push({name: 'Home'}); }, 2000);
+            this.error();
           }
-        });
+        } else {
+          this.error();
+        }
       }
     },
-  },
-  computed: {
-    ...mapState([
-      'loginData',
-    ]),
+    error() {
+      this.setOverlay(false);
+      setTimeout(() => { window.location.href = '/' }, 2000);
+    }
   },
   mounted() {
     this.setOverlay(true);
