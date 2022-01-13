@@ -469,16 +469,18 @@ export default {
     },
     getQuery() {
       const { startDay, endDay, distances, keywords } = this.$route.query;
+
       if (startDay && endDay) {
         this.search.date = [startDay, endDay];
         this.getDateRangeText();
       }
       if (distances) {
-        this.search.distances = distances;
+        this.search.distances = distances.map((value) => +value);
       }
       if (keywords) {
         this.search.keywords = keywords;
       }
+      return this.search;
     },
     setSearchDataAndResetPage() {
       this.page = 1;
