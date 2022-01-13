@@ -67,7 +67,7 @@ describe('LocationPopup.vue', () => {
     const cities = await wrapper.vm.getCities();
     
     /* fucntion test getcities then send city_id wail be success */
-    cities.forEach(async(item) => {
+    await cities.forEach(async(item) => {
       await expect(await wrapper.vm.getDistricts(item.id)).toEqual(districtsStructrue);
       await expect(wrapper.vm.districts).toEqual(districtsStructrue);
     });
