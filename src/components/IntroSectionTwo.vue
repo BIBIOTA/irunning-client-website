@@ -81,7 +81,7 @@ export default {
       return Math.floor(Math.random() * (max - min) + min);
     },
     getWeatherImg(WxValue) {
-      return `${process.env.VUE_APP_API_STORAGE}/weather/${this.getDayOrNight()}/${parseInt(WxValue, 10)}.svg`
+      return `${process.env.VUE_APP_API_STORAGE}/weather/${this.getDayOrNight()}/${parseInt(WxValue, 10)}`
     },
   },
   created() {

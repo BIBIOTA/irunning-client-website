@@ -72,7 +72,7 @@ export default {
       }
     },
     getWeatherImg(WxValue) {
-      return `${process.env.VUE_APP_API_STORAGE}/weather/${this.getDayOrNight()}/${parseInt(WxValue, 10)}.svg`
+      return `${process.env.VUE_APP_API_STORAGE}/image/weather/${this.getDayOrNight()}/${parseInt(WxValue, 10)}`
     },
   },
   components: {
