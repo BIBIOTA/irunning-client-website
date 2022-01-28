@@ -352,6 +352,7 @@ export default {
         event_certificate: null,
       },
       event: [],
+      gapi: null,
       authorized: false
     }
   },
@@ -523,36 +524,10 @@ export default {
       return date;
     },
 
-    /* gapi */
-
-    handleClientLoad() {
-      gapi.load('client:auth2', this.initClient);
-    },
-
-    /**
-      *  Initializes the API client library and sets up sign-in state
-      *  listeners.
-    */
-    initClient() {
-      let vm = this;
-
-      gapi.client.init({
-        apiKey: process.env.VUE_APP_GAPI,
-        clientId: process.env.VUE_APP_GCLIENT_ID,
-        discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
-        scope: 'https://www.googleapis.com/auth/calendar'
-      }).then(() => {
-        // Listen for sign-in state changes.
-        gapi.auth2.getAuthInstance().isSignedIn.listen(vm.authorized);
-
-      }, function(error) {
-        console.log(error);
-      });
-    },
-
     registerGoogleCalender(item) {
-      Promise.resolve(gapi.auth2.getAuthInstance().signIn())
-      .then(() => {
+      this.$gapi.login().then(({ currentUser, gapi, hasGrantedScopes }) => {
+        console.log({ currentUser, gapi, hasGrantedScopes });
+        this.gapi = gapi;
         this.authorized = true;
         this.addGoogleCalender(item);
       });
@@ -587,7 +562,7 @@ export default {
       const startDate = this.stringToDateTime(item.event_date, item.event_time, 'startTime');
       const endDate = this.stringToDateTime(item.event_date, item.event_time, 'endTime');
       const resource = this.setCalenderFrom(item, startDate, endDate);
-      const request = gapi.client.calendar.events.insert({
+      const request = this.gapi.client.calendar.events.insert({
         'calendarId': 'primary',
         'resource': resource
       });
@@ -604,8 +579,6 @@ export default {
     },
   },
   async mounted() {
-    /* global gapi */
-    this.handleClientLoad();
     this.page = await parseInt(this.$route.params.page);
     await this.getQuery();
     await this.getData();

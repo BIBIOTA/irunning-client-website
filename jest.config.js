@@ -2,6 +2,7 @@ const esModules = ['d3', 'd3-array', 'other-d3-module-if-needed', 'internmap', '
 
 module.exports = {
   preset: '@vue/cli-plugin-unit-jest',
+  setupFilesAfterEnv: ['./jest.setup.js'],
   transformIgnorePatterns: [
     `/node_modules/(?!${esModules})`,
   ],
