@@ -59,15 +59,15 @@ describe('LocationPopup.vue', () => {
     ]);
 
     /* default data */
-    await expect(wrapper.vm.districts).toEqual([]);
+    expect(wrapper.vm.districts).toEqual([]);
 
     /* fucntion test fail */
-    await expect(await wrapper.vm.getDistricts(null)).toEqual(false);
+    expect(await wrapper.vm.getDistricts(null)).toEqual(false);
 
     const cities = await wrapper.vm.getCities();
     
     /* fucntion test getcities then send city_id wail be success */
-    await cities.forEach(async(item) => {
+    cities.forEach(async(item) => {
       await expect(await wrapper.vm.getDistricts(item.id)).toEqual(districtsStructrue);
       await expect(wrapper.vm.districts).toEqual(districtsStructrue);
     });
@@ -92,7 +92,7 @@ describe('LocationPopup.vue', () => {
 
   const testGeoPosition = [121.7685823, 25.132778];
 
-  it('getGeoLocationCityAndDistrict', async () => {
+  it('getGeoLocationCityAndDistrict', async() => {
     const wrapper = mount(LocationPopup, {
       localVue,
       vuetify,
@@ -101,16 +101,16 @@ describe('LocationPopup.vue', () => {
 
 
     /* test api fail */
-    await expect(await wrapper.vm.getGeoLocationCityAndDistrict()).toEqual(false);
+    expect(await wrapper.vm.getGeoLocationCityAndDistrict()).toEqual(false);
 
-    await expect(await wrapper.vm.getGeoLocationCityAndDistrict([2000, 2000])).toEqual(false);
+    expect(wrapper.vm.getGeoLocationCityAndDistrict([2000, 2000])).resolves.toEqual(false);
     /* test api fail end */
 
     /* TEST POSITION */
     wrapper.vm.point = testGeoPosition;
     
     /* test api sucess */
-    await expect(await wrapper.vm.getGeoLocationCityAndDistrict(wrapper.vm.point)).toEqual(expect.objectContaining({
+    expect(wrapper.vm.getGeoLocationCityAndDistrict(wrapper.vm.point)).resolves.toEqual(expect.objectContaining({
       city_name: expect.any(String),
       district_name: expect.any(String),
     }));
@@ -152,7 +152,7 @@ describe('LocationPopup.vue', () => {
     aqiStructrue,
   ]);
 
-  it('getAqis', async () => {
+  it('getAqis', async() => {
     const wrapper = mount(LocationPopup, {
       localVue,
       vuetify,
@@ -160,17 +160,17 @@ describe('LocationPopup.vue', () => {
     });
 
     /* default data */
-    await expect(wrapper.vm.aqis).toEqual([]);
+    expect(wrapper.vm.aqis).toEqual([]);
 
     /* fucntion test fail */
-    await expect(await wrapper.vm.getAqis(null)).toEqual(false);
+    expect(await wrapper.vm.getAqis(null)).toEqual(false);
 
     const cities = await wrapper.vm.getCities();
     
-    /* fucntion test getcities then send city_id wail be success */
+    // /* fucntion test getcities then send city_id wail be success */
     cities.forEach(async(item) => {
-      await expect(await wrapper.vm.getAqis(item.id)).toEqual(aqisStructrue);
-      await expect(wrapper.vm.aqis).toEqual(aqisStructrue);
+      expect(await wrapper.vm.getAqis(item.id)).toEqual(aqisStructrue);
+      expect(wrapper.vm.aqis).toEqual(aqisStructrue);
     });
 
   })
@@ -189,14 +189,14 @@ describe('LocationPopup.vue', () => {
       await wrapper.vm.getAqis(item.id)
       const aqis = wrapper.vm.aqis;
       aqis.map(async(aqi) => {
-        await expect(wrapper.vm.getAqi(aqi.SiteName)).toEqual(aqiStructrue);
+        expect(await wrapper.vm.getAqi(aqi.SiteName)).toEqual(aqiStructrue);
       });
     });
 
     /* api fail test */
-    await expect(wrapper.vm.getAqi(null)).toEqual(false);
+    expect(await wrapper.vm.getAqi(null)).toEqual(false);
 
-    await expect(wrapper.vm.getAqi('any string')).toEqual(false);
+    expect(await wrapper.vm.getAqi('any string')).toEqual(false);
 
   })
 
@@ -210,14 +210,14 @@ describe('LocationPopup.vue', () => {
     /* TEST POSITION */
     wrapper.vm.point = testGeoPosition;
     
-    await expect(await wrapper.vm.point).toEqual([expect.any(Number), expect.any(Number)]);
+    expect(wrapper.vm.point).toEqual([expect.any(Number), expect.any(Number)]);
 
     const cities = await wrapper.vm.getCities();
     
     /* fucntion test getcities then send city_id wail be success */
     cities.forEach(async(item) => {
       await expect(await wrapper.vm.getAqis(item.id)).toEqual(aqisStructrue);
-      await expect(wrapper.vm.getGPSAqiPosition(wrapper.vm.point, wrapper.vm.aqis)).toEqual(aqiStructrue);
+      await expect(await wrapper.vm.getGPSAqiPosition(wrapper.vm.point, wrapper.vm.aqis)).toEqual(aqiStructrue);
     });
 
   })
@@ -253,13 +253,13 @@ describe('LocationPopup.vue', () => {
 
     /* test api success */
     if (districtsIds.length > 0) {
-      districtsIds.forEach(async(id) => {
-        expect(await wrapper.vm.getWeather(id)).toEqual(weatherStructrue);
+      districtsIds.forEach((id) => {
+        expect(wrapper.vm.getWeather(id)).resolves.toEqual(weatherStructrue);
       });
     }
 
     /* test api fail */
-    await expect(await wrapper.vm.getWeather("fake")).toEqual(false);
+    expect(wrapper.vm.getWeather("fake")).resolves.toEqual(false);
 
   })
 })
