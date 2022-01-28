@@ -210,6 +210,9 @@
                                     </v-btn>
                                   </a>
                                 </td>
+                                <td class="bd-none" v-else-if="item.name === '起跑時間'">
+                                  {{item.value}} test
+                                </td>
                                 <td class="bd-none" v-else>
                                   {{item.value}}
                                 </td>
@@ -219,6 +222,13 @@
                         </v-data-table>
 
                         <v-card-actions class="justify-end">
+                          <v-btn
+                            color="cyan"
+                            text
+                            @click="registerGoogleCalender(item)"
+                          >
+                            加入Google行事曆
+                          </v-btn>
                           <v-btn
                             color="primary"
                             text
@@ -342,6 +352,7 @@ export default {
         event_certificate: null,
       },
       event: [],
+      authorized: false
     }
   },
   components: {
@@ -350,6 +361,7 @@ export default {
   },
   methods: {
     ...mapMutations([
+      'setSuccess',
       'setError',
       'setLoading',
       'setNoData',
@@ -499,8 +511,101 @@ export default {
       await this.routerSet(this.page, this.$route.query);
       await this.getData();
     },
+
+    stringToDateTime(date, time = null, type) {
+      if (time) {
+        /* 如果為結束時間，加上5小時 */
+        if (type === 'endTime') {
+          return this.moment(date + ' ' + time, 'YYYY-MM-DD hh:mm:ss').add(5, 'hours').toDate();
+        }
+        return this.moment(date + ' ' + time, 'YYYY-MM-DD hh:mm:ss').toDate();
+      }
+      return date;
+    },
+
+    /* gapi */
+
+    handleClientLoad() {
+      gapi.load('client:auth2', this.initClient);
+    },
+
+    /**
+      *  Initializes the API client library and sets up sign-in state
+      *  listeners.
+    */
+    initClient() {
+      let vm = this;
+
+      gapi.client.init({
+        apiKey: process.env.VUE_APP_GAPI,
+        clientId: process.env.VUE_APP_GCLIENT_ID,
+        discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
+        scope: 'https://www.googleapis.com/auth/calendar'
+      }).then(() => {
+        // Listen for sign-in state changes.
+        gapi.auth2.getAuthInstance().isSignedIn.listen(vm.authorized);
+
+      }, function(error) {
+        console.log(error);
+      });
+    },
+
+    registerGoogleCalender(item) {
+      Promise.resolve(gapi.auth2.getAuthInstance().signIn())
+      .then(() => {
+        this.authorized = true;
+        this.addGoogleCalender(item);
+      });
+    },
+
+    setCalenderFrom(item, startDate, endDate) {
+      const dateFrom = {};
+      if (item.event_time) {
+        dateFrom.start = {
+          dateTime: startDate,
+        }
+        dateFrom.end = {
+          dateTime: endDate,
+        }
+      } else {
+        dateFrom.start = {
+          date: startDate,
+        }
+        dateFrom.end = {
+          date: endDate,
+        }
+      }
+      const resource = {
+        "summary": item.event_name,
+        "location": item.location,
+        ...dateFrom,
+      };
+      return resource;
+    },
+
+    addGoogleCalender(item) {
+      const startDate = this.stringToDateTime(item.event_date, item.event_time, 'startTime');
+      const endDate = this.stringToDateTime(item.event_date, item.event_time, 'endTime');
+      const resource = this.setCalenderFrom(item, startDate, endDate);
+      const request = gapi.client.calendar.events.insert({
+        'calendarId': 'primary',
+        'resource': resource
+      });
+      request.execute((resp) => {
+        console.log(resp);
+        if (resp) {
+          if (resp.error) {
+            this.setError('加入行事曆失敗');
+          } else {
+            this.setSuccess('已加入行事曆');
+          }
+        }
+      });
+    },
   },
   async mounted() {
+    /* global gapi */
+    this.handleClientLoad();
     this.page = await parseInt(this.$route.params.page);
     await this.getQuery();
     await this.getData();

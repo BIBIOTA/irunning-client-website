@@ -37,6 +37,13 @@ export const setWeather = (state, data) => {
   state.weather = data;
 };
 
+export const setSuccess = (state, data) => {
+  state.success = data;
+  setTimeout(() => {
+    state.success = false;
+  }, 3000);
+};
+
 export const setError = (state, data) => {
   state.error = data;
   setTimeout(() => {

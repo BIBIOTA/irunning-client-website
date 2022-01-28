@@ -10,6 +10,16 @@
     >
       {{error}}
     </v-alert>
+    <v-alert
+      v-if="success"
+      transition="scroll-y-reverse-transition"
+      width="100%"
+      color="cyan"
+      type="success"
+      class="text-center"
+    >
+      {{success}}
+    </v-alert>
   </v-row>
 </template>
 <script>
@@ -23,9 +33,19 @@ export default {
   },
   computed: {
     ...mapState([
-      'succes',
+      'success',
       'error',
     ]),
   },
 }
 </script>
+<style lang="scss">
+  .v-alert {
+    max-width: 480px;
+    position: fixed;
+    left: 50%;
+    bottom: 10px;
+    transform: translate(-50%, -50%);
+    margin: 0 auto;  // Without this the box extends the width of the page
+  }
+</style>
