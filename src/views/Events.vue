@@ -529,6 +529,7 @@ export default {
         console.log({ currentUser, gapi, hasGrantedScopes });
         this.gapi = gapi;
         this.authorized = true;
+        this.gapi.auth2.getAuthInstance().isSignedIn.listen(this.authorized);
         this.addGoogleCalender(item);
       });
     },
