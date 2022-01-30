@@ -39,6 +39,10 @@ ARG VUE_APP_GAPI
 ENV VUE_APP_GAPI=${VUE_APP_GAPI}
 RUN echo VUE_APP_GAPI >> /app/.env
 
+ARG VUE_APP_GCLIENT_ID
+ENV VUE_APP_GCLIENT_ID=${VUE_APP_GCLIENT_ID}
+RUN echo VUE_APP_GCLIENT_ID >> /app/.env
+
 COPY package.json yarn.lock ./
 RUN yarn install && yarn cache clean
 COPY . .
