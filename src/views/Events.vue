@@ -211,7 +211,7 @@
                                   </a>
                                 </td>
                                 <td class="bd-none" v-else-if="item.name === '起跑時間'">
-                                  {{item.value}} test
+                                  {{item.value ? moment(item.value, 'h:mm:ss').format('hh:mm') : ''}}
                                 </td>
                                 <td class="bd-none" v-else>
                                   {{item.value}}
