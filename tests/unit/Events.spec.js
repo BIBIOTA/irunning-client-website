@@ -1,7 +1,7 @@
 import Vuetify from 'vuetify';
 import Events from '@/views/Events.vue';
 import store from '@/store';
-import { createLocalVue, shallowMount } from '@vue/test-utils';
+import { createLocalVue, mount } from '@vue/test-utils';
 import router from '../../src/router';
 import _ from 'lodash';
 
@@ -25,8 +25,8 @@ describe('Event.vue', () => {
     }    
   })
 
-  it('getData success', async () => {
-    const wrapper = shallowMount(Events, {
+  it('getData success', async() => {
+    const wrapper = mount(Events, {
       localVue,
       vuetify,
       store,
@@ -76,7 +76,7 @@ describe('Event.vue', () => {
     const getData = await wrapper.vm.getData();
 
     /* fucntion test */
-    await expect(getData).toEqual(paginationStructrue);
+    expect(getData).toEqual(paginationStructrue);
 
     /* after fucntion test data */
     expect(wrapper.vm.events).toEqual(dataStructrue);
@@ -87,8 +87,8 @@ describe('Event.vue', () => {
 
   })
 
-  it('getData success', async () => {
-    const wrapper = shallowMount(Events, {
+  it('getData success', async() => {
+    const wrapper = mount(Events, {
       localVue,
       vuetify,
       store,
@@ -111,8 +111,8 @@ describe('Event.vue', () => {
 
   })
 
-  it('getQuery', async () => {
-    const wrapper = shallowMount(Events, {
+  it('getQuery', async() => {
+    const wrapper = mount(Events, {
       localVue,
       vuetify,
       store,
@@ -134,7 +134,7 @@ describe('Event.vue', () => {
   })
 
   it('getCertificateImg', async () => {
-    const wrapper = shallowMount(Events, {
+    const wrapper = mount(Events, {
       localVue,
       vuetify,
       store,
@@ -165,7 +165,7 @@ describe('Event.vue', () => {
   })
 
   it('cleardateRangeText', async () => {
-    const wrapper = shallowMount(Events, {
+    const wrapper = mount(Events, {
       localVue,
       vuetify,
       store,
@@ -182,7 +182,7 @@ describe('Event.vue', () => {
   })
 
   it('getDateRangeText', async () => {
-    const wrapper = shallowMount(Events, {
+    const wrapper = mount(Events, {
       localVue,
       vuetify,
       store,
@@ -198,7 +198,7 @@ describe('Event.vue', () => {
   })
 
   it('processEventData', async () => {
-    const wrapper = shallowMount(Events, {
+    const wrapper = mount(Events, {
       localVue,
       vuetify,
       store,
@@ -246,7 +246,7 @@ describe('Event.vue', () => {
   })
 
   it('getSearchData', async () => {
-    const wrapper = shallowMount(Events, {
+    const wrapper = mount(Events, {
       localVue,
       vuetify,
       store,
@@ -269,7 +269,7 @@ describe('Event.vue', () => {
   })
 
   it('setQuery', async () => {
-    const wrapper = shallowMount(Events, {
+    const wrapper = mount(Events, {
       localVue,
       vuetify,
       store,
@@ -292,7 +292,7 @@ describe('Event.vue', () => {
   })
 
   it('routerSet', async () => {
-    const wrapper = shallowMount(Events, {
+    const wrapper = mount(Events, {
       localVue,
       vuetify,
       store,
@@ -311,8 +311,8 @@ describe('Event.vue', () => {
     
   })
 
-  it('changePage', () => {
-    const wrapper = shallowMount(Events, {
+  it('changePage', async() => {
+    const wrapper = mount(Events, {
       localVue,
       vuetify,
       store,
@@ -323,7 +323,7 @@ describe('Event.vue', () => {
 
     const page = 2;
 
-    wrapper.vm.changePage(page);
+    await wrapper.vm.changePage(page);
 
     expect(wrapper.vm.$route.params.page).toEqual(page);
 
