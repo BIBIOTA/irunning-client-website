@@ -14,7 +14,6 @@ steps:
     env:
     - 'VUE_APP_API_KEY=$_VUE_APP_API_KEY'
     - 'VUE_APP_NODE_API_KEY=$_VUE_APP_NODE_API_KEY'
-    - 'VUE_APP_API_KEY=$_VUE_APP_API_KEY'
     - 'VUE_APP_API_STORAGE=$_VUE_APP_API_STORAGE'
     - 'VUE_APP_STRAVA_CLIENT_ID=$_VUE_APP_STRAVA_CLIENT_ID'
     - 'VUE_APP_STRAVA_CLIENT_SECRET=$_VUE_APP_STRAVA_CLIENT_SECRET'
@@ -22,6 +21,7 @@ steps:
     - 'BASE_URL=$_BASE_URL'
     - 'VUE_APP_ENV=$_VUE_APP_ENV'
     - 'VUE_APP_GAPI=$_VUE_APP_GAPI'
+    - 'VUE_APP_GCLIENT_ID=$_VUE_APP_GCLIENT_ID'
     # build the container image
   - name: 'gcr.io/cloud-builders/docker'
     args: [
@@ -44,6 +44,8 @@ steps:
       'VUE_APP_ENV=$_VUE_APP_ENV',
       '--build-arg',
       'VUE_APP_GAPI=$_VUE_APP_GAPI',
+      '--build-arg',
+      'VUE_APP_GCLIENT_ID=$_VUE_APP_GCLIENT_ID',
       '-t',
       'gcr.io/$_GCP_PROJECT_ID/${_IMAGE}:$BUILD_ID',
       '.',
