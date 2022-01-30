@@ -4,7 +4,6 @@ import vuetify from './plugins/vuetify'
 import router from './router'
 import store from './store'
 import moment from 'moment'
-import VueGapi from 'vue-gapi'
 import * as VueGoogleMaps from 'vue2-google-maps'
 import './style/reset.css'
 import './style/twicon.css'
@@ -125,13 +124,6 @@ moment.locale('zh-tw', {
 });
 
 Vue.prototype.moment = moment
-
-Vue.use(VueGapi, {
-  apiKey: process.env.VUE_APP_GAPI,
-  clientId: process.env.VUE_APP_GCLIENT_ID,
-  discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
-  scope: 'https://www.googleapis.com/auth/calendar',
-})
 
 Vue.use(VueGoogleMaps, {
   load: {

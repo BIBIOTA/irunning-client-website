@@ -17,8 +17,12 @@ describe('Event.vue', () => {
   const localVue = createLocalVue()
   let vuetify
 
+
   beforeEach(() => {
-    vuetify = new Vuetify()
+    vuetify = new Vuetify();
+    window.gapi = {
+      load() { }
+    }    
   })
 
   it('getData success', async () => {
