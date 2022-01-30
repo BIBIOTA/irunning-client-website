@@ -524,12 +524,33 @@ export default {
       return date;
     },
 
+    handleClientLoad() {
+      this.gapi.load('client:auth2', this.initClient);
+    },
+
+    /**
+      *  Initializes the API client library and sets up sign-in state
+      *  listeners.
+    */
+    initClient() {
+      let vm = this;
+      vm.gapi.client.init({
+        apiKey: process.env.VUE_APP_GAPI,
+        clientId: process.env.VUE_APP_GCLIENT_ID,
+        discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
+        scope: 'https://www.googleapis.com/auth/calendar'
+      }).then(() => {
+        // Listen for sign-in state changes.
+        this.gapi.auth2.getAuthInstance().isSignedIn.listen(vm.authorized);
+      }, function(error) {
+        console.log(error);
+      });
+    },
+
     registerGoogleCalender(item) {
-      this.$gapi.login().then(({ currentUser, gapi, hasGrantedScopes }) => {
-        console.log({ currentUser, gapi, hasGrantedScopes });
-        this.gapi = gapi;
+      Promise.resolve(this.gapi.auth2.getAuthInstance().signIn())
+      .then(() => {
         this.authorized = true;
-        this.gapi.auth2.getAuthInstance().isSignedIn.listen(this.authorized);
         this.addGoogleCalender(item);
       });
     },
@@ -580,6 +601,8 @@ export default {
     },
   },
   async mounted() {
+    this.gapi = window.gapi;
+    this.handleClientLoad();
     this.page = await parseInt(this.$route.params.page);
     await this.getQuery();
     await this.getData();
