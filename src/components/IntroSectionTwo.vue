@@ -11,43 +11,30 @@
       justify="center"
       column
     >
-      <v-carousel
-        continuous
-        cycle
-        interval="3000"
-        height="100"
-        hide-delimiters
-        :show-arrows="false"
-        >
-        <template>
-          <v-carousel-item
-            v-for="(count, k) in imgCount"
-            :key="`weather_${k}_${count}`"
-          >
-            <figure class="d-flex justify-center">
-              <v-img
-                max-width="100"
-                :src="getWeatherImg(count)"
-              />
-            </figure>
-          </v-carousel-item>
+      <v-card color="rgba(13, 152, 186, 0.8)" class="pa-2">
+        <div
+          class="py-6 text-h4 font-weight-bold white--text text-center">
+          最近有什麼賽事?
+        </div>
+        <div
+          class="pb-6 text-subtitle-1 font-weight-bold white--text text-center">
+          全國各地全馬、半馬、超馬賽事資訊報你知！
+        </div>
+        <template v-if="events.length > 0">
+          <v-list-item v-for="(event, i) in events" :key="`events_${i}`" class="px-10">
+            <v-list-item-content>
+              <v-list-item-title class="white--text">{{event.event_name}}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </template>
-      </v-carousel>
-      <div
-        class="py-6 text-h4 font-weight-bold white--text">
-        今天適合跑步嗎?
-      </div>
-      <div
-        class="pb-6 text-subtitle-1 font-weight-bold white--text text-center">
-        快速取得空氣品質和天氣資訊!
-      </div>
-      <router-link :to="{ name: 'Home' }" >
+      </v-card>
+      <router-link :to="{ name: 'Events', params: { page: 1 } }" class="mt-5">
         <v-btn
           class="white--text text-h5 py-6"
           @click="$emit('closeIntro')"
-          color="cyan"
+          color="rgba(13, 152, 186, 0.8)"
         >
-          立即體驗
+          立即搜尋
         </v-btn>
       </router-link>
     </v-row>
@@ -55,46 +42,20 @@
 </template>
 <script>
 export default {
-  name: 'IntroSectionTwo',
+  name: 'IntroSectionThree',
   props: {
     transblack: {
       type: String,
       required: true,
     },
+    events: {
+      type: Array,
+      required: true,
+    },
   },
   data() {
     return {
-    };
-  },
-  methods: {
-    getDayOrNight() {
-      const hours = new Date().getHours()
-      if (hours > 6 && hours < 18) {
-        return 'day';
-      } else {
-        return 'night';
-      }
-    },
-    getRandomInt(min, max) {
-      min = Math.ceil(min);
-      max = Math.floor(max);
-      return Math.floor(Math.random() * (max - min) + min);
-    },
-    getWeatherImg(WxValue) {
-      return `${process.env.VUE_APP_API_STORAGE}/weather/${this.getDayOrNight()}/${parseInt(WxValue, 10)}`
-    },
-  },
-  created() {
-    const imgCount = [];
-    for (let i = 1; i <= 5; i += 1) {
-      const ramdom = this.getRandomInt(1, 42);
-      if (ramdom !== 40) {
-        imgCount.push(ramdom);
-      }
     }
-    this.imgCount = imgCount;
-  },
-  mounted() {
   },
 }
 </script>

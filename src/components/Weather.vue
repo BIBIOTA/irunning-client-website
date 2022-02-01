@@ -26,8 +26,8 @@
     <template v-else>
       <ul class="dataList pl-0">
         <li>
-          <figure v-if="weather.Wx">
-            <img :src="getWeatherImg(weather.Wx)" alt="">
+          <figure v-if="weather.imageUrl">
+            <img :src="weather.imageUrl" alt="">
           </figure>
         </li>
         <li class="justify-center" v-if="weather.T">
@@ -62,19 +62,7 @@ export default {
     return {
     };
   },
-  methods: {
-    getDayOrNight() {
-      const hours = new Date().getHours()
-      if (hours > 6 && hours < 18) {
-        return 'day';
-      } else {
-        return 'night';
-      }
-    },
-    getWeatherImg(WxValue) {
-      return `${process.env.VUE_APP_API_STORAGE}/image/weather/${this.getDayOrNight()}/${parseInt(WxValue, 10)}`
-    },
-  },
+  methods: {},
   components: {
     LocationPopup,
   },

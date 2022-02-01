@@ -140,10 +140,10 @@
             transition="fade-transition"
           >
             <IntroSectionOne v-show="i === 0" :transblack="transblack" />
-            <IntroSectionTwo v-show="i === 1" :transblack="transblack" @closeIntro="closeIntro" />
-            <IntroSectionThree v-show="i === 2" :transblack="transblack"
+            <IntroSectionTwo v-show="i === 1" :transblack="transblack"
             :events="events"
             @closeIntro="closeIntro" />
+            <IntroSectionThree v-show="i === 2" :transblack="transblack" @closeIntro="closeIntro" />
           </v-carousel-item>
         </v-carousel>
       </v-dialog>
@@ -163,8 +163,8 @@ import Cookies from 'js-cookie';
 import localStorage from 'local-storage';
 
 import bg1 from './assets/index/runner_mb.webp';
-import bg2 from './assets/index/run_weather_mb.webp';
-import bg3 from './assets/index/taipei_marathon_mb.webp';
+import bg2 from './assets/index/taipei_marathon_mb.webp';
+import bg3 from './assets/index/run_weather_mb.webp';
 
 const iconColor = 'green darken-2';
 
