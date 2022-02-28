@@ -1,121 +1,6 @@
 <template>
   <v-app style="max-width: 480px; margin: auto; position:relative">
-    <v-card
-      v-show="!dialog"
-      class="overflow-x-hidden"
-      height="100vh"
-      >
-      <v-app-bar
-        height="70"
-        color="cyan"
-        dark
-      >
-        <router-link to="/" style="color: white!important">
-          <v-toolbar-title
-            @click="group = 0"
-            style="font-family: 'Pacifico', cursive !important;">
-            I Running
-          </v-toolbar-title>
-        </router-link>
-        <v-spacer></v-spacer>
-        <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
-
-      </v-app-bar>
-
-      <v-navigation-drawer
-        v-model="drawer"
-        absolute
-        temporary
-        right
-      > 
-        <v-list>
-          <v-list-item v-if="login">
-            <v-btn
-              class="mx-auto overflow-hidden"
-              rounded
-              color="#F64906"
-              dark
-              width="150"
-              @click="logout"
-            >
-              登出 
-            </v-btn>
-          </v-list-item>
-          <v-list-item v-else>
-            <StravaBtn />
-          </v-list-item>
-        </v-list>
-        <v-list
-          nav
-          dense
-        >
-          <v-list-item-group
-            v-model="group"
-            active-class="deep-purple--text text--accent-4"
-          >
-            <template v-for="(data, i) in list">
-              <router-link
-                :to="data.to" :key="`list_${i}`" v-if="!data.isLogin || login">
-                <v-list-item>
-                    <v-list-item-icon>
-                      <v-icon :color="data.icon.color" :class="data.icon.class">{{data.icon.value}}</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-title>
-                      {{data.name}}
-                    </v-list-item-title>
-                </v-list-item>
-              </router-link>
-            </template>
-            <!-- <router-link to="/">
-              <v-list-item>
-                  <v-list-item-icon>
-                    <v-icon color="green darken-2">mdi-home</v-icon>
-                  </v-list-item-icon>
-                  <v-list-item-title>
-                    首頁
-                  </v-list-item-title>
-              </v-list-item>
-            </router-link>
-
-            <router-link :to="{ name: 'Activities', params: { page: 1 } }"  v-if="login">
-              <v-list-item>
-                <v-list-item-icon>
-                  <v-icon color="green darken-2">mdi-run</v-icon>
-                </v-list-item-icon>
-                <v-list-item-title>
-                    我的跑步紀錄
-                </v-list-item-title>
-              </v-list-item>
-            </router-link>
-
-            <router-link :to="{ name: 'Events', params: { page: 1 } }">
-              <v-list-item>
-                <v-list-item-icon>
-                  <v-icon class="twicon-main-island" color="green darken-2"></v-icon>
-                </v-list-item-icon>
-                <v-list-item-title>
-                    全國賽會
-                </v-list-item-title>
-              </v-list-item>
-            </router-link>
-
-            <router-link :to="{ name: 'Member' }"  v-if="login">
-              <v-list-item>
-                <v-list-item-icon>
-                  <v-icon color="green darken-2">mdi-account</v-icon>
-                </v-list-item-icon>
-                <v-list-item-title>
-                    會員資料
-                </v-list-item-title>
-              </v-list-item>
-            </router-link> -->
-
-          </v-list-item-group>
-        </v-list>
-      </v-navigation-drawer>
-      <router-view />
-      <Alert />
-    </v-card>
+    <Hamburger />
     <div
       v-show="dialog"
       style="background-color: black; height: 100%; width: 100%">
@@ -152,68 +37,23 @@
 </template>
 
 <script>
-import StravaBtn from './components/StravaBtn.vue';
-import IntroSectionOne from './components/IntroSectionOne.vue';
-import IntroSectionTwo from './components/IntroSectionTwo.vue';
-import IntroSectionThree from './components/IntroSectionThree.vue';
-import Alert from './components/Alert.vue';
+
+import Hamburger from '@/components/Hamburger.vue'
+import IntroSectionOne from '@/components/IntroSectionOne.vue';
+import IntroSectionTwo from '@/components/IntroSectionTwo.vue';
+import IntroSectionThree from '@/components/IntroSectionThree.vue';
+
 import { index } from './libs/index.js';
-import { mapState, mapMutations, mapActions } from 'vuex';
-import Cookies from 'js-cookie';
+
 import localStorage from 'local-storage';
 
-import bg1 from './assets/index/runner_mb.webp';
-import bg2 from './assets/index/taipei_marathon_mb.webp';
-import bg3 from './assets/index/run_weather_mb.webp';
-
-const iconColor = 'green darken-2';
+import bg1 from '@/assets/index/runner_mb.webp';
+import bg2 from '@/assets/index/taipei_marathon_mb.webp';
+import bg3 from '@/assets/index/run_weather_mb.webp';
 
 export default {
   data() {
     return {
-      drawer: false,
-      group: null,
-      list: [
-        {
-          name: '首頁',
-          isLogin: false,
-          to: '/',
-          icon: {
-            color: iconColor,
-            value: 'mdi-home',
-          }
-        },
-        {
-          name: '我的跑步紀錄',
-          isLogin: true,
-          to: {
-            name: 'Activities',
-            params: { page: 1 },
-          },
-          icon: {
-            color: iconColor,
-            value: 'mdi-run',
-          }
-        },
-        {
-          name: '全國賽會',
-          isLogin: false,
-          to: { name: 'Events', params: { page: 1 } },
-          icon: {
-            color: iconColor,
-            class: 'twicon-main-island',
-          }
-        },
-        {
-          name: '會員資料',
-          isLogin: true,
-          to: { name: 'Member' },
-          icon: {
-            color: iconColor,
-            value: 'mdi-account',
-          }
-        },
-      ],
       dialog: true,
       transblack: 'rgba(0, 0, 0, 0.3)',
       imgIndex: 0,
@@ -235,54 +75,20 @@ export default {
     };
   },
   components: {
-    StravaBtn,
+    Hamburger,
     IntroSectionOne,
     IntroSectionTwo,
     IntroSectionThree,
-    Alert,
   },
   methods: {
-    ...mapMutations([
-      'setIsLogin',
-    ]),
-    ...mapActions([
-      'actionLogout',
-    ]),
-    logout() {
-      this.actionLogout().then((result) => {
-        if (result) {
-          if (this.$route.meta?.isLogin) {
-            this.$router.push({
-              name: 'Home',
-            });
-          }
-        } else {
-          this.setIsLogin(false);
-          if (this.$route.meta?.isLogin) {
-            this.$router.push({
-              name: 'Home',
-            });
-          }
-        }
-      });
-    },
     closeIntro() {
       this.dialog = false;
       localStorage.set('intro', true);
     },
   },
-  computed: {
-    ...mapState([
-      'login',
-    ]),
-  },
   created() {
-    const member = Cookies.get('member') ?? false;
-    if (member) {
-      this.setIsLogin(true);
-    }
     const intro = localStorage.get('intro');
-    if (intro || this.$route.name === 'Login') {
+    if (intro) {
       this.dialog = false;
     }
   },

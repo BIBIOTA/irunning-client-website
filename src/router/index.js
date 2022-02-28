@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Activities from '../views/Activities.vue';
-import Activity from '../views/Activity.vue';
-import Events from '../views/Events.vue';
-import Home from '../views/Home.vue';
-import Login from '../views/Login.vue';
-import Member from '../views/Member.vue';
-import MemberForm from '../views/MemberForm.vue';
+import Activities from '@/views/Activities.vue';
+import Activity from '@/views/Activity.vue';
+import Events from '@/views/Events.vue';
+import Home from '@/views/Home.vue';
+import Login from '@/views/Login.vue';
+import Member from '@/views/Member.vue';
+import MemberForm from '@/views/MemberForm.vue';
 import Cookies from 'js-cookie';
 
 Vue.use(VueRouter);
