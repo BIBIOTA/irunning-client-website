@@ -1,8 +1,6 @@
 <template>
   <v-card
-    class="ma-auto"
-    tile
-    elevation="0"
+    class="ma-auto my-5"
   >
     <v-row class="py-5 flex align-center">
       <v-col cols="10" class="pr-15">
@@ -19,7 +17,7 @@
       <div class="pa-15 text-center">
         <v-progress-circular
           indeterminate
-          color="cyan"
+          color="primary"
         ></v-progress-circular>
       </div>
     </template>

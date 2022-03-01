@@ -5,13 +5,14 @@
     >
     <v-app-bar
       height="70"
-      color="cyan"
+      color="primary"
       dark
     >
-      <router-link to="/" style="color: white!important">
+      <router-link to="/">
         <v-toolbar-title
+          id="logo"
           @click="group = 0"
-          style="font-family: 'Pacifico', cursive !important;">
+        >
           I Running
         </v-toolbar-title>
       </router-link>

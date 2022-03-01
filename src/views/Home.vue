@@ -1,6 +1,10 @@
 <template>
   <v-main>
-    <v-card>
+    <v-card
+      color="primary"
+      tile
+      outlined
+    >
       <v-col dense>
         <StravaIndex />
         <Weather />

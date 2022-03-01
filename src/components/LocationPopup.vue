@@ -12,7 +12,7 @@
           small
           v-bind="attrs"
           v-on="on"
-          color="cyan"
+          color="primary"
         >
           <v-icon dark>
             mdi-pencil

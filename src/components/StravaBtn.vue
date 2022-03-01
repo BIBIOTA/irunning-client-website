@@ -2,7 +2,7 @@
   <v-btn
     class="mx-auto overflow-hidden"
     rounded
-    color="#F64906"
+    color="secondary"
     dark
     @click="setLogin"
     >

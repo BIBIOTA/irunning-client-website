@@ -1,7 +1,9 @@
 <template>
-  <div>
+  <v-card
+    class="mx-auto my-5"
+  >
     <v-row class="py-5 flex align-center">
-      <v-col class="col-md-8">
+      <v-col>
         <div class="text-h7 text-center">
           空氣品質
         </div>
@@ -39,7 +41,7 @@
         {{status}}
       </div>
     </template>
-  </div>
+  </v-card>
 </template>
 
 <script>
