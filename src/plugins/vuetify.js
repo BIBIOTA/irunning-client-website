@@ -14,5 +14,6 @@ export default new Vuetify({
         accent: colors.green.darken2, // #388E3C
       },
     },
+    options: { customProperties: true },
   },
 });

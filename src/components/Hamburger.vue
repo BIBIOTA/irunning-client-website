@@ -1,10 +1,8 @@
+// TODO header組件拆分 + RWD global設定
 <template>
   <v-card
-    class="overflow-x-hidden"
-    height="100vh"
     >
     <v-app-bar
-      height="70"
       color="primary"
       dark
     >
@@ -16,8 +14,46 @@
           I Running
         </v-toolbar-title>
       </router-link>
+
+      <template v-for="(data, i) in list">
+        <router-link
+          class="white--text px-8 pt-2"
+          :to="data.to"
+          :key="`list_${i}`"
+          v-if="(!isMobile && !data.isMobile) && (!data.isLogin || login)"
+        >
+          <v-list-item>
+              <v-list-item-title>
+                {{data.name}}
+              </v-list-item-title>
+          </v-list-item>
+        </router-link>
+      </template>
+
       <v-spacer></v-spacer>
-      <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+
+      <v-list color="transparent" v-if="!isMobile">
+        <v-list-item v-if="login">
+          <v-btn
+            class="mx-auto overflow-hidden"
+            rounded
+            color="secondary"
+            dark
+            width="150"
+            @click="logout"
+          >
+            登出 
+          </v-btn>
+        </v-list-item>
+        <v-list-item v-else>
+          <StravaBtn />
+        </v-list-item>
+      </v-list>
+
+      <v-app-bar-nav-icon
+        v-else
+        @click="drawer = true"
+      />
 
     </v-app-bar>
 
@@ -135,6 +171,7 @@ export default {
   },
   data() {
     return {
+      isMobile: false,
       drawer: false,
       group: null,
       list: [
@@ -145,7 +182,8 @@ export default {
           icon: {
             color: iconColor,
             value: 'mdi-home',
-          }
+          },
+          isMobile: true,
         },
         {
           name: '我的跑步紀錄',
@@ -205,6 +243,9 @@ export default {
         }
       });
     },
+    onResize () {
+      this.isMobile = window.innerWidth < 768
+    },
   },
   created() {
     const member = Cookies.get('member') ?? false;
@@ -216,6 +257,16 @@ export default {
     ...mapState([
       'login',
     ]),
+  },
+  beforeDestroy () {
+    if (typeof window === 'undefined') return
+
+    window.removeEventListener('resize', this.onResize, { passive: true })
+  },
+  mounted () {
+    this.onResize();
+
+    window.addEventListener('resize', this.onResize, { passive: true })
   },
 }
 </script>

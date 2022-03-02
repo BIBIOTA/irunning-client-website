@@ -1,5 +1,5 @@
 <template>
-  <v-app style="max-width: 480px; margin: auto; position:relative">
+  <v-app>
     <Hamburger />
     <div
       v-show="dialog"

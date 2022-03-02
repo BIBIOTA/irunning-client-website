@@ -1,11 +1,14 @@
 <template>
   <v-main>
     <v-card
-      color="primary"
       tile
       outlined
+      id="mainCard"
     >
-      <v-col dense>
+      <v-col
+        dense
+        style="max-width: 480px; margin: auto"
+      >
         <StravaIndex />
         <Weather />
         <Aqi />
