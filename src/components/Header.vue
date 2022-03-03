@@ -1,7 +1,5 @@
-// TODO header組件拆分 + RWD global設定
 <template>
-  <v-card
-    >
+  <v-card>
     <v-app-bar
       color="primary"
       dark
@@ -17,7 +15,7 @@
 
       <template v-for="(data, i) in list">
         <router-link
-          class="white--text px-8 pt-2"
+          class="white--text font-weight-bold px-8 pt-2"
           :to="data.to"
           :key="`list_${i}`"
           v-if="(!isMobile && !data.isMobile) && (!data.isLogin || login)"
@@ -164,14 +162,13 @@ import Cookies from 'js-cookie';
 const iconColor = 'green darken-2';
 
 export default {
-  name: 'Hamburger',
+  name: 'Header',
   components: {
     StravaBtn,
     Alert,
   },
   data() {
     return {
-      isMobile: false,
       drawer: false,
       group: null,
       list: [
@@ -243,9 +240,6 @@ export default {
         }
       });
     },
-    onResize () {
-      this.isMobile = window.innerWidth < 768
-    },
   },
   created() {
     const member = Cookies.get('member') ?? false;
@@ -256,17 +250,8 @@ export default {
   computed: {
     ...mapState([
       'login',
+      'isMobile',
     ]),
-  },
-  beforeDestroy () {
-    if (typeof window === 'undefined') return
-
-    window.removeEventListener('resize', this.onResize, { passive: true })
-  },
-  mounted () {
-    this.onResize();
-
-    window.addEventListener('resize', this.onResize, { passive: true })
   },
 }
 </script>

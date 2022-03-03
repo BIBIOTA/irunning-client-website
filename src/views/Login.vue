@@ -1,5 +1,13 @@
 <template>
-  <Overlay :message="'登入中...'" />
+  <v-main>
+    <v-card
+      tile
+      outlined
+      id="mainCard"
+    >
+      <Overlay :message="'登入中...'" />
+    </v-card>
+  </v-main>
 </template>
 <script>
 import Overlay from '../components/Overlay.vue';

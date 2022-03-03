@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <Hamburger />
+    <Header />
     <div
       v-show="dialog"
       style="background-color: black; height: 100%; width: 100%">
@@ -38,12 +38,14 @@
 
 <script>
 
-import Hamburger from '@/components/Hamburger.vue'
+import Header from '@/components/Header.vue'
 import IntroSectionOne from '@/components/IntroSectionOne.vue';
 import IntroSectionTwo from '@/components/IntroSectionTwo.vue';
 import IntroSectionThree from '@/components/IntroSectionThree.vue';
 
 import { index } from './libs/index.js';
+
+import { mapMutations } from 'vuex';
 
 import localStorage from 'local-storage';
 
@@ -75,16 +77,27 @@ export default {
     };
   },
   components: {
-    Hamburger,
+    Header,
     IntroSectionOne,
     IntroSectionTwo,
     IntroSectionThree,
   },
   methods: {
+    ...mapMutations([
+      'setIsMobile',
+    ]),
     closeIntro() {
       this.dialog = false;
       localStorage.set('intro', true);
     },
+    onResize () {
+      this.setIsMobile(window.innerWidth < 768);
+    },
+  },
+  beforeDestroy () {
+    if (typeof window === 'undefined') return
+
+    window.removeEventListener('resize', this.onResize, { passive: true })
   },
   created() {
     const intro = localStorage.get('intro');
@@ -100,6 +113,10 @@ export default {
         console.log(res.message);
       }
     });
+
+    this.onResize();
+
+    window.addEventListener('resize', this.onResize, { passive: true })
   },
 }
 </script>

@@ -63,3 +63,7 @@ export const setCookies = (state, data) => {
   const expires = moment(addExpired).toDate();
   Cookies.set('member', data.access_token, { expires });
 }
+
+export const setIsMobile = (state, status) => {
+  state.isMobile = status;
+}

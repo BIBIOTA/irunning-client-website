@@ -13,6 +13,9 @@ export default function () {
     login: false,
     // 會員登入資訊
 
+    // RWD
+    isMobile: false,
+
     // 資料
     area: {
       city_name: '臺北市',
