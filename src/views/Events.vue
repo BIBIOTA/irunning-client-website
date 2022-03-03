@@ -102,7 +102,7 @@
             sm="11"
             >
             <v-btn
-              color="#F64906"
+              color="primary"
               elevation="2"
               medium
               class="white--text"
@@ -113,7 +113,7 @@
           </v-col>
         </v-row>
         <v-data-table
-          :headers="headers"
+          :headers="computedHeaders"
           mobile-breakpoint="0"
           :items="events"
           :options.sync="pagination"
@@ -121,7 +121,7 @@
           item-key="name"
           class="elevation-1"
           dense
-        >   
+        >
           <template
             v-slot:body="{ items }"
           >
@@ -130,16 +130,21 @@
                 v-for="(item, i) in items"
                 :key="`${item.name}_${i}`"
               >
-                <td class="py-2" style="width: 40%">
+                <td
+                  :width="isMobile ? '50%' : ''"
+                  class="py-2"
+                >
                   <div>
-                    <div :class="{ 'text-decoration-line-through': !item.event_status }">
+                    <div
+                      :class="{ 'text-decoration-line-through': !item.event_status }"
+                    >
                       {{item.event_name}}
                       <img v-if="item.event_certificate" :src="getCertificateImg(item.event_certificate)">
                     </div>
                     <div>
                       <template v-for="(data, i) in item.distance">
                         <v-chip
-                          color="green darken-2"
+                          color="accent"
                           text-color="white"
                           x-small
                           class="mx-1"
@@ -152,10 +157,11 @@
                     </div>
                   </div>
                 </td>
-                <td style="width: 30%">
+                <td>
                   {{item.event_date}} {{item.event_time ? moment(item.event_time, 'h:mm:ss').format('hh:mm') : ''}}
                 </td>
-                <!-- <td class="py-8">{{item.location}}</td> -->
+                <td v-if="!isMobile">{{item.location}}</td>
+                <td v-if="!isMobile">{{item.participate}}</td>
                 <td>
                   <v-dialog
                     transition="dialog-bottom-transition"
@@ -187,7 +193,7 @@
                                 <td class="bd-none" v-if="item.name === '里程'">
                                   <template v-for="(data, i) in item.value">
                                     <v-chip
-                                      color="green darken-2"
+                                      color="accent"
                                       text-color="white"
                                       x-small
                                       class="mx-1"
@@ -201,7 +207,7 @@
                                 <td class="bd-none" v-else-if="item.name === '報名連結'">
                                   <a :href="item.value" target="_blank" v-if="item.value">
                                     <v-btn
-                                      color="cyan"
+                                      color="primary"
                                       elevation="2"
                                       small
                                       class="white--text"
@@ -223,7 +229,7 @@
 
                         <v-card-actions class="justify-end">
                           <v-btn
-                            color="cyan"
+                            color="primary"
                             text
                             @click="registerGoogleCalender(item)"
                           >
@@ -243,7 +249,7 @@
                     </template>
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
-                        color="cyan"
+                        color="primary"
                         elevation="2"
                         small
                         class="white--text"
@@ -278,9 +284,13 @@
 <script>
 import NoData from '../components/NoData.vue';
 import Loading from '../components/Loading.vue';
-import { mapMutations } from 'vuex';
+
+import { mapState, mapMutations } from 'vuex';
+
 import { events } from '../libs/events.js';
+
 import _ from 'lodash';
+
 import iaaf from '../assets/logo/iaaf.gif';
 import aims from '../assets/logo/aims_logo.gif';
 import courseOk from '../assets/logo/course_ok.png';
@@ -320,24 +330,31 @@ export default {
           text: '賽事名稱',
           align: 'start',
           value: 'name',
-          width: '40%',
+          isMobile: true,
         },
         {
           sortable: false,
           text: '日期',
           value: 'date',
-          width: '30%',
+          isMobile: true,
         },
-        // {
-        //   sortable: false,
-        //   text: '地點',
-        //   value: 'location',
-        // },
+        {
+          sortable: false,
+          text: '地點',
+          value: 'location',
+          isMobile: false,
+        },
+        {
+          sortable: false,
+          text: '報名日期',
+          value: 'participate',
+          isMobile: false,
+        },
         {
           sortable: false,
           text: '',
           value: 'data-table-expand',
-          width: '20%',
+          isMobile: true,
         },
       ],
       distances: [
@@ -598,6 +615,21 @@ export default {
           }
         }
       });
+    },
+  },
+  computed: {
+    ...mapState([
+      'isMobile',
+    ]),
+    computedHeaders() {
+      if (this.isMobile) {
+        return this.headers.filter((header) => {
+          if (header.isMobile) {
+            return header;
+          }
+        })
+      }
+      return this.headers;
     },
   },
   async mounted() {
