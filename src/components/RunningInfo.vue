@@ -5,7 +5,13 @@
       <p class="text-h4 text--primary">
         {{data.name}}
       </p>
-      <img v-if="data.summary_polyline" :src="getSrc(data.summary_polyline)" alt="activityImg">
+      <figure class="d-flex justify-center">
+        <img
+          v-if="data.summary_polyline"
+          :src="getSrc(data.summary_polyline)"
+          alt="activityImg"
+        >
+      </figure>
       <div class="d-flex justify-space-between mt-5">
         <div class="text--primary">
           距離<br>
@@ -63,7 +69,7 @@
         v-if="data && data.start_latlng && data.map.polyline"
         :center="{lng: 0, lat: 0}"
         map-type-id="terrain"
-        style="width: 100%; height: 300px"
+        style="width: 100%; height: 300px;"
       >
         <GmapPolyline
           ref="polyline"

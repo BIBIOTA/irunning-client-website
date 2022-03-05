@@ -10,7 +10,6 @@
         hide-overlay
       >
         <v-carousel
-          style="max-width: 480px; margin: auto"
           height="100vh"
           hide-delimiter-background
           @change="imgIndex = imgs[$event].index"

@@ -36,23 +36,26 @@
             locale="zh-tw"
           ></v-date-picker>
         </v-menu>
-        <v-card
-          class="ma-2"
-          v-for="(data, i) in activities"
-          :key="`activities_${i}`"
-        >
-          <RunningInfo :data="data" />
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn
-              text
-              color="cyan"
-              @click="routerPush(data.id)"
-            >
-              查看活動
-            </v-btn>
-          </v-card-actions>
-        </v-card>
+        <div class="d-flex justify-center flex-wrap">
+          <v-card
+            class="ma-2"
+            v-for="(data, i) in activities"
+            :key="`activities_${i}`"
+            max-width="600px"
+          >
+            <RunningInfo :data="data" />
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                text
+                color="cyan"
+                @click="routerPush(data.id)"
+              >
+                查看活動
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </div>
         <Loading />
         <NoData />
         <div class="text-center">
@@ -192,6 +195,7 @@ export default {
     ]),
     searchData() {
       const formData = {};
+      _.set(formData, 'rows', 12);
       Object.keys(this.search).forEach((key) => {
         if (this.search[key] !== null || this.search[key] !== '') {
           if (key === 'date') {

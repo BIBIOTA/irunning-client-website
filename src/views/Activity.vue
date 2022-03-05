@@ -1,11 +1,14 @@
 <template>
   <v-main>
-    <v-card class="ma-4">
-      <RunningInfo :data="activity" :moreInfo="true" v-show="Object.keys(activity).length > 0" />
+    <v-card
+      class="ma-10" 
+      v-show="computedHasData"
+    >
+      <RunningInfo :data="activity" :moreInfo="true" />
+      <Backbtn class="py-4" />
     </v-card>
     <Loading />
     <NoData />
-    <Backbtn />
   </v-main>
 </template>
 <script>
@@ -53,6 +56,9 @@ export default {
     ...mapState([
       'login',
     ]),
+    computedHasData() {
+      return Object.keys(this.activity).length > 0;
+    },
   },
   mounted() {
     if (this.login) {
