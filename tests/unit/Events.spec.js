@@ -5,6 +5,8 @@ import { createLocalVue, mount } from '@vue/test-utils';
 import router from '../../src/router';
 import _ from 'lodash';
 
+
+
 const query = {
   startDay: '2022-01-01',
   endDay: '2022-01-31',
@@ -35,13 +37,13 @@ describe('Event.vue', () => {
   
     router.push('/Events/1');
 
+    // TODO event_certificate process
     const dataStructrue = expect.arrayContaining([
       expect.objectContaining({
         id: expect.any(String),
         link: expect.any(String),
         event_status: expect.any(Number),
         event_name: expect.any(String),
-        event_certificate: expect.any(Number),
         event_date: expect.any(String),
         event_time: expect.any(String),
         location: expect.any(String),

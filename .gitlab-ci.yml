@@ -1,15 +1,64 @@
 image: docker:latest
 stages:
+  - dependencies_install
+  - test
   - deploy
+  - deploy-k8s
+
+dependencies_install:
+  stage: dependencies_install
+  image: node:16.13.1
+  script:
+    - yarn
+  cache:
+    key:
+      files:
+        - package.json
+    paths:
+    - node_modules/
+
+test:
+  stage: test
+  image: node:16.13.1
+  cache:
+    key:
+      files:
+        - package.json
+    paths:
+      - node_modules/
+    policy: pull
+  script:
+    - yarn test:unit
+
 Deploy:
   stage: deploy
+  image: "docker:18.09"
+  services:
+    - docker:18-dind
+  before_script:
+    - chmod +x ./setup_env.sh
+    - ./setup_env.sh
+    - apk -Uuv add curl bash python
+    - curl https://sdk.cloud.google.com | CLOUDSDK_CORE_DISABLE_PROMPTS=1 bash
+    - export PATH=$PATH:/root/google-cloud-sdk/bin/
+    - echo "$GCP_SERVICE_KEY" > gcloud-service-key.json # Google Cloud service accounts
+    - gcloud auth activate-service-account --key-file gcloud-service-key.json
+    - gcloud auth configure-docker --quiet
+    - docker login -u _json_key --password-stdin https://gcr.io < gcloud-service-key.json
+  script:
+    - docker build -t gcr.io/$GCP_PROJECT_ID/$IMAGE:$CI_PIPELINE_ID .
+    - docker push gcr.io/$GCP_PROJECT_ID/$IMAGE:$CI_PIPELINE_ID
+  only:
+    - master
+
+Deploy-k8s:
   image: google/cloud-sdk
+  stage: deploy-k8s
   before_script:
     - echo "$GCP_SERVICE_KEY" > gcloud-service-key.json # Google Cloud service accounts
     - gcloud auth activate-service-account --key-file gcloud-service-key.json
+    - gcloud container clusters get-credentials $CLUSTER --zone $ZONE --project $GCP_PROJECT_ID
   script:
-    - gcloud config set project $GCP_PROJECT_ID
-    - gcloud builds submit
-       --config=cloudbuild.yaml
-  only:
-    - master
+    - kubectl set image deployment $DEPLOYMENT $CONTAINER=gcr.io/$GCP_PROJECT_ID/$IMAGE:$CI_PIPELINE_ID
+  dependencies:
+    - Deploy
