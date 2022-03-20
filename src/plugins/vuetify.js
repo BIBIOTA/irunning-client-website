@@ -6,6 +6,15 @@ Vue.use(Vuetify);
 import colors from 'vuetify/lib/util/colors'
 
 export default new Vuetify({
+  breakpoint: {
+    thresholds: {
+      xs: 340,
+      sm: 540,
+      md: 768,
+      lg: 1280,
+    },
+    mobileBreakpoint: 768,
+  },
   theme: {
     themes: {
       light: {

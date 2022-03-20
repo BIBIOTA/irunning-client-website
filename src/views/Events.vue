@@ -131,7 +131,7 @@
                 :key="`${item.name}_${i}`"
               >
                 <td
-                  :width="isMobile ? '50%' : ''"
+                  :width="$vuetify.breakpoint.mobile ? '50%' : ''"
                   class="py-2"
                 >
                   <div>
@@ -160,8 +160,8 @@
                 <td>
                   {{item.event_date}} {{item.event_time ? moment(item.event_time, 'h:mm:ss').format('hh:mm') : ''}}
                 </td>
-                <td v-if="!isMobile">{{item.location}}</td>
-                <td v-if="!isMobile">{{item.participate}}</td>
+                <td v-if="!$vuetify.breakpoint.mobile">{{item.location}}</td>
+                <td v-if="!$vuetify.breakpoint.mobile">{{item.participate}}</td>
                 <td>
                   <v-dialog
                     transition="dialog-bottom-transition"
@@ -285,7 +285,7 @@
 import NoData from '../components/NoData.vue';
 import Loading from '../components/Loading.vue';
 
-import { mapState, mapMutations } from 'vuex';
+import { mapMutations } from 'vuex';
 
 import { events } from '../libs/events.js';
 
@@ -618,11 +618,8 @@ export default {
     },
   },
   computed: {
-    ...mapState([
-      'isMobile',
-    ]),
     computedHeaders() {
-      if (this.isMobile) {
+      if (this.$vuetify.breakpoint.mobile) {
         return this.headers.filter((header) => {
           if (header.isMobile) {
             return header;

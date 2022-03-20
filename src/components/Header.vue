@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="overflow-hidden">
     <v-app-bar
       color="primary"
       dark
@@ -18,7 +18,7 @@
           class="white--text font-weight-bold px-8 pt-2"
           :to="data.to"
           :key="`list_${i}`"
-          v-if="(!isMobile && !data.isMobile) && (!data.isLogin || login)"
+          v-if="(!$vuetify.breakpoint.mobile && !data.isMobile) && (!data.isLogin || login)"
         >
           <v-list-item>
               <v-list-item-title>
@@ -30,7 +30,7 @@
 
       <v-spacer></v-spacer>
 
-      <v-list color="transparent" v-if="!isMobile">
+      <v-list color="transparent" v-if="!$vuetify.breakpoint.mobile">
         <v-list-item v-if="login">
           <v-btn
             class="mx-auto overflow-hidden"
@@ -250,7 +250,6 @@ export default {
   computed: {
     ...mapState([
       'login',
-      'isMobile',
     ]),
   },
 }

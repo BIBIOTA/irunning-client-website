@@ -44,8 +44,6 @@ import IntroSectionThree from '@/components/IntroSectionThree.vue';
 
 import { index } from './libs/index.js';
 
-import { mapMutations } from 'vuex';
-
 import localStorage from 'local-storage';
 
 import bg1 from '@/assets/index/runner_mb.webp';
@@ -82,27 +80,17 @@ export default {
     IntroSectionThree,
   },
   methods: {
-    ...mapMutations([
-      'setIsMobile',
-    ]),
     closeIntro() {
       this.dialog = false;
       localStorage.set('intro', true);
     },
-    onResize () {
-      this.setIsMobile(window.innerWidth < 768);
-    },
-  },
-  beforeDestroy () {
-    if (typeof window === 'undefined') return
-
-    window.removeEventListener('resize', this.onResize, { passive: true })
   },
   created() {
     const intro = localStorage.get('intro');
     if (intro) {
       this.dialog = false;
     }
+    console.log(this.$vuetify.breakpoint.mobile);
   },
   mounted() {
     index.getIndexEvents().then((res) => {
@@ -112,10 +100,6 @@ export default {
         console.log(res.message);
       }
     });
-
-    this.onResize();
-
-    window.addEventListener('resize', this.onResize, { passive: true })
   },
 }
 </script>
