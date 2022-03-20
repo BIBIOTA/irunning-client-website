@@ -2,7 +2,7 @@
   <div class="d-flex justify-center">
     <v-btn
       @click="routerPush"
-      class="white--text"
+      class="white--text my-4"
       color="cyan">
       返回
     </v-btn>

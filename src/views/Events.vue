@@ -268,7 +268,7 @@
         </v-data-table>
         <Loading />
         <NoData />
-        <div class="text-center">
+        <div class="text-center pa-4">
           <v-pagination
             v-model="page"
             @input="changePage($event)"
