@@ -1,11 +1,10 @@
 <template>
   <v-main>
     <v-card
-      class="ma-10" 
       v-show="computedHasData"
     >
       <RunningInfo :data="activity" :moreInfo="true" />
-      <Backbtn class="py-4" />
+      <Backbtn class="mb-6" />
     </v-card>
     <Loading />
     <NoData />
