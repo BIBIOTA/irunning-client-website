@@ -118,30 +118,13 @@ describe('LocationPopup.vue', () => {
   })
 
   const aqiStructrue = expect.objectContaining({
-    AQI: expect.any(String),
-    CO: expect.any(String),
-    CO_8hr: expect.any(String),
-    ImportDate: expect.any(String),
-    Latitude: expect.any(String),
-    Longitude: expect.any(String),
-    NO: expect.any(String),
-    NO2: expect.any(String),
-    NOx: expect.any(String),
-    O3: expect.any(String),
-    O3_8hr: expect.any(String),
-    PM2_5: expect.any(String),
-    PM2_5_AVG: expect.any(String),
-    PM10: expect.any(String),
-    PM10_AVG: expect.any(String),
-    Pollutant: expect.any(String),
-    PublishTime: expect.any(String),
-    SO2: expect.any(String),
-    SO2_AVG: expect.any(String),
-    SiteId: expect.any(String),
-    SiteName: expect.any(String),
-    Status: expect.any(String),
-    WIND_DIREC: expect.any(String),
-    WIND_SPEED: expect.any(String),
+    aqi: expect.any(String),
+    latitude: expect.any(String),
+    longitude: expect.any(String),
+    pm2_5: expect.any(String),
+    pm10: expect.any(String),
+    sitename: expect.any(String),
+    status: expect.any(String),
     city_id: expect.any(String),
     created_at: expect.any(String),
     id: expect.any(String),
@@ -189,7 +172,7 @@ describe('LocationPopup.vue', () => {
       await wrapper.vm.getAqis(item.id)
       const aqis = wrapper.vm.aqis;
       aqis.map(async(aqi) => {
-        expect(await wrapper.vm.getAqi(aqi.SiteName)).toEqual(aqiStructrue);
+        expect(await wrapper.vm.getAqi(aqi.sitename)).toEqual(aqiStructrue);
       });
     });
 

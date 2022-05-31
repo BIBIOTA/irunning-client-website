@@ -54,7 +54,7 @@
               v-model="area.aqi_name"
               :items="aqis"
               label="請選擇測量站"
-              item-text="SiteName"
+              item-text="sitename"
               @input="getAqi($event)"
             ></v-select>
           </v-card-text>
@@ -150,7 +150,7 @@ export default {
             aqi = this.getGPSAqiPosition(this.point, res.data);
           }
           this.setAqi(aqi);
-          this.setArea({ aqi_name: aqi.SiteName });
+          this.setArea({ aqi_name: aqi.sitename });
           this.setOverlay(false);
           return res.data;
         } else {
@@ -164,7 +164,7 @@ export default {
       let aqi = null;
       let distance = null;
       data.forEach((data) => {
-        const caculateDistance = d3.geoDistance(point, [data.Longitude, data.Latitude]);
+        const caculateDistance = d3.geoDistance(point, [data.longitude, data.latitude]);
         if (!distance || distance > caculateDistance) {
           distance = caculateDistance;
           aqi = data;
@@ -172,12 +172,12 @@ export default {
       });
       return aqi;
     },
-    getAqi(Sitename) {
-      if (Sitename) {
-        const data = this.aqis.find((item) => item.SiteName === Sitename);
+    getAqi(sitename) {
+      if (sitename) {
+        const data = this.aqis.find((item) => item.sitename === sitename);
         if (data) {
           this.setAqi(data);
-          this.setArea({ aqi_name: Sitename });
+          this.setArea({ aqi_name: sitename });
           return data;
         }
         return false;
@@ -285,7 +285,7 @@ export default {
       let aqi_id = null;
       if (this.area.aqi_name && this.aqis.length > 0) {
         this.aqis.forEach((item) => {
-          if (item.SiteName === this.area.aqi_name) {
+          if (item.sitename === this.area.aqi_name) {
             aqi_id = item.id;
           }
         });

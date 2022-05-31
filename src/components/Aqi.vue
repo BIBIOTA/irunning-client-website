@@ -8,7 +8,7 @@
           空氣品質
         </div>
         <div class="text-h7 text-center">
-          {{aqi.SiteName}}
+          {{aqi.siteName}}
         </div>
       </v-col>
     </v-row>
@@ -90,15 +90,14 @@ export default {
   methods: {
     putData(data) {
       this.lists.forEach((item) => {
-          Object.keys(data).forEach((key) =>  {
-            if (key === item.name) {
-              item.value = data[key];
-            } else if (item.name === 'PM2.5' && key === 'PM2_5') {
-              item.value = data[key];
-            }
-          }
-          );
-        });
+        if (item.name === 'PM2.5') {
+          item.value = data['pm2_5'];
+        } else if (item.name === 'AQI') {
+          item.value = data['aqi'];
+        } else if (item.name === 'PM10') {
+          item.value = data['pm10'];
+        }
+      });
       this.status = data.Status;
       this.styleProcess();
     },
@@ -124,13 +123,13 @@ export default {
       'aqi',
     ]),
     computedAqi() {
-      return this.aqi.AQI;
+      return this.aqi.aqi;
     },
     computedPM25() {
-      return this.aqi['PM2_5'];
+      return this.aqi['pm2_5'];
     },
     computedPM10() {
-      return this.aqi.PM10;
+      return this.aqi.pm10;
     },
     getAqiStyle() {
       const value = this.computedAqi;

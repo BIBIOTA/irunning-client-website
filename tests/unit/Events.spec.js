@@ -101,7 +101,7 @@ describe('Event.vue', () => {
 
     const getData = await wrapper.vm.getData();
     /* fucntion test */
-    expect(getData.message).toEqual('查無任何資料');
+    expect(getData.message).toEqual('not found');
     expect(getData.status).toEqual(false);
 
     /* after fucntion test data */
