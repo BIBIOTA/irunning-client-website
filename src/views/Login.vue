@@ -12,7 +12,6 @@
 <script>
 import Overlay from '../components/Overlay.vue';
 import { mapActions, mapMutations } from 'vuex';
-import localStorage from 'local-storage';
 
 export default {
   name: 'Login',
@@ -36,7 +35,6 @@ export default {
         if (payload) {
           const res = await this.login(payload);
           if (res) {
-            localStorage.set('intro', true);
             window.location.href = '/';
           } else {
             this.error();
