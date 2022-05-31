@@ -380,7 +380,7 @@ export default {
       distances: [
         {name:'全馬', value: 1},
         {name:'半馬', value: 2},
-        {name:'三鐵', value: 3},
+        {name:'10K', value: 3},
       ],
       events: [],
       dialogTitle: { 
@@ -524,8 +524,10 @@ export default {
         this.search.date = [startDay, endDay];
         this.getDateRangeText();
       }
-      if (distances) {
+      if (typeof(distances) === 'object') {
         this.search.distances = distances.map((value) => +value);
+      } else if(distances !== null) {
+        this.search.distances = [+distances];
       }
       if (keywords) {
         this.search.keywords = keywords;
