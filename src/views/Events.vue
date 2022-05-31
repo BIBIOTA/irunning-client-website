@@ -153,6 +153,16 @@
                         >
                           {{ data.event_distance }}
                         </v-chip>
+                        <v-chip
+                          color="accent"
+                          text-color="white"
+                          x-small
+                          class="mx-1"
+                          v-else
+                          :key="`distance_${item.name}_${i}`"
+                        >
+                          {{ data.distance }}
+                        </v-chip>
                       </template>
                     </div>
                   </div>
@@ -201,6 +211,16 @@
                                       :key="`event_distance_${item.name}_${i}`"
                                     >
                                       {{ data.event_distance }}
+                                    </v-chip>
+                                    <v-chip
+                                      color="accent"
+                                      text-color="white"
+                                      x-small
+                                      class="mx-1"
+                                      v-else
+                                      :key="`event_distance_${item.name}_${i}`"
+                                    >
+                                      {{ data.distance }}
                                     </v-chip>
                                   </template>
                                 </td>
