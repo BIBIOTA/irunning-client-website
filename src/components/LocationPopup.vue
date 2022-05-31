@@ -127,6 +127,7 @@ export default {
           this.districts = res.data;
           if (!defaultlocation) {
             this.area.district_name = res.data[0].district_name;
+            this.getWeather(this.computedDistrictId);
           }
           return this.districts;
         } else {
