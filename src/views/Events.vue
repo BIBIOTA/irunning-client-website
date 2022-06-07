@@ -526,7 +526,7 @@ export default {
       }
       if (typeof(distances) === 'object') {
         this.search.distances = distances.map((value) => +value);
-      } else if(distances !== null) {
+      } else if(distances) {
         this.search.distances = [+distances];
       }
       if (keywords) {

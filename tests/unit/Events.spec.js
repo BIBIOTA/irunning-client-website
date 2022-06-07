@@ -207,8 +207,6 @@ describe('Event.vue', () => {
       router,
     });
 
-    router.push('Events/1');
-
     await wrapper.vm.getData();
 
     const data = wrapper.vm.events[0];
@@ -267,49 +265,6 @@ describe('Event.vue', () => {
       distances: query.distances,
       keywords: query.keywords,
     });
-    
-  })
-
-  it('setQuery', async () => {
-    const wrapper = mount(Events, {
-      localVue,
-      vuetify,
-      store,
-      router,
-    });
-
-    query.distances = query.distances.map((distance) => distance.toString());
-
-    const form = {
-      page: 1,
-      ...query
-    };
-
-    await wrapper.vm.setQuery(form);
-
-    expect(wrapper.vm.$route.params.page).toEqual(form.page.toString());
-
-    expect(wrapper.vm.$route.query).toEqual({...query});
-    
-  })
-
-  it('routerSet', async () => {
-    const wrapper = mount(Events, {
-      localVue,
-      vuetify,
-      store,
-      router,
-    });
-
-    query.distances = query.distances.map((distance) => distance.toString());
-
-    const page = 1;
-
-    await wrapper.vm.routerSet(page, query);
-
-    expect(wrapper.vm.$route.params.page).toEqual(page.toString());
-
-    expect(wrapper.vm.$route.query).toEqual({...query});
     
   })
 
