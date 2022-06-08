@@ -5,6 +5,7 @@ import router from './router'
 import store from './store'
 import moment from 'moment'
 import * as VueGoogleMaps from 'vue2-google-maps'
+import VueGapi from 'vue-gapi'
 import './style/reset.css'
 import './style/twicon.css'
 import '@mdi/font/css/materialdesignicons.css'
@@ -148,6 +149,14 @@ Vue.use(VueGoogleMaps, {
   //// Vue.component('GmapMarker', GmapMarker)
   //// then disable the following:
   // installComponents: true,
+})
+
+Vue.use(VueGapi, {
+  apiKey: process.env.VUE_APP_GAPI,
+  clientId: process.env.VUE_APP_GCLIENT_ID,
+  plugin_name: "chat",
+  discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
+  scope: 'https://www.googleapis.com/auth/calendar'
 })
 
 new Vue({
