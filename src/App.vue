@@ -1,12 +1,14 @@
 <template>
   <v-app>
     <Header />
+    <Footer />
   </v-app>
 </template>
 
 <script>
 
 import Header from '@/components/Header.vue'
+import Footer from '@/components/Footer.vue'
 
 import { index } from './libs/index.js';
 
@@ -20,6 +22,7 @@ export default {
   },
   components: {
     Header,
+    Footer,
   },
   methods: {},
   created() {},

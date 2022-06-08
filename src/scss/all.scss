@@ -2,13 +2,13 @@
 
 #app > div.v-application--wrap {
   background-color: var(--v-primary-base);
+  min-height: auto;
 }
 
 #mainCard {
-  background-color: var(--v-primary-base);
   border: none;
   overflow-x: auto;
-  height: 100vh;
+  height: calc(100vh - 104px);
 }
 
 #logo {

@@ -7,7 +7,7 @@
     >
       <v-col
         dense
-        style="max-width: 480px; margin: auto"
+        style="margin: auto"
       >
         <StravaIndex />
         <Weather />
