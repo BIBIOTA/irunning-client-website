@@ -4,11 +4,22 @@
       <v-col dense>
         <v-row>
           <v-col
+            class="d-block"
             cols="12"
-            sm="6"
           >
             <v-card-title>
               全國賽會
+              <v-spacer v-show="!$vuetify.breakpoint.mobile" />
+              <v-card-subtitle
+                :class="$vuetify.breakpoint.mobile ? 'px-0' : ''"
+                class="flex-column align-center mt-2">
+                <div class="ma-2 d-flex align-center text-no-wrap grey--text text--darken-2">
+                  <a href="https://t.me/irunning_bot" target="_blank" class="d-flex">
+                    <TelegramIcon class="mr-2 mb-1" :width="25" :height="25" />
+                    加入 I Running Telegram 機器人 隨時關注新賽事 ！
+                  </a>
+                </div>
+              </v-card-subtitle>
             </v-card-title>
             <v-card-subtitle class="flex-column align-center mt-2">
               <div class="ma-2 d-flex text-no-wrap grey--text text--darken-2">
@@ -304,6 +315,7 @@
 <script>
 import NoData from '../components/NoData.vue';
 import Loading from '../components/Loading.vue';
+import TelegramIcon from '../components/TelegramIcon.vue';
 
 import { mapMutations } from 'vuex';
 
@@ -396,6 +408,7 @@ export default {
   components: {
     NoData,
     Loading,
+    TelegramIcon,
   },
   methods: {
     ...mapMutations([
