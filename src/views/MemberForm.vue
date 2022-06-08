@@ -114,6 +114,7 @@ import { districts } from '../libs/districts.js';
 import { member } from '../libs/member.js';
 import { required, realChName, checkEMail } from '../consts/validator.js';
 import { mapMutations } from 'vuex';
+import messages from '../consts/messages';
 
 export default {
   name: 'MemberForm',
@@ -172,7 +173,7 @@ export default {
           }
           this.setArea(this.form);
         } else {
-          this.setError(res.message);
+          this.setError(messages.updateErrorMessage);
         }
       });
     },
@@ -185,7 +186,7 @@ export default {
             }
           });
         } else {
-          this.setError(res.message);
+          this.setError(messages.errorMessage);
         }
       }).then(() => {
         this.getCities();
@@ -200,7 +201,7 @@ export default {
           }
         } else {
           this.cities = [],
-          this.setError(res.message);
+          this.setError(messages.specificErrorMessange('城市'));
         }
       }).then(() => {
         this.getDistrict(this.computedCityId);
@@ -216,7 +217,7 @@ export default {
             }
           } else {
             this.districts = [],
-            this.setError(res.message);
+            this.setError(messages.specificErrorMessange('鄉鎮區'));
           }
         });
       }

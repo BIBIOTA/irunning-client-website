@@ -79,6 +79,7 @@ import Loading from '../components/Loading.vue';
 // import imgExample from '../assets/Actitivities/activitity_example.png';
 import { activities } from '../libs/activities.js';
 import { mapState, mapMutations } from 'vuex';
+import messages from '../consts/messages'
 
 export default {
   name: 'Activities',
@@ -127,7 +128,7 @@ export default {
             total: res.data.last_page,
           };
         } else {
-          this.setError(res.message);
+          this.setError(messages.errorMessage);
           this.setNoData(true);
           this.pagination = {
             page: 1,

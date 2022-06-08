@@ -83,6 +83,7 @@ import { aqi } from '../libs/aqi.js';
 import { weather } from '../libs/weather.js';
 import { node } from '../libs/node.js';
 import { mapState, mapMutations } from 'vuex';
+import messages from '../consts/messages';
 import * as d3 from 'd3';
 
 export default {
@@ -115,7 +116,7 @@ export default {
           return this.cities;
         } else {
           this.cities = [],
-          this.setError(res.message);
+          this.setError(messages.specificErrorMessange('城市'));
           return false;
         }
       });
@@ -133,7 +134,7 @@ export default {
         } else {
           this.districts = [];
           this.setWeather(null);
-          this.setError(res.message);
+          this.setError(messages.specificErrorMessange('鄉鎮區'));
           return false;
         }
       });
@@ -156,7 +157,7 @@ export default {
           return res.data;
         } else {
           this.setAqi({});
-          this.setError(res.message);
+          this.setError(messages.specificErrorMessange('空氣品質'));
           return false;
         }
       });
@@ -196,7 +197,7 @@ export default {
           return res.data;
         } else {
           this.setWeather({});
-          this.setError(res.message);
+          this.setError(messages.specificErrorMessange('天氣'));
           return false;
         }
       });
@@ -240,7 +241,7 @@ export default {
               district_name: T_Name,
             };
           } else {
-            this.setError(res.message);
+            this.setError(messages.specificErrorMessange('使用者定位'));
             return false;
           }
         }).catch((err) => {

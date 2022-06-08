@@ -17,6 +17,7 @@ import Loading from '../components/Loading.vue';
 import Backbtn from '../components/Backbtn.vue';
 import { mapState, mapMutations } from 'vuex';
 import { activities } from '../libs/activities.js';
+import messages from '../consts/messages'
 
 export default {
   name: 'Activity',
@@ -45,7 +46,7 @@ export default {
           this.setNoData(false);
           this.activity = res.data;
         } else {
-          this.setError(res.message);
+          this.setError(messages.errorMessage);
           this.setNoData(true);
         }
       });

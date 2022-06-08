@@ -461,7 +461,6 @@ export default {
           this.total = res.data.last_page;
           this.setQuery(formData);
         } else {
-          this.setError(res.message);
           this.setNoData(true);
           this.page = 1;
           this.total = 1;

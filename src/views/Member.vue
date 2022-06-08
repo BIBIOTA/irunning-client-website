@@ -39,6 +39,7 @@
 <script>
 import { member } from '../libs/member.js';
 import { mapMutations } from 'vuex';
+import messages from '../consts/messages'
 
 export default {
   name: 'Member',
@@ -98,7 +99,7 @@ export default {
             }
           });
         } else {
-          this.setError(res.message);
+          this.setError(messages.errorMessage);
         }
       });
     },
