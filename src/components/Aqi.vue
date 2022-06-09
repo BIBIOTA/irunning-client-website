@@ -8,7 +8,7 @@
           空氣品質
         </div>
         <div class="text-h7 text-center">
-          {{aqi.siteName}}
+          {{aqi.sitename}}
         </div>
       </v-col>
     </v-row>
@@ -51,11 +51,26 @@ export default {
   name: 'Aqi',
   data() {
     return {
-      lists: [
-        { name: 'AQI', value: null, color: 'grey darken-2', icon: 'mdi-emoticon-happy' },
-        { name: 'PM2.5', value: null, color: 'grey darken-2', icon: 'mdi-emoticon-happy' },
-        { name: 'PM10', value: null, color: 'grey darken-2', icon: 'mdi-emoticon-happy'},
-      ],
+      lists: {
+        aqi: {
+          name: 'AQI',
+          value: null,
+          color: 'grey darken-2',
+          icon: 'mdi-emoticon-happy',
+        },
+        pm2_5: {
+          name: 'PM2.5',
+          value: null,
+          color: 'grey darken-2',
+          icon: 'mdi-emoticon-happy',
+        },
+        pm10: {
+          name: 'PM10',
+          value: null,
+          color: 'grey darken-2',
+          icon: 'mdi-emoticon-happy',
+        },
+      },
       status: null,
       style: {
         good: {
@@ -85,54 +100,23 @@ export default {
       },
     };
   },
-  components: {
-  },
   methods: {
     putData(data) {
-      this.lists.forEach((item) => {
-        if (item.name === 'PM2.5') {
-          item.value = data['pm2_5'];
-        } else if (item.name === 'AQI') {
-          item.value = data['aqi'];
-        } else if (item.name === 'PM10') {
-          item.value = data['pm10'];
-        }
-      });
-      this.status = data.Status;
-      this.styleProcess();
+      this.processAqi(data['aqi']);
+      this.processPM25(data['pm2_5']);
+      this.processPM10(data['pm10']);
+      this.status = data.status;
     },
-    styleProcess() {
-      this.lists.forEach((item, i) => {
-        if (item.name === 'AQI') {
-          this.lists[i] = {...item, ...this.getAqiStyle};
-        } else if (item.name === 'PM2.5') {
-          this.lists[i] = {...item, ...this.getPM25Style};
-        } else if (item.name === 'PM10') {
-          this.lists[i] = {...item, ...this.getPM10Style};
-        }
-      });
+    processAqi(value) {
+      this.lists.aqi = { value, ...this.getAqiColorAndIcon(value) };
     },
-  },
-  watch: {
-    aqi(data) {
-      this.putData(data);
+    processPM25(value) {
+      this.lists.pm2_5 = { value, ...this.getPM25ColorAndIcon(value) };
     },
-  },
-  computed: {
-    ...mapState([
-      'aqi',
-    ]),
-    computedAqi() {
-      return this.aqi.aqi;
+    processPM10(value) {
+      this.lists.pm10 = { value, ...this.getPM10ColorAndIcon(value) };
     },
-    computedPM25() {
-      return this.aqi['pm2_5'];
-    },
-    computedPM10() {
-      return this.aqi.pm10;
-    },
-    getAqiStyle() {
-      const value = this.computedAqi;
+    getAqiColorAndIcon(value) {
       if (value <= 50) {
         return this.style.good;
       } else if (value >= 51 && value <= 100) {
@@ -149,8 +133,7 @@ export default {
         return null
       }
     },
-    getPM25Style() {
-      const value = this.computedPM25;
+    getPM25ColorAndIcon(value) {
       if (value <= 15.4) {
         return this.style.good;
       } else if (value >= 15.5 && value <= 35.4) {
@@ -167,8 +150,7 @@ export default {
         return null;
       }
     },
-    getPM10Style() {
-      const value = this.computedPM10;
+    getPM10ColorAndIcon(value) {
       if (value <= 50) {
         return this.style.good;
       } else if (value >= 51 && value <= 100) {
@@ -184,7 +166,17 @@ export default {
       } else {
         return null;
       }
-    }
+    },
+  },
+  watch: {
+    aqi(data) {
+      this.putData(data);
+    },
+  },
+  computed: {
+    ...mapState([
+      'aqi',
+    ]),
   },
   mounted() {
     if (Object.keys(this.aqi).length > 0) {
@@ -193,6 +185,3 @@ export default {
   },
 }
 </script>
-
-<style scoped lang="scss">
-</style>
