@@ -108,13 +108,13 @@ export default {
       this.status = data.status;
     },
     processAqi(value) {
-      this.lists.aqi = { value, ...this.getAqiColorAndIcon(value) };
+      this.lists.aqi = { ...this.lists.aqi , value, ...this.getAqiColorAndIcon(value) };
     },
     processPM25(value) {
-      this.lists.pm2_5 = { value, ...this.getPM25ColorAndIcon(value) };
+      this.lists.pm2_5 = { ...this.lists.pm2_5 , value, ...this.getPM25ColorAndIcon(value) };
     },
     processPM10(value) {
-      this.lists.pm10 = { value, ...this.getPM10ColorAndIcon(value) };
+      this.lists.pm10 = { ...this.lists.pm10 , value, ...this.getPM10ColorAndIcon(value) };
     },
     getAqiColorAndIcon(value) {
       if (value <= 50) {
