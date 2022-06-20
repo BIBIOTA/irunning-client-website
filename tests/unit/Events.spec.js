@@ -1,5 +1,6 @@
 import Vuetify from 'vuetify';
 import Events from '@/views/Events.vue';
+import { events } from '../../src/libs/events';
 import store from '@/store';
 import { createLocalVue, mount } from '@vue/test-utils';
 import router from '../../src/router';
@@ -25,9 +26,151 @@ describe('Event.vue', () => {
     window.gapi = {
       load() { }
     }    
-  })
+  });
+
+  const mockData = {
+    "status": true,
+    "message": "ok",
+    "data": {
+        "current_page": 1,
+        "data": [
+            {
+                "id": "6289f2a019015",
+                "link": "https://www.ctrun.com.tw/pageO.aspx?CF_ActCode=CZ220626&id=5795",
+                "event_status": 1,
+                "event_name": "2022 DADA RUN 皇冠路跑趣-桃園站",
+                "event_info": null,
+                "event_certificate": null,
+                "event_date": "2022-06-26",
+                "event_time": "06:00:00",
+                "location": "桃園市新屋區農博環境教育園區",
+                "agent": "臺灣運動賽事協會",
+                "participate": "已截止",
+                "entry_is_end": 1,
+                "entry_start": null,
+                "entry_end": null,
+                "created_at": "2022-05-22T08:21:52.000000Z",
+                "updated_at": "2022-06-08T17:01:48.000000Z",
+                "distance": [
+                    {
+                        "id": 62,
+                        "event_id": "6289f2a019015",
+                        "event_distance": null,
+                        "distance": "10K",
+                        "event_price": null,
+                        "event_limit": null,
+                        "created_at": "2022-06-19T17:01:41.000000Z",
+                        "updated_at": "2022-06-19T17:01:41.000000Z"
+                    },
+                    {
+                        "id": 62,
+                        "event_id": "6289f2a019015",
+                        "event_distance": null,
+                        "distance": "4K",
+                        "event_price": null,
+                        "event_limit": null,
+                        "created_at": "2022-06-19T17:01:41.000000Z",
+                        "updated_at": "2022-06-19T17:01:41.000000Z"
+                    }
+                ]
+            },
+        ],
+        "first_page_url": "http://irunningapi.bibiota.com/api/events?page=1",
+        "from": 1,
+        "last_page": 8,
+        "last_page_url": "http://irunningapi.bibiota.com/api/events?page=8",
+        "links": [
+            {
+                "url": null,
+                "label": "&laquo; Previous",
+                "active": false
+            },
+            {
+                "url": "http://irunningapi.bibiota.com/api/events?page=1",
+                "label": "1",
+                "active": true
+            },
+            {
+                "url": "http://irunningapi.bibiota.com/api/events?page=2",
+                "label": "2",
+                "active": false
+            },
+            {
+                "url": "http://irunningapi.bibiota.com/api/events?page=3",
+                "label": "3",
+                "active": false
+            },
+            {
+                "url": "http://irunningapi.bibiota.com/api/events?page=4",
+                "label": "4",
+                "active": false
+            },
+            {
+                "url": "http://irunningapi.bibiota.com/api/events?page=5",
+                "label": "5",
+                "active": false
+            },
+            {
+                "url": "http://irunningapi.bibiota.com/api/events?page=6",
+                "label": "6",
+                "active": false
+            },
+            {
+                "url": "http://irunningapi.bibiota.com/api/events?page=7",
+                "label": "7",
+                "active": false
+            },
+            {
+                "url": "http://irunningapi.bibiota.com/api/events?page=8",
+                "label": "8",
+                "active": false
+            },
+            {
+                "url": "http://irunningapi.bibiota.com/api/events?page=2",
+                "label": "Next &raquo;",
+                "active": false
+            }
+        ],
+        "next_page_url": "http://irunningapi.bibiota.com/api/events?page=2",
+        "path": "http://irunningapi.bibiota.com/api/events",
+        "per_page": 30,
+        "prev_page_url": null,
+        "to": 30,
+        "total": 213
+    }
+};
+  
+  const mockNotFound = {
+    data: null,
+    status: false,
+    message: 'not found'
+  };
 
   it('getData success', async() => {
+    const wrapper = mount(Events, {
+      localVue,
+      vuetify,
+      store,
+      router,
+    });
+
+    router.push('/Events/1');
+
+    jest.spyOn(events, 'getEvents').mockImplementation(() => {
+      return Promise.resolve(mockData);
+    });
+
+    const result = await wrapper.vm.getData();
+
+    expect(result.data.data).toEqual(mockData.data.data);
+
+    expect(wrapper.vm.page).toEqual(mockData.data.current_page);
+
+    expect(wrapper.vm.total).toEqual(mockData.data.last_page);
+
+  })
+
+  it('getData not found', async() => {
     const wrapper = mount(Events, {
       localVue,
       vuetify,
@@ -37,67 +180,9 @@ describe('Event.vue', () => {
   
     router.push('/Events/1');
 
-    // TODO event_certificate process
-    const dataStructrue = expect.arrayContaining([
-      expect.objectContaining({
-        id: expect.any(String),
-        link: expect.any(String),
-        event_status: expect.any(Number),
-        event_name: expect.any(String),
-        event_date: expect.any(String),
-        event_time: expect.any(String),
-        location: expect.any(String),
-        agent: expect.any(String),
-        participate: expect.any(String),
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-        distance: expect.any(Array),
-      })
-    ]);
-
-    const paginationStructrue = expect.objectContaining({
-      data: expect.objectContaining({
-        current_page: expect.any(Number),
-        data: dataStructrue,
-        first_page_url: expect.any(String),
-        from: expect.any(Number),
-        last_page: expect.any(Number),
-        last_page_url: expect.any(String),
-        links: expect.any(Array),
-        next_page_url: expect.any(String),
-        path: expect.any(String),
-        per_page: expect.any(Number),
-        prev_page_url: expect.any(Object), // null
-        to: expect.any(Number),
-        total: expect.any(Number),
-      }),
-      message: expect.any(String),
-      status: expect.any(Boolean),
+    jest.spyOn(events, 'getEvents').mockImplementation(() => {
+      return Promise.resolve(mockNotFound);
     });
-
-    const getData = await wrapper.vm.getData();
-
-    /* fucntion test */
-    expect(getData).toEqual(paginationStructrue);
-
-    /* after fucntion test data */
-    expect(wrapper.vm.events).toEqual(dataStructrue);
-
-    expect(wrapper.vm.page).toEqual(getData.data.current_page);
-
-    expect(wrapper.vm.total).toEqual(getData.data.last_page);
-
-  })
-
-  it('getData success', async() => {
-    const wrapper = mount(Events, {
-      localVue,
-      vuetify,
-      store,
-      router,
-    });
-  
-    router.push('/Events/2000');
 
     const getData = await wrapper.vm.getData();
     /* fucntion test */
@@ -207,9 +292,7 @@ describe('Event.vue', () => {
       router,
     });
 
-    await wrapper.vm.getData();
-
-    const data = wrapper.vm.events[0];
+    const data = mockData.data.data[0];
 
     await wrapper.vm.processEventData(data);
 
@@ -278,9 +361,15 @@ describe('Event.vue', () => {
 
     router.push('/Events/1');
 
+    mockData.data.current_page = 2;
+
+    jest.spyOn(events, 'getEvents').mockImplementation(() => {
+      return Promise.resolve(mockData);
+    });
+
     const page = 2;
 
-    await wrapper.vm.changePage(page);
+    await wrapper.vm.changePage(2);
 
     expect(wrapper.vm.$route.params.page).toEqual(page);
 
